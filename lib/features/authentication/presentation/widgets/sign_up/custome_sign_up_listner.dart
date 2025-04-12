@@ -19,8 +19,8 @@ class CustomeSignUpListner extends StatelessWidget {
         if (state.isSuccess) {
           showCustomDialog(
             context,
-            "The verification code has been sent to your email.",
-            "Account created successfully",
+            "تم إرسال رمز التحقق إلى بريدك الإلكتروني.",
+            "تم إنشاء الحساب بنجاح",
             () {
               Navigator.popAndPushNamed(context, RouteNames.verification,arguments: cubit.emailController.text.trim());
             },

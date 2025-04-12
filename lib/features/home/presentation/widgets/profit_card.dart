@@ -19,7 +19,7 @@ class ProfitCard extends StatelessWidget {
         spacing: 16,
         children: [
           Text(
-            'Profit achieved ',
+            'الربح المحقق',
             textDirection: TextDirection.rtl,
             style: TextStyle(
               color: Colors.white,

@@ -31,7 +31,7 @@ class _InvestmentPlansCarouselState extends State<InvestmentPlansCarousel> {
         final activeUserPlan = state.userActivePlans ?? [];
         if (state.isLoading || state.isInitial) {
           return AspectRatio(
-      aspectRatio:  16/14,
+            aspectRatio: 16/15,
             child: const Center(
               child: CircularProgressIndicator(
                 color: AppColor.brandHighlight,
@@ -42,7 +42,7 @@ class _InvestmentPlansCarouselState extends State<InvestmentPlansCarousel> {
           return Padding(
             padding: EdgeInsets.symmetric(vertical: 20.h),
             child: Text(
-              'No investment plans available.',
+              'لا توجد خطط استثمارية متاحة',
               style: TextStyle(
                 color: Colors.white70,
                 fontSize: 16.sp,

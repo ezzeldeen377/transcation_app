@@ -23,7 +23,7 @@ class _PlansPageState extends State<PlansPage> {
                 automaticallyImplyLeading: false,
 
         title: Text(
-          'My Investment Plans',
+          'خططي الاستثمارية',
           style: TextStyle(
             color: AppColor.brandHighlight,
             fontSize: 20.sp,
@@ -55,7 +55,7 @@ class _PlansPageState extends State<PlansPage> {
                   ),
                   SizedBox(height: 16.h),
                   Text(
-                    'No Active Plans',
+                    'لا توجد خطط نشطة',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 18.sp,
@@ -64,7 +64,7 @@ class _PlansPageState extends State<PlansPage> {
                   ),
                   SizedBox(height: 8.h),
                   Text(
-                    'You haven\'t invested in any plans yet',
+                    'لم تستثمر في أي خطط حتى الآن',
                     style: TextStyle(
                       color: Colors.white70,
                       fontSize: 14.sp,
@@ -98,7 +98,7 @@ class _PlansPageState extends State<PlansPage> {
                         if (activePlan.plan.special == 1)
                           Positioned(
                             top: 0,
-                            right: 0,
+                            left: 0,
                             child: Container(
                               padding: EdgeInsets.symmetric(
                                 horizontal: 12.w,
@@ -107,8 +107,8 @@ class _PlansPageState extends State<PlansPage> {
                               decoration: BoxDecoration(
                                 color: AppColor.brandHighlight,
                                 borderRadius: BorderRadius.only(
-                                  topRight: Radius.circular(15.r),
-                                  bottomLeft: Radius.circular(15.r),
+                                  topLeft: Radius.circular(15.r),
+                                  bottomRight: Radius.circular(15.r),
                                 ),
                               ),
                               child: Row(
@@ -121,7 +121,7 @@ class _PlansPageState extends State<PlansPage> {
                                   ),
                                   SizedBox(width: 4.w),
                                   Text(
-                                    'Special',
+                                    'مميزة',
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 12.sp,
@@ -190,20 +190,20 @@ class _PlansPageState extends State<PlansPage> {
                               Row(
                                 children: [
                                   _buildDetailItem(
-                                    'Returns',
+                                    'العائد',
                                     '${activePlan.plan.profitMargin}%',
                                     Icons.trending_up,
                                   ),
                                   SizedBox(width: 24.w),
                                   _buildDetailItem(
-                                    'Duration',
-                                    '${activePlan.plan.durationDays} Days',
+                                    'المدة',
+                                    '${activePlan.plan.durationDays} يوم',
                                     Icons.timer_outlined,
                                   ),
                                   SizedBox(width: 24.w),
                                   _buildDetailItem(
-                                    'Investment',
-                                    '\$${activePlan.plan.price}',
+                                    'الاستثمار',
+                                    '${activePlan.plan.price} \$',
                                     Icons.attach_money,
                                   ),
                                 ],
@@ -213,7 +213,7 @@ class _PlansPageState extends State<PlansPage> {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    'Tap to view details',
+                                    'انقر للتفاصيل',
                                     style: TextStyle(
                                       color: Colors.white70,
                                       fontSize: 12.sp,

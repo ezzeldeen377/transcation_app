@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:transcation_app/core/common/cubit/app_user/app_user_cubit.dart';
 import 'package:transcation_app/core/helpers/spacer.dart';
+import 'package:transcation_app/core/routes/routes.dart';
 import 'package:transcation_app/core/theme/app_color.dart';
 import 'package:transcation_app/features/home/data/models/active_plans_response.dart';
 import 'package:transcation_app/features/home/data/models/plans_response.dart';
@@ -27,6 +28,11 @@ class _OfferPageState extends State<OfferPage> {
         if (state.isSubscribePlan) {
           context.read<OfferCubit>().getUserActivePlan(
               context.read<AppUserCubit>().state.accessToken!);
+          context.read<OfferCubit>().getPlanReuslt(
+              context.read<AppUserCubit>().state.accessToken!,
+              state.subscriptedPlan!.planId.toString());
+        }
+        if (state.isSuccessPlanDetails) {
           showDialog(
             context: context,
             builder: (context) => AlertDialog(
@@ -39,12 +45,12 @@ class _OfferPageState extends State<OfferPage> {
                 children: [
                   Icon(
                     Icons.check_circle_outline,
-                    color: AppColor.brandPrimary,
+                    color: AppColor.brandAccent,
                     size: 50.sp,
                   ),
                   SizedBox(height: 15.h),
                   Text(
-                    'Success!',
+                    'نجاح!',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 20.sp,
@@ -53,7 +59,7 @@ class _OfferPageState extends State<OfferPage> {
                   ),
                   SizedBox(height: 10.h),
                   Text(
-                    'Your plan has been subscribed successfully.',
+                    'تم الاشتراك في الخطة بنجاح.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.white70,
@@ -62,9 +68,13 @@ class _OfferPageState extends State<OfferPage> {
                   ),
                   SizedBox(height: 20.h),
                   ElevatedButton(
-                    onPressed: () => Navigator.pop(context),
+                    onPressed: () {
+
+                      Navigator.popAndPushNamed(context,RouteNames.planDetails,arguments: state.userActivePlan);
+
+                    },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColor.brandPrimary,
+                      backgroundColor: AppColor.brandAccent,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.r),
                       ),
@@ -74,7 +84,7 @@ class _OfferPageState extends State<OfferPage> {
                       ),
                     ),
                     child: Text(
-                      'OK',
+                      'حسنا',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 16.sp,
@@ -92,7 +102,7 @@ class _OfferPageState extends State<OfferPage> {
           appBar: AppBar(
             automaticallyImplyLeading: false,
             title: Text(
-              'Special Offers',
+              'العروض الخاصة',
               style: TextStyle(
                 color: AppColor.brandHighlight,
                 fontSize: 24.sp,
@@ -111,7 +121,7 @@ class _OfferPageState extends State<OfferPage> {
                     Padding(
                       padding: EdgeInsets.all(16.w),
                       child: Text(
-                        'Featured Offers',
+                        'العروض المميزة',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 20.sp,
@@ -125,7 +135,7 @@ class _OfferPageState extends State<OfferPage> {
         final activeUserPlan = state.userActivePlans ?? [];
         if (state.isLoading || state.isInitial) {
           return AspectRatio(
-      aspectRatio:  16/14,
+      aspectRatio:  14/16,
             child: const Center(
               child: CircularProgressIndicator(
                 color: AppColor.brandHighlight,
@@ -136,7 +146,7 @@ class _OfferPageState extends State<OfferPage> {
           return Padding(
             padding: EdgeInsets.symmetric(vertical: 20.h),
             child: Text(
-              'No investment plans available.',
+              'لا توجد خطط استثمارية متاحة.',
               style: TextStyle(
                 color: Colors.white70,
                 fontSize: 16.sp,
@@ -224,7 +234,7 @@ class _OfferPageState extends State<OfferPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Why Choose Our Special Offers?',
+                              'لماذا تختار عروضنا الخاصة؟',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 18.sp,
@@ -234,20 +244,20 @@ class _OfferPageState extends State<OfferPage> {
                             SizedBox(height: 16.h),
                             _buildBenefitItem(
                               Icons.star,
-                              'Exclusive Benefits',
-                              'Get access to premium features and higher returns',
+                              'مزايا حصرية',
+                              'احصل على ميزات متميزة وعوائد أعلى',
                             ),
                             SizedBox(height: 12.h),
                             _buildBenefitItem(
                               Icons.trending_up,
-                              'Enhanced Returns',
-                              'Enjoy higher profit margins than standard plans',
+                              'عوائد معززة',
+                              'استمتع بهوامش ربح أعلى من الخطط القياسية',
                             ),
                             SizedBox(height: 12.h),
                             _buildBenefitItem(
                               Icons.timer,
-                              'Limited Time',
-                              'Don\'t miss out on these time-sensitive opportunities',
+                              'عرض محدود',
+                              'لا تفوت هذه الفرص المحدودة بوقت معين',
                             ),
                           ],
                         ),
@@ -271,7 +281,7 @@ class _OfferPageState extends State<OfferPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'How It Works',
+                              'كيف يعمل',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 18.sp,
@@ -280,19 +290,19 @@ class _OfferPageState extends State<OfferPage> {
                             ),
                             SizedBox(height: 16.h),
                             _buildStepItem(
-                              '1',
-                              'Choose Your Plan',
-                              'Select from our exclusive special offers',
+                              '١',
+                              'اختر خطتك',
+                              'اختر من عروضنا الحصرية المميزة',
                             ),
                             _buildStepItem(
-                              '2',
-                              'Subscribe',
-                              'Complete the subscription process',
+                              '٢',
+                              'اشترك',
+                              'أكمل عملية الاشتراك',
                             ),
                             _buildStepItem(
-                              '3',
-                              'Earn Returns',
-                              'Watch your investment grow with higher returns',
+                              '٣',
+                              'اكسب العوائد',
+                              'راقب نمو استثمارك مع عوائد أعلى',
                             ),
                           ],
                         ),

@@ -39,7 +39,7 @@ final cubit=context.read<VerificationCubit>();
               decoration: const InputDecoration(
                 border: InputBorder.none,
                 counterText: '',
-                hintText: 'Verification Code',
+                hintText: 'رمز التحقق',
                 contentPadding: EdgeInsets.symmetric(vertical: 5),
               ),
               maxLength: 6, // Assuming the verification code is 6 digits
@@ -52,7 +52,7 @@ final cubit=context.read<VerificationCubit>();
               cubit.resendCode();
             },
             child: Text(
-              'Resend Code',
+              'إعادة إرسال الرمز',
               style: TextStyle(
                 fontSize: 14.sp,
                 color: AppColor.brandHighlight,

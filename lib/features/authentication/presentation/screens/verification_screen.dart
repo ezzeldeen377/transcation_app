@@ -41,12 +41,12 @@ class VerificationScreen extends StatelessWidget {
                 children: [
                   Icon(
                     Icons.check_circle_outline,
-                    color: AppColor.brandPrimary,
+                    color: AppColor.brandAccent,
                     size: 50.sp,
                   ),
                   SizedBox(height: 15.h),
                   Text(
-                    'Success!',
+                    'تم بنجاح!',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 20.sp,
@@ -55,7 +55,7 @@ class VerificationScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 10.h),
                   Text(
-                    'Your account has been verified successfully.',
+                    'تم التحقق من حسابك بنجاح.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.white70,
@@ -73,7 +73,7 @@ class VerificationScreen extends StatelessWidget {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColor.brandPrimary,
+                      backgroundColor: AppColor.brandAccent,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.r),
                       ),
@@ -83,7 +83,7 @@ class VerificationScreen extends StatelessWidget {
                       ),
                     ),
                     child: Text(
-                      'OK',
+                      'موافق',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 16.sp,
@@ -108,8 +108,8 @@ class VerificationScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CustomeTitleText(
-                title: "Verification",
-                animatedText: "Enter the code sent to your email",
+                title: "التحقق",
+                animatedText: "أدخل الرمز المرسل إلى بريدك الإلكتروني",
                 padding: EdgeInsetsDirectional.only(
                     top: 35.h, bottom: 65.h, end: 35.w, start: 35.w),
               ),
@@ -124,7 +124,7 @@ class VerificationScreen extends StatelessWidget {
                           buttonContent: state.isLoading
                               ? const CircularProgressIndicator(color: AppColor.white)
                               : Text(
-                                  "Verify",
+                                  "تحقق",
                                   style: TextStyle(
                                     fontSize: 18.sp,
                                     fontWeight: FontWeight.bold,

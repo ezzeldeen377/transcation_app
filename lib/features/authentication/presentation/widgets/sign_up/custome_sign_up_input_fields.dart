@@ -29,7 +29,7 @@ class CustomeSignUpInputFields extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Email",
+            "البريد الإلكتروني",
             style: TextStyle(
               fontSize: 14.sp,
               fontWeight: FontWeight.w600,
@@ -39,7 +39,7 @@ class CustomeSignUpInputFields extends StatelessWidget {
           verticalSpace(10),
           CustomTextFormField(
             validator: emailValidator,
-            hint: "Enter your email",
+            hint: "أدخل بريدك الإلكتروني",
             keyboardType: TextInputType.emailAddress,
             suffixIcon: const Icon(
               Icons.email_outlined,
@@ -52,7 +52,7 @@ class CustomeSignUpInputFields extends StatelessWidget {
           ),
           SizedBox(height: 15.h),
           Text(
-            "Username",
+            "اسم المستخدم",
             style: TextStyle(
               fontSize: 14.sp,
               fontWeight: FontWeight.w600,
@@ -62,7 +62,7 @@ class CustomeSignUpInputFields extends StatelessWidget {
           verticalSpace(10),
           CustomTextFormField(
             validator: emptyValidator,
-            hint: "Enter your username",
+            hint: "أدخل اسم المستخدم",
             keyboardType: TextInputType.name,
             suffixIcon: const Icon(
               Icons.person,
@@ -76,7 +76,7 @@ class CustomeSignUpInputFields extends StatelessWidget {
           ),
           SizedBox(height: 15.h),
           Text(
-            "Phone",
+            "رقم الهاتف",
             style: TextStyle(
               fontSize: 14.sp,
               fontWeight: FontWeight.w600,
@@ -86,7 +86,7 @@ class CustomeSignUpInputFields extends StatelessWidget {
           verticalSpace(10),
           CustomTextFormField(
             validator: emptyValidator,
-            hint: "Enter your phone number",
+            hint: "أدخل رقم هاتفك",
             keyboardType: TextInputType.number,
             suffixIcon: const Icon(
               Icons.call,
@@ -100,7 +100,7 @@ class CustomeSignUpInputFields extends StatelessWidget {
           ),
           SizedBox(height: 15.h),
           Text(
-            "Password",
+            "كلمة المرور",
             style: TextStyle(
               fontSize: 14.sp,
               fontWeight: FontWeight.w600,
@@ -112,7 +112,7 @@ class CustomeSignUpInputFields extends StatelessWidget {
             builder: (context, state) {
               return CustomTextFormField(
                 validator: emptyValidator,
-                hint: "Enter your password",
+                hint: "أدخل كلمة المرور",
                 obscureText: state.isVisiblePassword,
                 keyboardType: TextInputType.visiblePassword,
                 suffixIcon: IconButton(
@@ -138,7 +138,7 @@ class CustomeSignUpInputFields extends StatelessWidget {
             height: 15.h,
           ),
           Text(
-            "Confirm Password",
+            "تأكيد كلمة المرور",
             style: TextStyle(
               fontSize: 14.sp,
               fontWeight: FontWeight.w600,
@@ -152,13 +152,13 @@ class CustomeSignUpInputFields extends StatelessWidget {
                 animationIndex: 3,
                 validator: (String? value) {
                   if (value == null || value.trim().isEmpty) {
-                    return "Please confirm your password";
+                    return "يرجى تأكيد كلمة المرور";
                   } else if (value != cubit.passwordController.text) {
-                    return "Passwords do not match";
+                    return "كلمات المرور غير متطابقة";
                   }
                   return null;
                 },
-                hint: "Confirm your password",
+                hint: "تأكيد كلمة المرور",
                 keyboardType: TextInputType.visiblePassword,
                 obscureText: state.isVisiblePasswordConfirm,
                 suffixIcon: IconButton(
@@ -198,7 +198,7 @@ class CustomeSignUpInputFields extends StatelessWidget {
                 child: Wrap(
                   children: [
                     Text(
-                      "I agree to the ",
+                      "أوافق على ",
                       style: TextStyle(
                         fontSize: 10.sp,
                         fontWeight: FontWeight.w400,
@@ -210,7 +210,7 @@ class CustomeSignUpInputFields extends StatelessWidget {
                         // Navigate to Terms & Conditions page if needed
                       },
                       child: Text(
-                        "Terms and Conditions",
+                        "الشروط والأحكام",
                         style: TextStyle(
                           fontSize: 11.sp,
                           fontWeight: FontWeight.w500,

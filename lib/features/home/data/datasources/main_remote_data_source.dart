@@ -82,6 +82,7 @@ class MainRemoteDataSourceImpl implements MainRemoteDataSource {
 
   @override
   Future<Map<String, dynamic>> withdraw(Map<String, dynamic> withdrawData) {
+    print("withdrawData $withdrawData");
     return executeTryAndCatchForDataLayer(() {
       return HttpServices.instance
           .post(ApiConstant.withdrawEndPoint, body: withdrawData);

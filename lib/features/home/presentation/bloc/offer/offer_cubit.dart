@@ -43,4 +43,18 @@ void subscribePlan(String token, int planId) async {
           subscriptedPlan: success.userPlan)),
     );
   }
+  void getPlanReuslt(String token, String planId) async {
+    emit(state.copyWith(status: OfferStatus.loading));
+    final result = await repository.getPlanReuslt(token, planId);
+    result.fold(
+      (failure) => emit(state.copyWith(
+        status: OfferStatus.failure,
+        message: failure.message,
+      )),
+      (plan) => emit(state.copyWith(
+        status: OfferStatus.successGetPlanDetails,
+        userActivePlan: plan,
+      )),
+    );
+  }
 }

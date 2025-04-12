@@ -7,24 +7,27 @@ import 'package:transcation_app/core/helpers/navigator.dart';
 import 'package:transcation_app/core/routes/routes.dart';
 import 'package:transcation_app/core/theme/app_color.dart';
 import 'package:transcation_app/core/theme/text_styles.dart';
+import 'package:transcation_app/core/utils/web_view.dart';
 import 'package:transcation_app/features/home/presentation/widgets/menu_item.dart';
 
 class MenuScreen extends StatelessWidget {
   const MenuScreen({Key? key}) : super(key: key);
-  
+  final String whatsappLink = "https://wa.me/message/66NFNOEP3S3LC1";
+  final String websiteLink = "https://ethraawalet.com/";
+
   Future<bool?> _showLogoutDialog(BuildContext context) async {
     return showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: AppColor.darkGray,
         title: Text(
-          'Logout',
+          'تسجيل الخروج',
           style: TextStyles.fontCircularSpotify16BlackMedium.copyWith(
             color: AppColor.brandPrimary,
           ),
         ),
         content: Text(
-          'Are you sure you want to logout?',
+          'هل أنت متأكد أنك تريد تسجيل الخروج؟',
           style: TextStyles.fontCircularSpotify14BlackMedium.copyWith(
             color: AppColor.white,
           ),
@@ -33,7 +36,7 @@ class MenuScreen extends StatelessWidget {
           TextButton(
             onPressed: () => Navigator.pop(context, false),
             child: Text(
-              'Cancel',
+              'إلغاء',
               style: TextStyles.fontCircularSpotify14BlackMedium.copyWith(
                 color: AppColor.white,
               ),
@@ -47,7 +50,7 @@ class MenuScreen extends StatelessWidget {
                   .onLogout(context.read<AppUserCubit>().state.accessToken!);
             },
             child: Text(
-              'Logout',
+              'تسجيل الخروج',
               style: TextStyles.fontCircularSpotify14BlackMedium.copyWith(
                 color: AppColor.brandHighlight,
               ),
@@ -60,9 +63,9 @@ class MenuScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = context.watch<AppUserCubit>().state.user; 
-    return BlocListener<AppUserCubit,AppUserState>(
-       listener: (context, state) {
+    final user = context.watch<AppUserCubit>().state.user;
+    return BlocListener<AppUserCubit, AppUserState>(
+      listener: (context, state) {
         if (state.isClearUserData) {
           context.pushNamedAndRemoveAll(RouteNames.signIn);
         }
@@ -80,7 +83,7 @@ class MenuScreen extends StatelessWidget {
             onPressed: () => Navigator.pop(context),
           ),
           title: Text(
-            'Menu',
+            'القائمة',
             style: TextStyles.fontCircularSpotify16BlackMedium.copyWith(
               color: AppColor.brandHighlight,
               fontWeight: FontWeight.bold,
@@ -135,7 +138,7 @@ class MenuScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              user?.name??"",
+                              user?.name ?? "",
                               style: TextStyles.fontCircularSpotify16BlackMedium
                                   .copyWith(
                                 color: AppColor.brandAccent,
@@ -144,7 +147,7 @@ class MenuScreen extends StatelessWidget {
                             ),
                             SizedBox(height: 4.h),
                             Text(
-                              user?.email??"",
+                              user?.email ?? "",
                               style: TextStyles.fontCircularSpotify14BlackMedium
                                   .copyWith(
                                 color:
@@ -165,35 +168,38 @@ class MenuScreen extends StatelessWidget {
                     children: [
                       MenuItem(
                         icon: Icons.settings,
-                        title: 'Settings',
+                        title: 'الإعدادات',
                         onTap: () {
                           // Navigate to Settings screen
                         },
                       ),
                       MenuItem(
                         icon: Icons.lock,
-                        title: 'Privacy & Security',
+                        title: 'الخصوصية والأمان',
                         onTap: () {
                           // Navigate to Privacy & Security screen
                         },
                       ),
                       MenuItem(
                         icon: Icons.help_outline,
-                        title: 'Help & Support',
+                        title: 'المساعدة والدعم',
                         onTap: () {
                           // Navigate to Help & Support screen
+                          customelaunchUrl(whatsappLink, context);
                         },
                       ),
                       MenuItem(
                         icon: Icons.info_outline,
-                        title: 'About',
+                        title: 'حول',
                         onTap: () {
                           // Navigate to About screen
+                                                    customelaunchUrl(websiteLink, context);
+
                         },
                       ),
                       MenuItem(
                         icon: Icons.logout,
-                        title: 'Logout',
+                        title: 'تسجيل الخروج',
                         onTap: () async {
                           final shouldLogout = await _showLogoutDialog(context);
                           if (shouldLogout == true) {

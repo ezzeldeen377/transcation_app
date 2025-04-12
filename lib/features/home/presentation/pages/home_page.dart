@@ -32,7 +32,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
- 
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +40,11 @@ class _HomePageState extends State<HomePage> {
         if (state.isSubscribePlan) {
           context.read<HomeCubit>().getUserActivePlan(
               context.read<AppUserCubit>().state.accessToken!);
+          context.read<HomeCubit>().getPlanReuslt(
+              context.read<AppUserCubit>().state.accessToken!,
+              state.subscriptedPlan!.planId.toString());
+        }
+        if (state.isSuccessGetPlanDetails) {
           showDialog(
             context: context,
             builder: (context) => AlertDialog(
@@ -58,7 +62,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   SizedBox(height: 15.h),
                   Text(
-                    'Success!',
+                    'نجاح!',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 20.sp,
@@ -67,7 +71,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   SizedBox(height: 10.h),
                   Text(
-                    'Your plan has been subscribed successfully.',
+                    'تم الاشتراك في الخطة بنجاح.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.white70,
@@ -76,9 +80,13 @@ class _HomePageState extends State<HomePage> {
                   ),
                   SizedBox(height: 20.h),
                   ElevatedButton(
-                    onPressed: () => Navigator.pop(context),
+                    onPressed: () {
+
+                      Navigator.popAndPushNamed(context,RouteNames.planDetails,arguments: state.userActivePlan);
+
+                    },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColor.brandPrimary,
+                      backgroundColor: AppColor.brandAccent,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.r),
                       ),
@@ -88,7 +96,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                     child: Text(
-                      'OK',
+                      'حسنا',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 16.sp,
@@ -129,7 +137,7 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     _buildActionButton(
-                      'Deposit',
+                      'إيداع',
                       Icons.arrow_downward,
                       AppColor.brandPrimary,
                       () {
@@ -139,7 +147,7 @@ class _HomePageState extends State<HomePage> {
                       },
                     ),
                     _buildActionButton(
-                      'Withdraw',
+                      'سحب',
                       Icons.arrow_upward,
                       AppColor.brandHighlight,
                       () {
@@ -149,7 +157,7 @@ class _HomePageState extends State<HomePage> {
                       },
                     ),
                     _buildActionButton(
-                      'History',
+                      'السجل',
                       Icons.history,
                       AppColor.brandAccent,
                       () {
@@ -166,7 +174,7 @@ class _HomePageState extends State<HomePage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Recent Transactions',
+                      'المعاملات الأخيرة',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 18.sp,
@@ -177,17 +185,17 @@ class _HomePageState extends State<HomePage> {
                     BlocBuilder<HomeCubit, HomeState>(
                       builder: (context, state) {
                         final transactions = state.history;
-                        if(state.isLoading||state.isInitial){
+                        if (state.isLoading || state.isInitial) {
                           return Center(
                             child: CircularProgressIndicator(
                               color: AppColor.brandHighlight,
-                            ), 
+                            ),
                           );
                         }
                         if (transactions == null) {
                           return Center(
                             child: Text(
-                              'No recent transactions',
+                              'لا توجد معاملات حديثة',
                               style: TextStyle(
                                 color: Colors.white70,
                                 fontSize: 14.sp,
@@ -224,43 +232,46 @@ class _HomePageState extends State<HomePage> {
                           children: [
                             if (lastDeposit != null)
                               _buildTransactionItem(
-                                'Deposit',
+                                'إيداع',
                                 '+\$${lastDeposit.amount}',
-                                timeago.format(lastDeposit.createdAt),
+                                timeago.format(lastDeposit.createdAt,
+                                    locale: "ar"),
                                 Icons.arrow_downward,
                                 AppColor.brandPrimary,
                               )
                             else
                               _buildEmptyTransactionItem(
-                                'No Recent Deposits',
+                                'لا توجد إيداعات حديثة',
                                 Icons.arrow_downward,
                                 AppColor.brandPrimary.withOpacity(0.5),
                               ),
                             if (lastWithdrawal != null)
                               _buildTransactionItem(
-                                'Withdraw',
+                                'سحب',
                                 '-\$${lastWithdrawal.amount}',
-                                timeago.format(lastWithdrawal.createdAt),
+                                timeago.format(lastWithdrawal.createdAt,
+                                    locale: "ar"),
                                 Icons.arrow_upward,
                                 AppColor.brandHighlight,
                               )
                             else
                               _buildEmptyTransactionItem(
-                                'No Recent Withdrawals',
+                                'لا توجد عمليات سحب حديثة',
                                 Icons.arrow_upward,
                                 AppColor.brandHighlight.withOpacity(0.5),
                               ),
                             if (lastSubscription != null)
                               _buildTransactionItem(
-                                lastPlanDetails?.plan.name ?? 'Investment',
+                                lastPlanDetails?.plan.name ?? 'استثمار',
                                 '-\$${lastPlanDetails?.plan.price}',
-                                timeago.format(lastSubscription.createdAt),
+                                timeago.format(lastSubscription.createdAt,
+                                    locale: "ar"),
                                 Icons.account_balance,
                                 AppColor.brandAccent,
                               )
                             else
                               _buildEmptyTransactionItem(
-                                'No Active Investments',
+                                'لا توجد استثمارات نشطة',
                                 Icons.account_balance,
                                 AppColor.brandAccent.withOpacity(0.5),
                               ),
@@ -379,36 +390,36 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildEmptyTransactionItem(
-      String title,
-      IconData icon,
-      Color color,
-    ) {
-      return CustomContainer(
-        child: ListTile(
-          leading: Container(
-            padding: EdgeInsets.all(8.r),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  color.withOpacity(0.3),
-                  color.withOpacity(0.1),
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-              borderRadius: BorderRadius.circular(10.r),
+    String title,
+    IconData icon,
+    Color color,
+  ) {
+    return CustomContainer(
+      child: ListTile(
+        leading: Container(
+          padding: EdgeInsets.all(8.r),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                color.withOpacity(0.3),
+                color.withOpacity(0.1),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
             ),
-            child: Icon(icon, color: Colors.white.withOpacity(0.5)),
+            borderRadius: BorderRadius.circular(10.r),
           ),
-          title: Text(
-            title,
-            style: TextStyle(
-              color: Colors.white.withOpacity(0.5),
-              fontSize: 16.sp,
-              fontWeight: FontWeight.w500,
-            ),
+          child: Icon(icon, color: Colors.white.withOpacity(0.5)),
+        ),
+        title: Text(
+          title,
+          style: TextStyle(
+            color: Colors.white.withOpacity(0.5),
+            fontSize: 16.sp,
+            fontWeight: FontWeight.w500,
           ),
         ),
-      );
-    }
+      ),
+    );
+  }
 }

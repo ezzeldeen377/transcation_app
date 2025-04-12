@@ -7,6 +7,7 @@ enum OfferStatus {
   successGetOffer,
   failure,
   successGetActiveUserPlans,
+  successGetPlanDetails,
   subscribePlan
 }
 
@@ -18,6 +19,8 @@ extension OfferStateX on OfferState {
   bool get isSuccessActiveUserPlans =>
       status == OfferStatus.successGetActiveUserPlans;
   bool get isSubscribePlan => status == OfferStatus.subscribePlan;
+  bool get isSuccessPlanDetails =>
+      status == OfferStatus.successGetPlanDetails;
 }
 
 class OfferState {
@@ -26,12 +29,14 @@ class OfferState {
   final List<Plan>? offers;
     final SubscriptedPlan? subscriptedPlan;
   final List<ActivePlan>? userActivePlans;
+  final ActivePlan? userActivePlan;
 
   OfferState({
     required this.status,
     this.message,
     this.offers,
     this.subscriptedPlan,
+    this.userActivePlan,
     this.userActivePlans,
   });
 
@@ -41,6 +46,7 @@ class OfferState {
     List<Plan>? offers,
     SubscriptedPlan? subscriptedPlan,
     List<ActivePlan>? userActivePlans,
+    ActivePlan? userActivePlan,
   }) {
     return OfferState(
       status: status ?? this.status,
@@ -48,6 +54,7 @@ class OfferState {
       offers: offers ?? this.offers,
       subscriptedPlan: subscriptedPlan ?? this.subscriptedPlan,
       userActivePlans: userActivePlans ?? this.userActivePlans,
+      userActivePlan: userActivePlan ?? this.userActivePlan,
     );
   }
 

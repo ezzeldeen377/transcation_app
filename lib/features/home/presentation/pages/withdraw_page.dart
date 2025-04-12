@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:transcation_app/core/common/cubit/app_user/app_user_cubit.dart';
 import 'package:transcation_app/core/helpers/spacer.dart';
+import 'package:transcation_app/core/routes/routes.dart';
 import 'package:transcation_app/core/theme/app_color.dart';
 import 'package:transcation_app/core/utils/custom_button.dart';
 import 'package:transcation_app/core/utils/custom_text_form_field.dart';
@@ -80,7 +81,7 @@ class _WithdrawPageState extends State<WithdrawPage> {
                     ),
                     SizedBox(height: 16.h),
                     Text(
-                      'Withdrawal Successful',
+                      'تم السحب بنجاح',
                       style: TextStyle(
                         color: AppColor.white,
                         fontSize: 18.sp,
@@ -89,7 +90,7 @@ class _WithdrawPageState extends State<WithdrawPage> {
                     ),
                     SizedBox(height: 8.h),
                     Text(
-                      'Your withdrawal request has been processed successfully',
+                      'تم معالجة طلب السحب الخاص بك بنجاح',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: AppColor.white.withOpacity(0.7),
@@ -98,8 +99,10 @@ class _WithdrawPageState extends State<WithdrawPage> {
                     ),
                     SizedBox(height: 24.h),
                     CustomButton(
-                      onTapButton: () => Navigator.of(context).pop(),
-                      buttonContent: Text("Done"),
+                      onTapButton: () {
+                        Navigator.of(context).popAndPushNamed(RouteNames.historyPage);
+                      },
+                      buttonContent: Text("تم"),
                       animationIndex: 1,
                     ),
                   ],
@@ -112,7 +115,7 @@ class _WithdrawPageState extends State<WithdrawPage> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            'Withdraw',
+            'سحب',
             style: TextStyle(
               color: AppColor.brandHighlight,
               fontSize: 20.sp,
@@ -167,7 +170,7 @@ class _WithdrawPageState extends State<WithdrawPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Withdraw Amount',
+          'مبلغ السحب',
           style: TextStyle(
             fontSize: 20.sp,
             fontWeight: FontWeight.bold,
@@ -177,7 +180,7 @@ class _WithdrawPageState extends State<WithdrawPage> {
         SizedBox(height: 16.h),
         CustomTextFormField(
           controller: _amountController,
-          hint: 'Enter amount',
+          hint: 'أدخل المبلغ',
           keyboardType: TextInputType.number,
           prefixIcon: Icon(
             Icons.attach_money,
@@ -186,24 +189,24 @@ class _WithdrawPageState extends State<WithdrawPage> {
         ),
         SizedBox(height: 24.h),
         _buildPaymentMethod(
-          'Bank Transfer',
+          'تحويل بنكي',
           Icons.account_balance,
-          'Direct bank transfer',
+          'تحويل بنكي مباشر',
         ),
         _buildPaymentMethod(
-          'Credit Card',
+          'دفع محلي',
           Icons.credit_card,
-          'Visa, Mastercard, etc.',
+          'فيزا، ماستركارد، إلخ',
         ),
         _buildPaymentMethod(
-          'Western Union',
+          'ويسترن يونيون',
           Icons.account_balance_wallet,
-          'Send money worldwide',
+          'إرسال الأموال في جميع أنحاء العالم',
         ),
         _buildPaymentMethod(
-          'Crypto',
+          'عملات رقمية',
           Icons.currency_bitcoin,
-          'BTC, ETH, USDT',
+          'بيتكوين، إيثريوم، تيثر',
         ),
         SizedBox(height: 32.h),
         CustomButton(
@@ -211,7 +214,7 @@ class _WithdrawPageState extends State<WithdrawPage> {
             // Implement withdraw logic
             _handleWithdraw();
           },
-          buttonContent: Text("Withdraw"),
+          buttonContent: Text("سحب"),
           animationIndex: 1,
         ),
       ],
@@ -292,45 +295,45 @@ class _WithdrawPageState extends State<WithdrawPage> {
               child: Column(
                 children: [
                   // Update the Western Union section in _buildPaymentMethod
-                  if (title == 'Western Union') ...[
+                  if (title == 'ويسترن يونيون') ...[
                     SizedBox(height: 12.h),
                     CustomTextFormField(
                       controller: _westernUnionNameController,
-                      hint: 'Full Name (as in ID/Passport)',
+                      hint: 'الاسم الكامل (كما في الهوية/جواز السفر)',
                       keyboardType: TextInputType.text,
                     ),
                     SizedBox(height: 12.h),
                     CustomTextFormField(
                       controller: _westernUnionPhoneController,
-                      hint: 'Phone Number',
+                      hint: 'رقم الهاتف',
                       keyboardType: TextInputType.phone,
                     ),
                   ],
                   // Update the _getHintText method
 
-                  if (title == 'Bank Transfer') ...[
+                  if (title == 'تحويل بنكي') ...[
                     SizedBox(height: 12.h),
                     CustomTextFormField(
                       controller: _accountNumberController,
-                      hint: 'Account Number',
+                      hint: 'رقم الحساب',
                     ),
                     SizedBox(height: 12.h),
                     CustomTextFormField(
                       controller: _bankNameController,
-                      hint: 'Bank Name',
+                      hint: 'اسم البنك',
                     ),
-                  ] else if (title == 'Credit Card') ...[
+                  ] else if (title == 'دفع محلي') ...[
                     SizedBox(height: 12.h),
                     CustomTextFormField(
                       controller: _cardNumberController,
-                      hint: ' bank account info (IBAN or account number)',
+                      hint: 'معلومات الحساب البنكي (IBAN أو رقم الحساب)',
                     ),
                     SizedBox(height: 12.h),
-                  ] else if (title == 'Crypto') ...[
+                  ] else if (title == 'عملات رقمية') ...[
                     SizedBox(height: 12.h),
                     CustomTextFormField(
                       controller: _walletAddressController,
-                      hint: 'Wallet Address',
+                      hint: 'عنوان المحفظة',
                     ),
                   ],
                 ],
@@ -348,7 +351,7 @@ class _WithdrawPageState extends State<WithdrawPage> {
     if (_selectedPaymentMethod.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Please select a payment method'),
+          content: Text('يرجى اختيار طريقة الدفع'),
           backgroundColor: AppColor.errorColor,
         ),
       );
@@ -358,7 +361,8 @@ class _WithdrawPageState extends State<WithdrawPage> {
     if (_amountController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Please enter amount'),
+          content: Text('يرجى إدخال المبلغ'
+),
           backgroundColor: AppColor.errorColor,
         ),
       );
@@ -369,14 +373,13 @@ class _WithdrawPageState extends State<WithdrawPage> {
       'amount': _amountController.text,
       'token': context.read<AppUserCubit>().state.accessToken,
     };
-
     switch (_selectedPaymentMethod) {
       case 'Western Union':
         if (_westernUnionNameController.text.isEmpty ||
             _westernUnionPhoneController.text.isEmpty) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Please fill all Western Union fields'),
+              content: Text('يرجى ملء جميع حقول ويسترن يونيون'),
               backgroundColor: AppColor.errorColor,
             ),
           );
@@ -393,7 +396,7 @@ class _WithdrawPageState extends State<WithdrawPage> {
             _bankNameController.text.isEmpty) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Please fill all Bank Transfer fields'),
+              content: Text('يرجى ملء جميع حقول التحويل البنكي'),
               backgroundColor: AppColor.errorColor,
             ),
           );
@@ -409,7 +412,7 @@ class _WithdrawPageState extends State<WithdrawPage> {
         if (_cardNumberController.text.isEmpty) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Please fill bank account information'),
+              content: Text('يرجى ملء معلومات الحساب البنكي'),
               backgroundColor: AppColor.errorColor,
             ),
           );
@@ -424,7 +427,7 @@ class _WithdrawPageState extends State<WithdrawPage> {
         if (_walletAddressController.text.isEmpty) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Please enter wallet address'),
+              content: Text('يرجى إدخال عنوان المحفظة'),
               backgroundColor: AppColor.errorColor,
             ),
           );

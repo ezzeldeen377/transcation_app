@@ -14,7 +14,7 @@ class CustomeAlreadyHaveAnAccountRow extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
          Text(
-          "Already have an account?",
+          "لديك حساب بالفعل؟",
           style: TextStyle(
             fontSize: 14.sp,
             fontWeight: FontWeight.w500,
@@ -26,7 +26,7 @@ class CustomeAlreadyHaveAnAccountRow extends StatelessWidget {
             Navigator.pushNamed(context,RouteNames.signIn);
           },
           child: Text(
-            "Sign In",
+            "تسجيل الدخول",
             style: TextStyle(
               fontSize: 14.sp,
               fontWeight: FontWeight.w500,

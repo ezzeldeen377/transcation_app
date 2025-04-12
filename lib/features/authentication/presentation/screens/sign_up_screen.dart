@@ -43,8 +43,8 @@ class SignUpScreenState extends State<SignUpScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CustomeTitleText(
-                      title: "Sign Up",
-                      animatedText: "Create your account",
+                      title: "إنشاء حساب",
+                      animatedText: "أنشئ حسابك الجديد",
                       padding: EdgeInsetsDirectional.only(
                           top: 35.h, bottom: 65.h, end: 35.w, start: 35.w),
                     ),
@@ -60,7 +60,7 @@ class SignUpScreenState extends State<SignUpScreen> {
                               buttonContent: state.isLoading
                                   ? const CircularProgressIndicator()
                                   : Text(
-                                      "Sign Up",
+                                      "إنشاء حساب",
                                       style: TextStyle(
                                         fontSize: 18.sp,
                                         fontWeight: FontWeight.bold,
@@ -80,7 +80,7 @@ class SignUpScreenState extends State<SignUpScreen> {
                                   }
                                 } else {
                                   showSnackBar(context,
-                                      "Please accept terms and conditions");
+                                      "يرجى الموافقة على الشروط والأحكام");
                                 }
                               },
                             );

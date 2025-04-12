@@ -47,7 +47,7 @@ showCustomDialog(
               foregroundColor: AppColor.brandPrimary,
             ),
             child: Text(
-              "OK",
+              "حسنا",
               style: TextStyles.fontCircularSpotify14BlackMedium.copyWith(
                 color: AppColor.brandHighlight,
               ),
@@ -58,3 +58,46 @@ showCustomDialog(
     },
   );
 }
+
+
+Future<bool> onWillPop(BuildContext context) async {
+    return await showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            backgroundColor: AppColor.darkGray,
+            title: Text(
+              'الخروج من التطبيق',
+              style: TextStyles.fontCircularSpotify16BlackMedium.copyWith(
+                color: AppColor.brandPrimary,
+              ),
+            ),
+            content: Text(
+              'هل أنت متأكد أنك تريد الخروج؟',
+              style: TextStyles.fontCircularSpotify14BlackMedium.copyWith(
+                color: AppColor.white,
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: Text(
+                  'لا',
+                  style: TextStyles.fontCircularSpotify14BlackMedium.copyWith(
+                    color: AppColor.white,
+                  ),
+                ),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                child: Text(
+                  'نعم',
+                  style: TextStyles.fontCircularSpotify14BlackMedium.copyWith(
+                    color: AppColor.brandHighlight,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ) ??
+        false;
+  }

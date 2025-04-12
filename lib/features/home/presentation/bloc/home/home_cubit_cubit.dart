@@ -122,4 +122,19 @@ class HomeCubit extends Cubit<HomeState> with MountedCubit<HomeState> {
       },
     );
   }
+  void getPlanReuslt(String token, String planId) async {
+        emit(state.copyWith(status: HomeStatus.loading));
+
+    final result = await repository.getPlanReuslt(token, planId);
+    result.fold(
+      (failure) => emit(state.copyWith(
+        status: HomeStatus.failure,
+        message: failure.message,
+      )),
+      (plan) => emit(state.copyWith(
+        status: HomeStatus.successGetPlanDetails,
+        userActivePlan: plan,
+      )),
+    );
+  }
 }

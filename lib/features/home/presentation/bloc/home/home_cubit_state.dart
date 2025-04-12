@@ -11,6 +11,7 @@ enum HomeStatus {
   subscribePlan,
   successCheckPlans,
   successGetTranscation,
+  successGetPlanDetails,
   failure,
 }
 extension HomeStateX on HomeState {
@@ -24,6 +25,7 @@ extension HomeStateX on HomeState {
   bool get isSubscribePlan => status == HomeStatus.subscribePlan;
   bool get isSuccessCheckPlans => status == HomeStatus.successCheckPlans;
   bool get isSuccessGetTranscation => status == HomeStatus.successGetTranscation;
+  bool get isSuccessGetPlanDetails => status == HomeStatus.successGetPlanDetails;
 }
 class HomeState {
   final HomeStatus status;
@@ -32,6 +34,7 @@ class HomeState {
   final List<Plan>? plans;
   final List<Notification>? notifications;
   final List<ActivePlan>? userActivePlans;
+  final ActivePlan? userActivePlan;
   final SubscriptedPlan? subscriptedPlan;
     final TransactionHistoryResponse? history;
   final Map<int, ActivePlan>? planDetails;
@@ -44,6 +47,7 @@ class HomeState {
     this.userActivePlans,
     this.subscriptedPlan,
     this.history,
+    this.userActivePlan,
      this.planDetails,
   });
 
@@ -54,6 +58,7 @@ class HomeState {
     List<Plan>? plans,
     List<Notification>? notifications,
     List<ActivePlan>? userActivePlans,
+    ActivePlan? userActivePlan,
     SubscriptedPlan? subscriptedPlan,
     TransactionHistoryResponse? history,
     Map<int, ActivePlan>? planDetails,
@@ -65,6 +70,7 @@ class HomeState {
       plans: plans ?? this.plans,
       notifications: notifications ?? this.notifications,
       userActivePlans: userActivePlans ?? this.userActivePlans,
+      userActivePlan: userActivePlan ?? this.userActivePlan,
       subscriptedPlan: subscriptedPlan ?? this.subscriptedPlan,
       history: history ?? this.history,
       planDetails: planDetails ?? this.planDetails,

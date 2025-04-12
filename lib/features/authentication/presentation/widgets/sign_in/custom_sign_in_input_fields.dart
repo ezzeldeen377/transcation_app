@@ -24,14 +24,14 @@ class CustomSignInInputFields extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Email',
+            'البريد الإلكتروني',
             style: Theme.of(context).textTheme.titleSmall,
           ),
           verticalSpace(10),
           CustomTextFormField(
             animationIndex: 0,
             validator: emailValidator,
-            hint: 'Enter your email',
+            hint: 'أدخل بريدك الإلكتروني',
             keyboardType: TextInputType.emailAddress,
             suffixIcon: const Icon(
               Icons.email_outlined,
@@ -44,7 +44,7 @@ class CustomSignInInputFields extends StatelessWidget {
           ),
           SizedBox(height: 15.h),
           Text(
-            'Password',
+            'كلمة المرور',
             style: Theme.of(context).textTheme.titleSmall,
           ),
           verticalSpace(10),
@@ -53,7 +53,7 @@ class CustomSignInInputFields extends StatelessWidget {
               return CustomTextFormField(
                 animationIndex: 1,
                 validator: emptyValidator,
-                hint: 'Enter your password',
+                hint: 'أدخل كلمة المرور',
                 obscureText: state.isVisible,
                 keyboardType: TextInputType.visiblePassword,
                 suffixIcon: IconButton(

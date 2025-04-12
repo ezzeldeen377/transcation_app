@@ -18,7 +18,7 @@ class CustomDontHaveAccountRow extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
          Text(
-          "Don't have an account?",
+          "ليس لديك حساب؟",
           style: TextStyle(
             fontSize: 14.sp,
             fontWeight: FontWeight.w500,
@@ -29,7 +29,7 @@ class CustomDontHaveAccountRow extends StatelessWidget {
         InkWell(
           onTap: onTap,
           child: Text(
-            "Register Now",
+            "سجل الآن",
             style: TextStyle(
               fontSize: 14.sp,
               fontWeight: FontWeight.w500,

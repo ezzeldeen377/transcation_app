@@ -28,7 +28,7 @@ class _PlanDetailsScreenState extends State<PlanDetailsScreen> {
   }
 
   void _calculateProgress() {
-   startTime = DateTime.parse(widget.activePlan.startDate!);
+   startTime = DateTime.parse(widget.activePlan.startDate??DateTime.now().toString());
    endTime = DateTime.parse(widget.activePlan.expiryDate);
     final now = DateTime.now();
     final totalDays = widget.activePlan.plan.durationDays;
@@ -78,7 +78,7 @@ class _PlanDetailsScreenState extends State<PlanDetailsScreen> {
                         color: AppColor.brandHighlight, size: 24.sp),
                     SizedBox(width: 8.w),
                     Text(
-                      'Special Plan',
+                      'خطة خاصة',
                       style: TextStyle(
                         color: AppColor.brandHighlight,
                         fontSize: 16.sp,
@@ -94,25 +94,25 @@ class _PlanDetailsScreenState extends State<PlanDetailsScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildInfoRow('Plan ID', '#${widget.activePlan.plan.id}'),
+                    _buildInfoRow('معرف الخطة', '#${widget.activePlan.plan.id}'),
                     SizedBox(height: 8.h),
-                    _buildInfoRow('Status', widget.activePlan.status),
+                    _buildInfoRow('الحالة', widget.activePlan.status),
                     SizedBox(height: 8.h),
-                    _buildInfoRow('Investment Amount',
+                    _buildInfoRow('مبلغ الاستثمار',
                         '\$${widget.activePlan.plan.price}'),
                     SizedBox(height: 8.h),
                     _buildInfoRow(
-                        'Returns', '${widget.activePlan.plan.profitMargin}%'),
+                        'العائدات', '${widget.activePlan.plan.profitMargin}%'),
                     SizedBox(height: 8.h),
-                    _buildInfoRow('Duration',
-                        '${widget.activePlan.plan.durationDays} Days'),
+                    _buildInfoRow('المدة',
+                        '${widget.activePlan.plan.durationDays} يوم'),
                     SizedBox(height: 8.h),
-                    _buildInfoRow('Start Date', _formatDate(startTime)),
+                    _buildInfoRow('تاريخ البدء', _formatDate(startTime)),
                     SizedBox(height: 8.h),
-                    _buildInfoRow('End Date',_formatDate(endTime)),
+                    _buildInfoRow('تاريخ الانتهاء', _formatDate(endTime)),
                     SizedBox(height: 16.h),
                     Text(
-                      'Progress',
+                      'التقدم',
                       style: TextStyle(
                         fontSize: 16.sp,
                         fontWeight: FontWeight.bold,
@@ -133,17 +133,17 @@ class _PlanDetailsScreenState extends State<PlanDetailsScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         _buildProgressDetail(
-                          'Days Spent',
+                          'الأيام المنقضية',
                           daysSpent.toString(),
                           Icons.calendar_today,
                         ),
                         _buildProgressDetail(
-                          'Days Remaining',
+                          'الأيام المتبقية',
                           daysRemaining.toString(),
                           Icons.timer_outlined,
                         ),
                         _buildProgressDetail(
-                          'Progress',
+                          'التقدم',
                           '${(progress * 100).toStringAsFixed(1)}%',
                           Icons.show_chart,
                         ),
@@ -155,7 +155,7 @@ class _PlanDetailsScreenState extends State<PlanDetailsScreen> {
             ),
             SizedBox(height: 16.h),
             Text(
-              'Description',
+              'الوصف',
               style: TextStyle(
                 fontSize: 18.sp,
                 fontWeight: FontWeight.bold,

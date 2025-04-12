@@ -37,7 +37,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           child: BlocBuilder<HomeCubit, HomeState>(
             
             builder: (context, state) {
-                  final userIdentifier=state.user?.userIdentifier??"null";
+              final userIdentifier = state.user?.userIdentifier ?? "غير متوفر";
 
               return Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -46,7 +46,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                     onTap: () {
                       Clipboard.setData(ClipboardData(text: userIdentifier.toString()));
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('User ID copied to clipboard')),
+                        SnackBar(content: Text('تم نسخ معرف المستخدم إلى الحافظة')),
                       );
                     },
                     child: Container(
@@ -59,7 +59,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                       child: Row(
                         children: [
                           Text(
-                            "ID: $userIdentifier",
+                            "المعرف: $userIdentifier",
                             style: TextStyles.fontCircularSpotify12GreyRegular,
                           ),
                           SizedBox(width: 8.w),

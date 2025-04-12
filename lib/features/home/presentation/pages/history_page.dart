@@ -18,7 +18,7 @@ class HistoryPage extends StatelessWidget {
         appBar: AppBar(
           elevation: 0,
           title: Text(
-            'Transaction History',
+            'سجل المعاملات',
             style: TextStyle(
               color: AppColor.brandHighlight,
               fontSize: 20.sp,
@@ -38,15 +38,15 @@ class HistoryPage extends StatelessWidget {
             tabs: [
               Tab(
                 icon: Icon(Icons.arrow_upward_rounded),
-                text: 'Withdrawals',
+                text: 'السحوبات',
               ),
               Tab(
                 icon: Icon(Icons.arrow_downward_rounded),
-                text: 'Deposits',
+                text: 'الإيداعات',
               ),
               Tab(
                 icon: Icon(Icons.assignment_rounded),
-                text: 'Plans',
+                text: 'الخطط',
               ),
             ],
           ),
@@ -77,7 +77,7 @@ class HistoryPage extends StatelessWidget {
   Widget _buildWithdrawalsList(List<Withdrawal> withdrawals) {
     if (withdrawals.isEmpty) {
       return _buildEmptyState(
-        'No withdrawals yet',
+        'لا توجد سحوبات حتى الآن',
         Icons.arrow_upward_rounded,
       );
     }
@@ -86,17 +86,17 @@ class HistoryPage extends StatelessWidget {
       itemCount: withdrawals.length,
       itemBuilder: (context, index) {
         final withdrawal = withdrawals[index];
-        String method = 'Bank Transfer';
+        String method = 'تحويل بنكي';
         String details = withdrawal.bank ?? '';
         
         if (withdrawal.western != null) {
-          method = 'Western Union';
+          method = 'ويسترن يونيون';
           details = withdrawal.western!;
         } else if (withdrawal.moneyOffice != null) {
-          method = 'Money Office';
+          method = 'مكتب الصرافة';
           details = withdrawal.moneyOffice!;
         } else if (withdrawal.usdt != null) {
-          method = 'Crypto';
+          method = 'عملات رقمية';
           details = withdrawal.usdt!;
         }
 
@@ -114,7 +114,7 @@ class HistoryPage extends StatelessWidget {
   Widget _buildDepositsList(List<Deposit> deposits) {
     if (deposits.isEmpty) {
       return _buildEmptyState(
-        'No deposits yet',
+        'لا توجد إيداعات حتى الآن',
         Icons.arrow_downward_rounded,
       );
     }
@@ -126,8 +126,8 @@ class HistoryPage extends StatelessWidget {
         return _buildTransactionCard(
           amount: deposit.amount,
           date: deposit.createdAt,
-          method: 'Deposit',
-          details: 'Deposit to account',
+          method: 'إيداع',
+          details: 'إيداع في الحساب',
           isWithdrawal: false,
         );
       },
@@ -236,13 +236,25 @@ class HistoryPage extends StatelessWidget {
   }
 
   String _formatDate(DateTime date) {
-    return '${date.day}/${date.month}/${date.year} ${date.hour}:${date.minute.toString().padLeft(2, '0')}';
+    String formatNumber(int n) => n.toString()
+        .replaceAll('0', '٠')
+        .replaceAll('1', '١')
+        .replaceAll('2', '٢')
+        .replaceAll('3', '٣')
+        .replaceAll('4', '٤')
+        .replaceAll('5', '٥')
+        .replaceAll('6', '٦')
+        .replaceAll('7', '٧')
+        .replaceAll('8', '٨')
+        .replaceAll('9', '٩');
+
+    return '${formatNumber(date.day)}/${formatNumber(date.month)}/${formatNumber(date.year)} ${formatNumber(date.hour)}:${formatNumber(date.minute).padLeft(2, '٠')}';
   }
 
   Widget _buildSubscriptionsList(List<Subscription> subscriptions) {
     if (subscriptions.isEmpty) {
       return _buildEmptyState(
-        'No active plans',
+        'لا توجد خطط نشطة',
         Icons.assignment_rounded,
       );
     }
@@ -317,18 +329,18 @@ class HistoryPage extends StatelessWidget {
                       SizedBox(height: 8.h),
                       if (planDetail != null) ...[
                         _buildSubscriptionDetail(
-                          'Profit Margin',
+                          'هامش الربح',
                           planDetail.plan.profitMargin,
                         ),
                         SizedBox(height: 4.h),
                       ],
                       _buildSubscriptionDetail(
-                        'Expires',
+                        'تاريخ الانتهاء',
                         subscription.expiratoryDate.toString().split(' ')[0],
                       ),
                       SizedBox(height: 4.h),
                       _buildSubscriptionDetail(
-                        'Subscribed',
+                        'تاريخ الاشتراك',
                         subscription.createdAt.toString().split(' ')[0],
                       ),
                     ],

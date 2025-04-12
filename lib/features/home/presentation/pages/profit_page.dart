@@ -14,7 +14,7 @@ class ProfitPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Profit Details',
+          'تفاصيل الربح',
           style: TextStyle(
             color: AppColor.brandHighlight,
             fontSize: 20.sp,
@@ -27,27 +27,30 @@ class ProfitPage extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
       ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CustomContainer(
-              child: Padding(
-                padding: EdgeInsets.all(16.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildProfitRow('Initial Investment', '${plan.price}'),
-                    SizedBox(height: 8.h),
-                    _buildProfitRow('Current Returns', '${plan.profitMargin}%'),
-                    SizedBox(height: 8.h),
-                    _buildProfitRow('Estimated Profit', '${_calculateEstimatedProfit()}'),
-                  ],
+      body: Directionality(
+        textDirection: TextDirection.rtl,
+        child: SingleChildScrollView(
+          padding: EdgeInsets.all(16.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CustomContainer(
+                child: Padding(
+                  padding: EdgeInsets.all(16.w),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildProfitRow('الاستثمار المبدئي', '${plan.price}'),
+                      SizedBox(height: 8.h),
+                      _buildProfitRow('العائد الحالي', '${plan.profitMargin}%'),
+                      SizedBox(height: 8.h),
+                      _buildProfitRow('الربح المتوقع', '${_calculateEstimatedProfit()}'),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

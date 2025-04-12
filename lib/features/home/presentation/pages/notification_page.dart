@@ -5,6 +5,7 @@ import 'package:transcation_app/core/theme/app_color.dart';
 import 'package:transcation_app/features/home/presentation/bloc/home/home_cubit_cubit.dart';
 import 'package:transcation_app/features/home/presentation/widgets/notification_item.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 class NotificationPage extends StatelessWidget {
   const NotificationPage({Key? key}) : super(key: key);
@@ -21,7 +22,7 @@ class NotificationPage extends StatelessWidget {
           backgroundColor: AppColor.darkGray,
           elevation: 0,
           title: Text(
-            'Notifications',
+            'الإشعارات',
             style: TextStyle(
               color: AppColor.brandHighlight,
               fontSize: 20.sp,
@@ -37,7 +38,9 @@ class NotificationPage extends StatelessWidget {
           ),
         ),
       ),
-      body: BlocBuilder<HomeCubit, HomeState>(
+      body: Directionality(
+        textDirection: TextDirection.rtl,
+        child: BlocBuilder<HomeCubit, HomeState>(
         builder: (context, state) {
           if (state.isLoading || state.isInitial) {
             return const Center(
@@ -60,7 +63,7 @@ class NotificationPage extends StatelessWidget {
                   ),
                   SizedBox(height: 16.h),
                   Text(
-                    'No notifications yet',
+                    'لا توجد إشعارات حتى الآن',
                     style: TextStyle(
                       color: Colors.white70,
                       fontSize: 16.sp,
@@ -79,13 +82,13 @@ class NotificationPage extends StatelessWidget {
               return NotificationItem(
                 title: notifications[index].title,
                 description: notifications[index].message,
-                time: timeago.format(notifications[index].createdAt),
+                time: timeago.format(notifications[index].createdAt,locale: 'ar'),
                 icon: Icons.new_releases,
               );
             },
           );
         },
       ),
-    );
+     ) );
   }
 }

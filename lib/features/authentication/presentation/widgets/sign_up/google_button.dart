@@ -36,7 +36,7 @@ class GoogleButton extends StatelessWidget {
                   SvgPicture.asset('assets/icons/google.svg'),
                   SizedBox(width: 5.w),
                   Text(
-                    "Connect with Google",
+                    "تسجيل الدخول بواسطة جوجل",
                     style: TextStyle(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w500,

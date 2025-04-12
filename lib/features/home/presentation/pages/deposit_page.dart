@@ -8,6 +8,7 @@ import 'package:transcation_app/core/theme/app_color.dart';
 import 'package:transcation_app/core/utils/custom_button.dart';
 import 'package:transcation_app/core/utils/custom_text_form_field.dart';
 import 'package:transcation_app/core/utils/custom_container.dart';
+import 'package:transcation_app/core/utils/web_view.dart';
 import 'package:transcation_app/features/home/presentation/bloc/deposit/deposit_cubit.dart';
 import 'package:transcation_app/features/home/presentation/widgets/home/user_balance.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -29,31 +30,11 @@ class _DepositPageState extends State<DepositPage> {
     super.dispose();
   }
 
-  
-  final String binancePayId = 'your_binance_pay_id' ;
-  final String whatsappLink="https://wa.me/message/66NFNOEP3S3LC1";
-  final String telegramLink="https://telegram.me/Ethraawalet";
+  final String binancePayId = 'your_binance_pay_id';
+  final String whatsappLink = "https://wa.me/message/66NFNOEP3S3LC1";
+  final String telegramLink = "https://telegram.me/Ethraawalet";
 
-  Future<void> _launchUrl(String url) async {
-    try {
-      final Uri uri = Uri.parse(url);
-      if (await canLaunchUrl(uri)) {
-        await launchUrl(
-          uri,
-          mode: LaunchMode.externalApplication,
-        );
-      } else {
-        throw 'Could not launch $url';
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error launching URL: $e'),
-          backgroundColor: Colors.red,
-        ),
-      );
-    }
-  }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +43,7 @@ class _DepositPageState extends State<DepositPage> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text(
-          'Deposit',
+          'الإيداع',
           style: TextStyle(
             color: AppColor.brandHighlight,
             fontSize: 20.sp,
@@ -70,13 +51,12 @@ class _DepositPageState extends State<DepositPage> {
           ),
         ),
         backgroundColor: AppColor.darkGray,
-    
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.sp),
         child: Column(
           children: [
-            BlocBuilder<DepositCubit,DepositState>(
+            BlocBuilder<DepositCubit, DepositState>(
               builder: (context, state) {
                 return UserBalance(
                   balance: (state.balance ?? 0.0).toString(),
@@ -85,45 +65,48 @@ class _DepositPageState extends State<DepositPage> {
             ),
             verticalSpace(20),
             _buildDepositOption(
-              'Telegram',
-               SvgPicture.asset(
+              'تيليجرام',
+              SvgPicture.asset(
                 'assets/icons/telegram.svg',
                 color: AppColor.brandHighlight,
                 width: 24.sp,
                 height: 24.sp,
               ),
-              'Contact us on Telegram for deposit',
-              'Chat with our support team on Telegram to process your deposit.',
-              'Open Telegram',
-              () => _launchUrl(telegramLink),
+              'تواصل معنا على تيليجرام للإيداع',
+              'تحدث مع فريق الدعم على تيليجرام لمعالجة إيداعك',
+              'فتح تيليجرام',
+              () => customelaunchUrl(telegramLink,context),
             ),
             SizedBox(height: 16.h),
             _buildDepositOption(
-              'WhatsApp',
+              'واتساب',
               SvgPicture.asset(
                 'assets/icons/whatsapp.svg',
                 color: AppColor.brandHighlight,
                 width: 24.sp,
                 height: 24.sp,
               ),
-              'Contact us on WhatsApp for deposit',
-              'Message us on WhatsApp to complete your deposit process.',
-              'Open WhatsApp',
-              () => _launchUrl(whatsappLink),
+              'تواصل معنا على واتساب للإيداع',
+              'راسلنا على واتساب لإتمام عملية الإيداع',
+              'فتح واتساب',
+              () => customelaunchUrl(whatsappLink,context),
             ),
             SizedBox(height: 16.h),
             _buildDepositOption(
-              'Binance Pay',
-              Icon(Icons.currency_bitcoin, color: AppColor.brandHighlight, size: 24.sp),
-              'Pay with Binance Pay',
-              'TG8MRqNqWFi1tyqnyRmvV3FFouQhzvFSWa',  // Replace with your actual address
-              'Copy Address',
+              'بينانس باي',
+              Icon(Icons.currency_bitcoin,
+                  color: AppColor.brandHighlight, size: 24.sp),
+              'الدفع عبر بينانس باي',
+              '''Tron (TRC20) 
+TG8MRqNqWFi1tyqnyRmvV3FFouQhzvFSWa''', // Replace with your actual address
+              'نسخ العنوان',
               () {
-                Clipboard.setData(ClipboardData(text: 'TG8MRqNqWFi1tyqnyRmvV3FFouQhzvFSWa'))
+                Clipboard.setData(ClipboardData(
+                        text: 'TG8MRqNqWFi1tyqnyRmvV3FFouQhzvFSWa'))
                     .then((_) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text('Address copied to clipboard'),
+                      content: Text('تم نسخ العنوان إلى الحافظة'),
                       backgroundColor: AppColor.brandHighlight,
                       behavior: SnackBarBehavior.floating,
                       margin: EdgeInsets.all(16.sp),
@@ -134,20 +117,20 @@ class _DepositPageState extends State<DepositPage> {
             ),
             // After the Binance Pay option, add:
             SizedBox(height: 16.h),
-           
-              // For Telegram
-              
-              // For WhatsApp
-            
-            
+                _buildDepositOption2("بنك تركيا ", Icon(Icons.account_balance,
+                  color: AppColor.brandHighlight, size: 24.sp),"ايداع عن طريق بنك تركيا",""),
+
+
+            // For Telegram
+
+            // For WhatsApp
           ],
         ),
       ),
     );
   }
 
-
-  Widget _buildDepositOption(
+ Widget _buildDepositOption(
     String title,
     Widget icon,
     String subtitle,
@@ -190,15 +173,7 @@ class _DepositPageState extends State<DepositPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  "Tron (TRC20)",
-                  style: TextStyle(
-                    color: AppColor.white.withOpacity(0.9),
-                    fontSize: 18.sp,
-                  ),
-                ),
-                SizedBox(height: 8.h),
-                Text(
+                           Text(
                   details,
                   style: TextStyle(
                     color: AppColor.white.withOpacity(0.9),
@@ -233,6 +208,113 @@ class _DepositPageState extends State<DepositPage> {
                     ),
                   ),
                 ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+   Widget _buildDepositOption2(
+    String title,
+    Widget icon,
+    String subtitle,
+    String details,
+  ) {
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColor.brandDark.withOpacity(0.3),
+        borderRadius: BorderRadius.circular(15.r),
+        border: Border.all(
+          color: AppColor.brandSecondary.withOpacity(0.3),
+          width: 0.5,
+        ),
+      ),
+      child: ExpansionTile(
+        title: Text(
+          title,
+          style: TextStyle(
+            color: AppColor.white,
+            fontSize: 18.sp,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        leading: icon,
+        subtitle: Text(
+          subtitle,
+          style: TextStyle(
+            color: AppColor.white.withOpacity(0.7),
+            fontSize: 14.sp,
+          ),
+        ),
+        backgroundColor: Colors.transparent,
+        collapsedIconColor: AppColor.brandHighlight,
+        iconColor: AppColor.brandHighlight,
+        children: [
+          Padding(
+            padding: EdgeInsets.all(16.sp),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  title: Text(
+                    'IBRAHIM EL DERVIŞ',
+                    style: TextStyle(
+                      color: AppColor.white.withOpacity(0.9),
+                      fontSize: 14.sp,
+                    ),
+                  ),
+            
+                  trailing: IconButton(
+                    icon: Icon(Icons.copy, color: AppColor.brandHighlight),
+                    onPressed: () {
+                      Clipboard.setData(ClipboardData(
+                        text: 'IBRAHIM EL DERVIŞ',
+                      )).then((_) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('تم نسخ العنوان إلى الحافظة'),
+                            backgroundColor: AppColor.brandHighlight,
+                            behavior: SnackBarBehavior.floating,
+                            margin: EdgeInsets.all(16.sp),
+                          ),
+                        );
+                      });
+                    },
+                  ),
+                ),
+                                SizedBox(height: 8.h),
+
+                ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  title: Text(
+                    'TR44 0082 9000 0949 2078 6745 37',
+                    style: TextStyle(
+                      color: AppColor.white.withOpacity(0.9),
+                      fontSize: 14.sp,
+                    ),
+                  ),
+            
+                  trailing: IconButton(
+                    icon: Icon(Icons.copy, color: AppColor.brandHighlight),
+                    onPressed: () {
+                      Clipboard.setData(ClipboardData(
+                        text: 'TR44 0082 9000 0949 2078 6745 37',
+                      )).then((_) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('تم نسخ العنوان إلى الحافظة'),
+                            backgroundColor: AppColor.brandHighlight,
+                            behavior: SnackBarBehavior.floating,
+                            margin: EdgeInsets.all(16.sp),
+                          ),
+                        );
+                      });
+                    },
+                  ),
+                ),
+              
               ],
             ),
           ),

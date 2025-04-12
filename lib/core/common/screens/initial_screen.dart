@@ -9,6 +9,7 @@ import 'package:transcation_app/core/helpers/secure_storage_helper.dart';
 import 'package:transcation_app/core/routes/routes.dart';
 import 'package:transcation_app/core/theme/app_color.dart';
 import 'package:transcation_app/core/theme/text_styles.dart';
+import 'package:transcation_app/core/utils/show_snack_bar.dart';
 import 'package:transcation_app/features/home/presentation/bloc/deposit/deposit_cubit.dart';
 import 'package:transcation_app/features/home/presentation/bloc/home/home_cubit_cubit.dart';
 import 'package:transcation_app/features/home/presentation/bloc/my_plans/my_plans_cubit.dart';
@@ -85,47 +86,7 @@ class _InitialScreenState extends State<InitialScreen> {
   }
 
   // Add this method to show the exit dialog
-  Future<bool> _onWillPop() async {
-    return await showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            backgroundColor: AppColor.darkGray,
-            title: Text(
-              'Exit App',
-              style: TextStyles.fontCircularSpotify16BlackMedium.copyWith(
-                color: AppColor.brandPrimary,
-              ),
-            ),
-            content: Text(
-              'Are you sure you want to exit?',
-              style: TextStyles.fontCircularSpotify14BlackMedium.copyWith(
-                color: AppColor.white,
-              ),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(false),
-                child: Text(
-                  'No',
-                  style: TextStyles.fontCircularSpotify14BlackMedium.copyWith(
-                    color: AppColor.white,
-                  ),
-                ),
-              ),
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(true),
-                child: Text(
-                  'Yes',
-                  style: TextStyles.fontCircularSpotify14BlackMedium.copyWith(
-                    color: AppColor.brandHighlight,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ) ??
-        false;
-  }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -139,7 +100,7 @@ class _InitialScreenState extends State<InitialScreen> {
         }
       },
       child: WillPopScope(
-        onWillPop: _onWillPop,
+        onWillPop:()=> onWillPop(context),
         child: Scaffold(
           body: PageView(
             controller: _pageController,
@@ -166,23 +127,23 @@ class _InitialScreenState extends State<InitialScreen> {
             items: const [
               BottomNavigationBarItem(
                 icon: Icon(Icons.home),
-                label: 'Home',
+                label: 'الرئيسية',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.arrow_downward),
-                label: 'Deposit',
+                label: 'إيداع',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.arrow_upward),
-                label: 'Withdraw',
+                label: 'سحب',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.pie_chart),
-                label: 'Plans',
+                label: 'الخطط',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.local_offer),
-                label: 'Offers',
+                label: 'العروض',
               ),
             ],
           ),

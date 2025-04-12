@@ -23,7 +23,7 @@ class NotificationItem extends StatelessWidget {
     return CustomContainer(
       child: ListTile(
         contentPadding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
-        leading: Container(
+        trailing: Container(
           padding: EdgeInsets.all(8.r),
           decoration: BoxDecoration(
             gradient: const LinearGradient(
@@ -52,6 +52,7 @@ class NotificationItem extends StatelessWidget {
         ),
         title: Text(
           title,
+          textDirection: TextDirection.rtl,
           style: TextStyles.fontCircularSpotify14BlackMedium.copyWith(
             color: AppColor.brandPrimary,
             fontWeight: FontWeight.bold,
@@ -63,6 +64,7 @@ class NotificationItem extends StatelessWidget {
             SizedBox(height: 4.h),
             Text(
               description,
+              textDirection: TextDirection.rtl,
               style: TextStyles.fontCircularSpotify12GreyRegular.copyWith(
                 color: AppColor.white.withOpacity(0.8),
               ),
@@ -70,6 +72,7 @@ class NotificationItem extends StatelessWidget {
             SizedBox(height: 4.h),
             Text(
               time,
+              textDirection: TextDirection.rtl,
               style: TextStyles.fontCircularSpotify12GreyRegular.copyWith(
                 color: AppColor.errorLightColor.withOpacity(0.6),
               ),

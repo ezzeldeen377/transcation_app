@@ -23,7 +23,7 @@ class UserBalance extends StatelessWidget {
           color: AppColor.brandHighlight,
         ),
         title: Text(
-          'Total Balance',
+          'الرصيد الإجمالي',
           style: TextStyle(
             color: AppColor.brandHighlight,
             fontSize: 18.sp,

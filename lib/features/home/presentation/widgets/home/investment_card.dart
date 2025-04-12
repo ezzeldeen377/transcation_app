@@ -24,7 +24,7 @@ class InvestmentCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 10.w),
-      padding: EdgeInsets.all(20.w),
+      padding: EdgeInsets.symmetric(horizontal:  20.w,vertical: 5.h),
       decoration: _buildCardDecoration(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -147,7 +147,7 @@ class InvestmentCard extends StatelessWidget {
       child: Column(
         children: [
           _buildMetricRow(
-            'Returns',
+            'العائد',
             '${activePlan.plan.profitMargin}%',
             Icons.show_chart,
           ),
@@ -159,8 +159,8 @@ class InvestmentCard extends StatelessWidget {
             ),
           ),
           _buildMetricRow(
-            'Duration',
-            '${activePlan.plan.durationDays} Days',
+            'المدة',
+            '${activePlan.plan.durationDays} يوم',
             Icons.timer_outlined,
           ),
           Padding(
@@ -171,8 +171,8 @@ class InvestmentCard extends StatelessWidget {
             ),
           ),
           _buildMetricRow(
-            'Investment',
-            '\$${activePlan.plan.price}',
+            'الاستثمار',
+            '${activePlan.plan.price}\$',
             Icons.account_balance_wallet,
           ),
         ],
@@ -302,17 +302,17 @@ class InvestmentCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Confirm Subscription',
+              'تأكيد الاشتراك',
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 22.sp, // Increased from 20.sp
+                fontSize: 22.sp,
                 fontWeight: FontWeight.bold,
               ),
             ),
             SizedBox(height: 15.h),
-            _buildDetailRow('Plan Name', activePlan.plan.name),
-            _buildDetailRow('Returns', activePlan.plan.profitMargin),
-            _buildDetailRow('Investment', activePlan.plan.price),
+            _buildDetailRow('اسم الخطة', activePlan.plan.name),
+            _buildDetailRow('العائد', activePlan.plan.profitMargin),
+            _buildDetailRow('الاستثمار', activePlan.plan.price),
             SizedBox(height: 20.h),
             Row(
               children: [
@@ -327,10 +327,10 @@ class InvestmentCard extends StatelessWidget {
                       ),
                     ),
                     child: Text(
-                      'Cancel',
+                      'إلغاء',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 18.sp, // Increased from 16.sp
+                        fontSize: 18.sp,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -358,7 +358,7 @@ class InvestmentCard extends StatelessWidget {
                       ),
                     ),
                     child: Text(
-                      'Confirm',
+                      'تأكيد',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 16.sp,
@@ -423,7 +423,8 @@ class InvestmentCard extends StatelessWidget {
           ),
         ),
         child: Text(
-          isActive ? 'View Details' : 'Choose Plan',
+          isActive ? 'عرض التفاصيل' : 'اختر الخطة',
+          textDirection: TextDirection.rtl,
           style: TextStyle(
             color: isActive ? Colors.white : AppColor.brandAccent,
             fontSize: 14.sp,
