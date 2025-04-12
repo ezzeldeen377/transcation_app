@@ -1,251 +1,278 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:transcation_app/core/common/cubit/app_user/app_user_cubit.dart';
+import 'package:transcation_app/core/helpers/navigator.dart';
+import 'package:transcation_app/core/helpers/spacer.dart';
+import 'package:transcation_app/core/routes/routes.dart';
 import 'package:transcation_app/core/theme/app_color.dart';
 import 'package:flutter/services.dart';
 import 'package:transcation_app/core/theme/text_styles.dart';
 import 'package:transcation_app/core/utils/custom_container.dart';
+import 'package:transcation_app/features/home/presentation/bloc/home/home_cubit_cubit.dart';
 import 'package:transcation_app/features/home/presentation/pages/notification_page.dart';
-import 'package:transcation_app/features/home/presentation/screens/menu_screen.dart';
+import 'package:transcation_app/features/home/presentation/pages/menu_screen.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:transcation_app/features/home/presentation/widgets/home/custom_app_bar.dart';
+import 'package:transcation_app/features/home/presentation/widgets/home/investment_plans_carousel.dart';
+import 'package:transcation_app/features/home/presentation/widgets/home/user_balance.dart';
 import 'package:transcation_app/features/home/presentation/widgets/profit_card.dart';
+import 'package:transcation_app/features/home/presentation/widgets/home/investment_card.dart';
+import 'package:timeago/timeago.dart' as timeago;
+import 'package:collection/collection.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key, required this.controller});
+  final PageController controller;
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  final String userId = "123456";
+  int _currentIndex = 0;
+ 
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(40.h),
-        child: AppBar(
-          automaticallyImplyLeading: false,
-          backgroundColor: AppColor.darkGray,
-          elevation: 4,
-          flexibleSpace: Container(
-            decoration: BoxDecoration(
-              color: AppColor.darkGray,
-              borderRadius: BorderRadius.vertical(
-                bottom: Radius.circular(20.r),
+    return BlocListener<HomeCubit, HomeState>(
+      listener: (context, state) {
+        if (state.isSubscribePlan) {
+          context.read<HomeCubit>().getUserActivePlan(
+              context.read<AppUserCubit>().state.accessToken!);
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              backgroundColor: AppColor.darkGray,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.r),
               ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  blurRadius: 10,
-                  offset: Offset(0, 5),
-                ),
-              ],
-            ),
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  InkWell(
-                    onTap: () {
-                      Clipboard.setData(ClipboardData(text: userId));
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('User ID copied to clipboard')),
-                      );
-                    },
-                    child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-                      decoration: BoxDecoration(
-                        color: AppColor.brandDark,
-                        borderRadius: BorderRadius.circular(20.r),
-                      ),
-                      child: Row(
-                        children: [
-                          Text(
-                            "ID: $userId",
-                            style: TextStyles.fontCircularSpotify12GreyRegular,
-                          ),
-                          SizedBox(width: 8.w),
-                          Icon(Icons.copy, color: AppColor.brandHighlight),
-                        ],
-                      ),
-                    ),
+                  Icon(
+                    Icons.check_circle_outline,
+                    color: AppColor.brandAccent,
+                    size: 50.sp,
                   ),
-                  Row(
-                    children: [
-                      IconButton(
-                        icon: Icon(Icons.notifications, color: AppColor.brandHighlight),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const NotificationPage(),
-                            ),
-                          );
-                        },
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.menu, color: AppColor.brandHighlight),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const MenuScreen(),
-                            ),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            ProfitCard(),
-            SizedBox(height: 10.h),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: ListTile(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.r),
-                  side: BorderSide(color: AppColor.brandDark, width: 0.3),
-                ),
-                leading: SvgPicture.asset(
-                  'assets/icons/balance.svg',
-                  color: AppColor.brandHighlight,
-                ),
-                title: Text(
-                  'Total Balance',
-                  style: TextStyle(
-                    color: AppColor.brandHighlight,
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                subtitle: Text(
-                  '\$10,250.00',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16.sp,
-                  ),
-                ),
-                trailing: IconButton(
-                  icon: Icon(Icons.add, color: AppColor.brandHighlight),
-                  onPressed: () {},
-                ),
-              ),
-            ),
-            SizedBox(height: 20.h),
-            CarouselSlider(
-              options: CarouselOptions(
-                height: 240 .h,
-                autoPlay: true,
-                enlargeCenterPage: true,
-                viewportFraction: 0.7,
-                autoPlayInterval: const Duration(seconds: 3),
-                autoPlayAnimationDuration: const Duration(milliseconds: 1500),
-              ),
-              items: [
-                _buildInvestmentCard(
-                  'Conservative Plan',
-                  'Low risk investment strategy',
-                  '5-8%',
-                  '\$1,000',
-                  ['Capital preservation', 'Steady returns', 'Lower volatility'],
-                  AppColor.brandPrimary,
-                ),
-                _buildInvestmentCard(
-                  'Balanced Plan',
-                  'Moderate risk investment strategy',
-                  '8-12%',
-                  '\$2,500',
-                  ['Diversified portfolio', 'Growth potential', 'Regular income'],
-                  AppColor.brandHighlight,
-                ),
-                _buildInvestmentCard(
-                  'Aggressive Plan',
-                  'High risk investment strategy',
-                  '12-18%',
-                  '\$5,000',
-                  ['Maximum growth', 'Active management', 'High returns'],
-                  AppColor.brandAccent,
-                ),
-              ],
-            ),
-            SizedBox(height: 20.h),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _buildActionButton(
-                    'Deposit',
-                    Icons.arrow_downward,
-                    AppColor.brandPrimary,
-                    () {},
-                  ),
-                  _buildActionButton(
-                    'Withdraw',
-                    Icons.arrow_upward,
-                    AppColor.brandHighlight,
-                    () {},
-                  ),
-                  _buildActionButton(
-                    'History',
-                    Icons.history,
-                    AppColor.brandAccent,
-                    () {},
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 20.h),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+                  SizedBox(height: 15.h),
                   Text(
-                    'Recent Transactions',
+                    'Success!',
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 18.sp,
+                      fontSize: 20.sp,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   SizedBox(height: 10.h),
-                  _buildTransactionItem(
-                    'Deposit',
-                    '+\$500.00',
-                    'Success',
-                    Icons.arrow_downward,
-                    AppColor.brandPrimary,
+                  Text(
+                    'Your plan has been subscribed successfully.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white70,
+                      fontSize: 14.sp,
+                    ),
                   ),
-                  _buildTransactionItem(
-                    'Withdraw',
-                    '-\$200.00',
-                    'Pending',
-                    Icons.arrow_upward,
-                    AppColor.brandHighlight,
-                  ),
-                  _buildTransactionItem(
-                    'Investment',
-                    '-\$1000.00',
-                    'Success',
-                    Icons.account_balance,
-                    AppColor.brandAccent,
+                  SizedBox(height: 20.h),
+                  ElevatedButton(
+                    onPressed: () => Navigator.pop(context),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColor.brandPrimary,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.r),
+                      ),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 30.w,
+                        vertical: 10.h,
+                      ),
+                    ),
+                    child: Text(
+                      'OK',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ),
                 ],
               ),
             ),
-          ],
+          );
+        }
+      },
+      child: Scaffold(
+        appBar: CustomAppBar(),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              // Remove ColorList from _HomePageState as it's no longer needed
+
+              // In the build method, replace the BlocBuilder with:
+              ProfitCard(),
+              SizedBox(height: 10.h),
+              BlocBuilder<HomeCubit, HomeState>(
+                builder: (context, state) {
+                  return UserBalance(
+                    pageController: widget.controller,
+                    balance: (state.user?.balance ?? 0).toString(),
+                  );
+                },
+              ),
+              SizedBox(height: 20.h),
+              InvestmentPlansCarousel(),
+              SizedBox(height: 20.h),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _buildActionButton(
+                      'Deposit',
+                      Icons.arrow_downward,
+                      AppColor.brandPrimary,
+                      () {
+                        widget.controller.animateToPage(1,
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.easeInOut);
+                      },
+                    ),
+                    _buildActionButton(
+                      'Withdraw',
+                      Icons.arrow_upward,
+                      AppColor.brandHighlight,
+                      () {
+                        widget.controller.animateToPage(2,
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.easeInOut);
+                      },
+                    ),
+                    _buildActionButton(
+                      'History',
+                      Icons.history,
+                      AppColor.brandAccent,
+                      () {
+                        context.pushNamed(RouteNames.historyPage);
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 20.h),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Recent Transactions',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 10.h),
+                    BlocBuilder<HomeCubit, HomeState>(
+                      builder: (context, state) {
+                        final transactions = state.history;
+                        if(state.isLoading||state.isInitial){
+                          return Center(
+                            child: CircularProgressIndicator(
+                              color: AppColor.brandHighlight,
+                            ), 
+                          );
+                        }
+                        if (transactions == null) {
+                          return Center(
+                            child: Text(
+                              'No recent transactions',
+                              style: TextStyle(
+                                color: Colors.white70,
+                                fontSize: 14.sp,
+                              ),
+                            ),
+                          );
+                        }
+
+                        final lastDeposit = transactions.deposits.firstOrNull;
+                        final lastWithdrawal =
+                            transactions.withdrawals.firstOrNull;
+                        final lastSubscription =
+                            transactions.subscriptions.firstOrNull;
+                        // Get plan details for the last subscription
+                        final lastPlanDetails = lastSubscription != null
+                            ? state.planDetails![lastSubscription.planId]
+                            : null;
+
+                        // if (lastDeposit == null &&
+                        //     lastWithdrawal == null &&
+                        //     lastSubscription == null) {
+                        //   return Center(
+                        //     child: Text(
+                        //       'No recent transactions',
+                        //       style: TextStyle(
+                        //         color: Colors.white70,
+                        //         fontSize: 14.sp,
+                        //       ),
+                        //     ),
+                        //   );
+                        // }
+
+                        return Column(
+                          children: [
+                            if (lastDeposit != null)
+                              _buildTransactionItem(
+                                'Deposit',
+                                '+\$${lastDeposit.amount}',
+                                timeago.format(lastDeposit.createdAt),
+                                Icons.arrow_downward,
+                                AppColor.brandPrimary,
+                              )
+                            else
+                              _buildEmptyTransactionItem(
+                                'No Recent Deposits',
+                                Icons.arrow_downward,
+                                AppColor.brandPrimary.withOpacity(0.5),
+                              ),
+                            if (lastWithdrawal != null)
+                              _buildTransactionItem(
+                                'Withdraw',
+                                '-\$${lastWithdrawal.amount}',
+                                timeago.format(lastWithdrawal.createdAt),
+                                Icons.arrow_upward,
+                                AppColor.brandHighlight,
+                              )
+                            else
+                              _buildEmptyTransactionItem(
+                                'No Recent Withdrawals',
+                                Icons.arrow_upward,
+                                AppColor.brandHighlight.withOpacity(0.5),
+                              ),
+                            if (lastSubscription != null)
+                              _buildTransactionItem(
+                                lastPlanDetails?.plan.name ?? 'Investment',
+                                '-\$${lastPlanDetails?.plan.price}',
+                                timeago.format(lastSubscription.createdAt),
+                                Icons.account_balance,
+                                AppColor.brandAccent,
+                              )
+                            else
+                              _buildEmptyTransactionItem(
+                                'No Active Investments',
+                                Icons.account_balance,
+                                AppColor.brandAccent.withOpacity(0.5),
+                              ),
+                          ],
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -341,7 +368,8 @@ class _HomePageState extends State<HomePage> {
         trailing: Text(
           amount,
           style: TextStyle(
-            color: amount.startsWith('+') ? AppColor.brandPrimary : Colors.white,
+            color:
+                amount.startsWith('+') ? AppColor.brandPrimary : Colors.white,
             fontSize: 16.sp,
             fontWeight: FontWeight.bold,
           ),
@@ -350,124 +378,37 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildInvestmentCard(
-    String title,
-    String description,
-    String returns,
-    String minInvestment,
-    List<String> benefits,
-    Color color,
-  ) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 5.w),
-      padding: EdgeInsets.all(10.w),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15.r),
-        gradient: LinearGradient(
-          colors: [
-            color.withOpacity(0.8),
-            color.withOpacity(0.4),
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: color.withOpacity(0.3),
-            spreadRadius: 1,
-            blurRadius: 8,
-            offset: const Offset(0, 4),
+  Widget _buildEmptyTransactionItem(
+      String title,
+      IconData icon,
+      Color color,
+    ) {
+      return CustomContainer(
+        child: ListTile(
+          leading: Container(
+            padding: EdgeInsets.all(8.r),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  color.withOpacity(0.3),
+                  color.withOpacity(0.1),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: BorderRadius.circular(10.r),
+            ),
+            child: Icon(icon, color: Colors.white.withOpacity(0.5)),
           ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
+          title: Text(
             title,
             style: TextStyle(
-              color: Colors.white,
-              fontSize: 18.sp,
-              fontWeight: FontWeight.bold,
+              color: Colors.white.withOpacity(0.5),
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w500,
             ),
           ),
-          SizedBox(height: 5.h),
-          Text(
-            description,
-            style: TextStyle(
-              color: Colors.white70,
-              fontSize: 12.sp,
-            ),
-          ),
-          SizedBox(height: 5.h),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Expected Returns',
-                    style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: 12.sp,
-                    ),
-                  ),
-                  Text(
-                    returns,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Min Investment',
-                    style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: 12.sp,
-                    ),
-                  ),
-                  Text(
-                    minInvestment,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          SizedBox(height: 10.h),
-          ...benefits.map((benefit) => Padding(
-                padding: EdgeInsets.only(bottom: 5.h),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.check_circle_outline,
-                      color: Colors.white,
-                      size: 16.sp,
-                    ),
-                    SizedBox(width: 5.w),
-                    Text(
-                      benefit,
-                      style: TextStyle(
-                        color: Colors.white70,
-                        fontSize: 12.sp,
-                      ),
-                    ),
-                  ],
-                ),
-              )),
-        ],
-      ),
-    );
-  }
+        ),
+      );
+    }
 }

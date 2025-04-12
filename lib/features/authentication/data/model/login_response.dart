@@ -98,28 +98,30 @@ class User {
   final String? password;
   final String? phone;
   final int? balance;
+  final int? profit;
   final String? verificationCode;
   final bool? isVerified;
   final String? rememberToken;
   final DateTime? createdAt;
   final DateTime? updatedAt;
+  final String? userIdentifier;  // Added new field
 
   User({
-     this.id,
-     this.name,
-     this.email,
-     this.emailVerifiedAt,
-     this.password,
-     this.phone,
-     this.balance,
-     this.verificationCode,
-     this.isVerified,
-     this.rememberToken,
-     this.createdAt,
-     this.updatedAt,
+    this.id,
+    this.name,
+    this.email,
+    this.emailVerifiedAt,
+    this.password,
+    this.phone,
+    this.balance,
+    this.profit,
+    this.verificationCode,
+    this.isVerified,
+    this.rememberToken,
+    this.createdAt,
+    this.updatedAt,
+    this.userIdentifier,  // Added to constructor
   });
-
-
 
   User copyWith({
     int? id,
@@ -129,11 +131,13 @@ class User {
     String? password,
     String? phone,
     int? balance,
+    int? profit,
     String? verificationCode,
     bool? isVerified,
     String? rememberToken,
     DateTime? createdAt,
     DateTime? updatedAt,
+    String? userIdentifier,  // Added to copyWith
   }) {
     return User(
       id: id ?? this.id,
@@ -143,11 +147,13 @@ class User {
       password: password ?? this.password,
       phone: phone ?? this.phone,
       balance: balance ?? this.balance,
+      profit: profit ?? this.profit,
       verificationCode: verificationCode ?? this.verificationCode,
       isVerified: isVerified ?? this.isVerified,
       rememberToken: rememberToken ?? this.rememberToken,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
+      userIdentifier: userIdentifier ?? this.userIdentifier,  // Added to copyWith return
     );
   }
 
@@ -160,11 +166,13 @@ class User {
       'password': password,
       'phone': phone,
       'balance': balance,
+      'profit': profit,
       'verification_code': verificationCode,
       'is_verified': isVerified,
       'remember_token': rememberToken,
       'created_at': createdAt?.toIso8601String(),
       'updated_at': updatedAt?.toIso8601String(),
+      'user_identifier': userIdentifier,  // Added to toMap
     };
   }
 
@@ -177,11 +185,13 @@ class User {
       password: map['password'] != null ? map['password'] as String : null,
       phone: map['phone'] != null ? map['phone'] as String : null,
       balance: map['balance'] != null ? map['balance'] as int : null,
+      profit: map['profit'] != null ? map['profit'] as int : null,
       verificationCode: map['verification_code'] as String?,
       isVerified: map['is_verified'] != null ? (map['is_verified'] == 1) : null,
       rememberToken: map['remember_token'] as String?,
       createdAt: map['created_at'] != null ? DateTime.parse(map['created_at']) : null,
       updatedAt: map['updated_at'] != null ? DateTime.parse(map['updated_at']) : null,
+      userIdentifier: map['user_identifier'] != null ? map['user_identifier'] as String : null,  // Added to fromMap
     );
   }
 
@@ -204,11 +214,13 @@ class User {
       other.password == password &&
       other.phone == phone &&
       other.balance == balance &&
+      other.profit == profit &&
       other.verificationCode == verificationCode &&
       other.isVerified == isVerified &&
       other.rememberToken == rememberToken &&
       other.createdAt == createdAt &&
       other.updatedAt == updatedAt;
+      other.userIdentifier == userIdentifier;  // Added to equality operator
   }
 
   @override
@@ -220,6 +232,7 @@ class User {
       password.hashCode ^
       phone.hashCode ^
       balance.hashCode ^
+      profit.hashCode ^
       verificationCode.hashCode ^
       isVerified.hashCode ^
       rememberToken.hashCode ^

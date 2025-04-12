@@ -11,7 +11,7 @@ import 'package:transcation_app/features/home/presentation/widgets/menu_item.dar
 
 class MenuScreen extends StatelessWidget {
   const MenuScreen({Key? key}) : super(key: key);
-
+  
   Future<bool?> _showLogoutDialog(BuildContext context) async {
     return showDialog<bool>(
       context: context,
@@ -60,6 +60,7 @@ class MenuScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final user = context.watch<AppUserCubit>().state.user; 
     return BlocListener<AppUserCubit,AppUserState>(
        listener: (context, state) {
         if (state.isClearUserData) {
@@ -70,6 +71,22 @@ class MenuScreen extends StatelessWidget {
         }
       },
       child: Scaffold(
+        backgroundColor: AppColor.darkGray,
+        appBar: AppBar(
+          backgroundColor: AppColor.darkGray,
+          elevation: 0,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios, color: AppColor.brandHighlight),
+            onPressed: () => Navigator.pop(context),
+          ),
+          title: Text(
+            'Menu',
+            style: TextStyles.fontCircularSpotify16BlackMedium.copyWith(
+              color: AppColor.brandHighlight,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
         body: SafeArea(
           child: SingleChildScrollView(
             child: Column(
@@ -118,7 +135,7 @@ class MenuScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'John Doe',
+                              user?.name??"",
                               style: TextStyles.fontCircularSpotify16BlackMedium
                                   .copyWith(
                                 color: AppColor.brandAccent,
@@ -127,7 +144,7 @@ class MenuScreen extends StatelessWidget {
                             ),
                             SizedBox(height: 4.h),
                             Text(
-                              'john.doe@example.com',
+                              user?.email??"",
                               style: TextStyles.fontCircularSpotify14BlackMedium
                                   .copyWith(
                                 color:

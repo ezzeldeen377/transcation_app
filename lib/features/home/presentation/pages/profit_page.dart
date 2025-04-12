@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:transcation_app/core/theme/app_color.dart';
 import 'package:transcation_app/core/utils/custom_container.dart';
-import 'package:transcation_app/features/home/domain/models/plan.dart';
+import 'package:transcation_app/features/home/data/models/plans_response.dart';
 
 class ProfitPage extends StatelessWidget {
   final Plan plan;
@@ -38,9 +38,9 @@ class ProfitPage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildProfitRow('Initial Investment', '${plan.minInvestment}'),
+                    _buildProfitRow('Initial Investment', '${plan.price}'),
                     SizedBox(height: 8.h),
-                    _buildProfitRow('Current Returns', '${plan.returns}%'),
+                    _buildProfitRow('Current Returns', '${plan.profitMargin}%'),
                     SizedBox(height: 8.h),
                     _buildProfitRow('Estimated Profit', '${_calculateEstimatedProfit()}'),
                   ],
@@ -77,8 +77,8 @@ class ProfitPage extends StatelessWidget {
   }
 
   String _calculateEstimatedProfit() {
-    final investment = double.parse(plan.minInvestment.toString());
-    final returns = double.parse(plan.returns.toString());
+    final investment = double.parse(plan.price.toString());
+    final returns = double.parse(plan.profitMargin.toString());
     final profit = (investment * returns) / 100;
     return profit.toStringAsFixed(2);
   }

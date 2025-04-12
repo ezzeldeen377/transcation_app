@@ -1,73 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:transcation_app/core/theme/app_color.dart';
+import 'package:transcation_app/features/home/presentation/bloc/home/home_cubit_cubit.dart';
 import 'package:transcation_app/features/home/presentation/widgets/notification_item.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class NotificationPage extends StatelessWidget {
   const NotificationPage({Key? key}) : super(key: key);
 
-  List<Map<String, dynamic>> get _dummyNotifications => [
-    {
-      'title': 'Payment Received',
-      'description': 'You received \$500 from John Doe',
-      'time': '2 minutes ago',
-      'icon': Icons.payment,
-    },
-    {
-      'title': 'New Message',
-      'description': 'You have a new message from support team',
-      'time': '15 minutes ago',
-      'icon': Icons.message,
-    },
-    {
-      'title': 'Account Update',
-      'description': 'Your account details have been updated',
-      'time': '1 hour ago',
-      'icon': Icons.account_circle,
-    },
-    {
-      'title': 'Security Alert',
-      'description': 'New login detected from unknown device',
-      'time': '2 hours ago',
-      'icon': Icons.security,
-    },
-    {
-      'title': 'Transaction Failed',
-      'description': 'Payment to Jane Smith failed',
-      'time': '3 hours ago',
-      'icon': Icons.error,
-    },
-    {
-      'title': 'Promotion',
-      'description': 'Special offer: 20% cashback on next transaction',
-      'time': '5 hours ago',
-      'icon': Icons.local_offer,
-    },
-    {
-      'title': 'Account Verified',
-      'description': 'Your account verification is complete',
-      'time': '1 day ago',
-      'icon': Icons.verified,
-    },
-    {
-      'title': 'New Feature',
-      'description': 'Check out our new investment options',
-      'time': '2 days ago',
-      'icon': Icons.new_releases,
-    },
-    {
-      'title': 'Payment Due',
-      'description': 'Upcoming payment reminder for loan',
-      'time': '3 days ago',
-      'icon': Icons.calendar_today,
-    },
-    {
-      'title': 'Profile Update',
-      'description': 'Please update your profile information',
-      'time': '4 days ago',
-      'icon': Icons.person_outline,
-    },
-  ];
+  
 
   @override
   Widget build(BuildContext context) {
@@ -88,23 +30,59 @@ class NotificationPage extends StatelessWidget {
           ),
           leading: IconButton(
             icon: Icon(
-              Icons.arrow_back,
+              Icons.arrow_back_ios,
               color: AppColor.brandHighlight,
             ),
             onPressed: () => Navigator.pop(context),
           ),
         ),
       ),
-      body: ListView.builder(
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
-        itemCount: _dummyNotifications.length,
-        itemBuilder: (context, index) {
-          final notification = _dummyNotifications[index];
-          return NotificationItem(
-            title: notification['title'],
-            description: notification['description'],
-            time: notification['time'],
-            icon: notification['icon'],
+      body: BlocBuilder<HomeCubit, HomeState>(
+        builder: (context, state) {
+          if (state.isLoading || state.isInitial) {
+            return const Center(
+              child: CircularProgressIndicator(
+                color: AppColor.brandHighlight,
+              ),
+            );
+          }
+
+          final notifications = state.notifications ?? [];
+          if (notifications.isEmpty) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.notifications_off_outlined,
+                    size: 48.sp,
+                    color: AppColor.brandHighlight,
+                  ),
+                  SizedBox(height: 16.h),
+                  Text(
+                    'No notifications yet',
+                    style: TextStyle(
+                      color: Colors.white70,
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+
+          return ListView.builder(
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
+            itemCount: notifications.length,
+            itemBuilder: (context, index) {
+              return NotificationItem(
+                title: notifications[index].title,
+                description: notifications[index].message,
+                time: timeago.format(notifications[index].createdAt),
+                icon: Icons.new_releases,
+              );
+            },
           );
         },
       ),

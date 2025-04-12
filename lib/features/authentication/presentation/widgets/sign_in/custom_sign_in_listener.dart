@@ -12,8 +12,8 @@ class CustomSignInListener extends StatelessWidget {
   final Widget child;
   const CustomSignInListener({super.key, required this.child});
 
-  void _navigateToHome(BuildContext context, User user,String token,int expireAt) {
-    context.read<AppUserCubit>().saveUserData(user,token,expireAt);
+  Future<void> _navigateToHome(BuildContext context, User user,String token,int expireAt) async {
+     await context.read<AppUserCubit>().saveUserData(user,token,expireAt);
     Navigator.pushNamedAndRemoveUntil(
       context,
       RouteNames.initial,

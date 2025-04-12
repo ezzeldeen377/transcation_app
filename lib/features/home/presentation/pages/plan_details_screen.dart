@@ -2,49 +2,49 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:transcation_app/core/theme/app_color.dart';
 import 'package:transcation_app/core/utils/custom_container.dart';
-import 'package:transcation_app/features/home/domain/models/plan.dart';
+import 'package:transcation_app/features/home/data/models/active_plans_response.dart';
+import 'package:transcation_app/features/home/data/models/plans_response.dart';
 import 'package:transcation_app/features/home/presentation/pages/profit_page.dart';
 
 class PlanDetailsScreen extends StatefulWidget {
-  final Plan plan;
+  final ActivePlan activePlan;
 
-  const PlanDetailsScreen({Key? key, required this.plan}) : super(key: key);
+  const PlanDetailsScreen({super.key, required this.activePlan});
 
   @override
   State<PlanDetailsScreen> createState() => _PlanDetailsScreenState();
 }
 
 class _PlanDetailsScreenState extends State<PlanDetailsScreen> {
-  late DateTime startTime;
-  double progress = 0.04;
-
+  late double progress;
+  late int daysRemaining;
+  late int daysSpent;
+  DateTime startTime =DateTime.now();
+  DateTime endTime =DateTime.now();
   @override
   void initState() {
     super.initState();
-    startTime = DateTime.now();
-    // _startTimer();
+    _calculateProgress();
   }
 
-  // void _startTimer() {
-  //   Future.delayed(const Duration(seconds: 1), () {
-  //     if (mounted) {
-  //       setState(() {
-  //         final now = DateTime.now();
-  //         final difference = now.difference(startTime);
-  //         final durationInHours = int.parse(widget.plan.duration.split(' ')[0]);
-  //         progress = (difference.inHours / (durationInHours * 24)).clamp(0.0, 1.0);
-  //       });
-  //       _startTimer();
-  //     }
-  //   });
-  // }
+  void _calculateProgress() {
+   startTime = DateTime.parse(widget.activePlan.startDate!);
+   endTime = DateTime.parse(widget.activePlan.expiryDate);
+    final now = DateTime.now();
+    final totalDays = widget.activePlan.plan.durationDays;
+    final difference = now.difference(startTime).inDays;
+
+    daysSpent = difference.clamp(0, totalDays);
+    daysRemaining = (totalDays - daysSpent).clamp(0, totalDays);
+    progress = (daysSpent / totalDays).clamp(0.0, 1.0);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.plan.type,
+          widget.activePlan.plan.name,
           style: TextStyle(
             color: AppColor.brandHighlight,
             fontSize: 20.sp,
@@ -62,72 +62,90 @@ class _PlanDetailsScreenState extends State<PlanDetailsScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            if (widget.activePlan.plan.special == 1)
+              Container(
+                margin: EdgeInsets.only(bottom: 16.h),
+                padding: EdgeInsets.all(16.w),
+                decoration: BoxDecoration(
+                  color: AppColor.brandHighlight.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(15.r),
+                  border: Border.all(
+                      color: AppColor.brandHighlight.withOpacity(0.3)),
+                ),
+                child: Row(
+                  children: [
+                    Icon(Icons.star,
+                        color: AppColor.brandHighlight, size: 24.sp),
+                    SizedBox(width: 8.w),
+                    Text(
+                      'Special Plan',
+                      style: TextStyle(
+                        color: AppColor.brandHighlight,
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             CustomContainer(
               child: Padding(
                 padding: EdgeInsets.all(16.w),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildInfoRow('Returns', '${widget.plan.returns}%'),
+                    _buildInfoRow('Plan ID', '#${widget.activePlan.plan.id}'),
                     SizedBox(height: 8.h),
-                    _buildInfoRow('Status', widget.plan.status),
+                    _buildInfoRow('Status', widget.activePlan.status),
                     SizedBox(height: 8.h),
-                    _buildInfoRow('Minimum Investment', '${widget.plan.minInvestment}'),
+                    _buildInfoRow('Investment Amount',
+                        '\$${widget.activePlan.plan.price}'),
                     SizedBox(height: 8.h),
-                    _buildInfoRow('Duration', widget.plan.duration),
+                    _buildInfoRow(
+                        'Returns', '${widget.activePlan.plan.profitMargin}%'),
+                    SizedBox(height: 8.h),
+                    _buildInfoRow('Duration',
+                        '${widget.activePlan.plan.durationDays} Days'),
+                    SizedBox(height: 8.h),
+                    _buildInfoRow('Start Date', _formatDate(startTime)),
+                    SizedBox(height: 8.h),
+                    _buildInfoRow('End Date',_formatDate(endTime)),
                     SizedBox(height: 16.h),
+                    Text(
+                      'Progress',
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.bold,
+                        color: AppColor.white,
+                      ),
+                    ),
+                    SizedBox(height: 12.h),
+                    LinearProgressIndicator(
+                      value: progress,
+                      backgroundColor: Colors.grey[800],
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                          AppColor.brandHighlight),
+                      minHeight: 8.h,
+                      borderRadius: BorderRadius.circular(4.r),
+                    ),
+                    SizedBox(height: 12.h),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Time Progress',
-                                style: TextStyle(
-                                  fontSize: 14.sp,
-                                  color: Colors.white70,
-                                ),
-                              ),
-                              SizedBox(height: 8.h),
-                              LinearProgressIndicator(
-                                value: progress,
-                                backgroundColor: Colors.grey[800],
-                                valueColor: AlwaysStoppedAnimation<Color>(AppColor.brandHighlight),
-                              ),
-                              SizedBox(height: 4.h),
-                              Text(
-                                '${(progress * 100).toStringAsFixed(1)}%',
-                                style: TextStyle(
-                                  fontSize: 12.sp,
-                                  color: AppColor.brandHighlight,
-                                ),
-                              ),
-                            ],
-                          ),
+                        _buildProgressDetail(
+                          'Days Spent',
+                          daysSpent.toString(),
+                          Icons.calendar_today,
                         ),
-                        SizedBox(width: 16.w),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ProfitPage(plan: widget.plan),
-                              ),
-                            );
-                          },
-                          style: TextButton.styleFrom(
-                            backgroundColor: AppColor.brandHighlight.withOpacity(0.1),
-                            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-                          ),
-                          child: Text(
-                            'View Profit',
-                            style: TextStyle(
-                              color: AppColor.brandHighlight,
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                        _buildProgressDetail(
+                          'Days Remaining',
+                          daysRemaining.toString(),
+                          Icons.timer_outlined,
+                        ),
+                        _buildProgressDetail(
+                          'Progress',
+                          '${(progress * 100).toStringAsFixed(1)}%',
+                          Icons.show_chart,
                         ),
                       ],
                     ),
@@ -149,7 +167,7 @@ class _PlanDetailsScreenState extends State<PlanDetailsScreen> {
               child: Padding(
                 padding: EdgeInsets.all(16.w),
                 child: Text(
-                  widget.plan.description,
+                  widget.activePlan.plan.description,
                   style: TextStyle(
                     fontSize: 14.sp,
                     color: Colors.white,
@@ -158,90 +176,76 @@ class _PlanDetailsScreenState extends State<PlanDetailsScreen> {
               ),
             ),
             SizedBox(height: 16.h),
-            Text(
-              'Benefits',
-              style: TextStyle(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.bold,
-                color: AppColor.brandHighlight,
-              ),
-            ),
-            SizedBox(height: 8.h),
-            CustomContainer(
-              child: Padding(
-                padding: EdgeInsets.all(16.w),
-                child: Column(
-                  children: widget.plan.benefits.map((benefit) => _buildBenefitItem(benefit)).toList(),
-                ),
-              ),
-            ),
-            SizedBox(height: 16.h),
-            Text(
-              'Historical Performance',
-              style: TextStyle(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.bold,
-                color: AppColor.brandHighlight,
-              ),
-            ),
-            SizedBox(height: 8.h),
-            CustomContainer(
-              child: Padding(
-                padding: EdgeInsets.all(16.w),
-                child: Column(
-                  children: widget.plan.historicalPerformance.entries
-                      .map((entry) => _buildPerformanceItem(entry.key, entry.value))
-                      .toList(),
-                ),
-              ),
-            ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildInfoRow(String label, String value) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  Widget _buildProgressDetail(String label, String value, IconData icon) {
+    return Column(
       children: [
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 14.sp,
-            color: Colors.white70,
-          ),
-        ),
+        Icon(icon, color: AppColor.brandHighlight, size: 20.sp),
+        SizedBox(height: 4.h),
         Text(
           value,
           style: TextStyle(
-            fontSize: 14.sp,
+            color: AppColor.white,
+            fontSize: 16.sp,
             fontWeight: FontWeight.bold,
-            color: AppColor.brandHighlight,
+          ),
+        ),
+        Text(
+          label,
+          style: TextStyle(
+            color: Colors.white70,
+            fontSize: 12.sp,
           ),
         ),
       ],
     );
   }
 
-  Widget _buildBenefitItem(String benefit) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 4.h),
-      child: Row(
-        children: [
-          Icon(
-            Icons.check_circle,
-            color: AppColor.brandHighlight,
-            size: 16.sp,
+  Widget _buildInfoRow(String label, String value) {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 8.h),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: AppColor.brandHighlight.withOpacity(0.1),
+            width: 1,
           ),
-          SizedBox(width: 8.w),
-          Expanded(
-            child: Text(
-              benefit,
-              style: TextStyle(
-                fontSize: 14.sp,
-                color: Colors.white,
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            children: [
+              Container(
+                width: 4.w,
+                height: 16.h,
+                decoration: BoxDecoration(
+                  color: AppColor.brandHighlight,
+                  borderRadius: BorderRadius.circular(2.r),
+                ),
               ),
+              SizedBox(width: 8.w),
+              Text(
+                label,
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  color: Colors.white70,
+                ),
+              ),
+            ],
+          ),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 14.sp,
+              fontWeight: FontWeight.w600,
+              color: AppColor.white,
             ),
           ),
         ],
@@ -249,29 +253,7 @@ class _PlanDetailsScreenState extends State<PlanDetailsScreen> {
     );
   }
 
-  Widget _buildPerformanceItem(String year, double performance) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 4.h),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            year,
-            style: TextStyle(
-              fontSize: 14.sp,
-              color: Colors.white70,
-            ),
-          ),
-          Text(
-            '${performance.toStringAsFixed(1)}%',
-            style: TextStyle(
-              fontSize: 14.sp,
-              fontWeight: FontWeight.bold,
-              color: AppColor.brandHighlight,
-            ),
-          ),
-        ],
-      ),
-    );
+  String _formatDate(DateTime date) {
+    return '${date.day}/${date.month}/${date.year}';
   }
 }

@@ -4,13 +4,12 @@ class RouteNames {
   static const signUp = '/signUp';
   static const verification = '/verification';
   static const home = '/home';
-  static const doctorsScreen = '/doctorsScreen';
-  static const doctorDetails = '/doctorDetails';
-  static const chatScreen = '/chatScreen';
-  static const userChats = '/userChats';
-  static const measurement = '/measurement';
+
   static const initial = '/initial';
-  static const editDoctor = '/editDoctor';
-  static const alarm = '/alarm';
-  static const askAi = '/askAi';
+
+  static const notification = '/notification';
+  static const menu = '/menu';
+  static const planDetails = '/planDetails';
+  static const historyPage = '/historyPage';
+
 }
