@@ -196,7 +196,7 @@ class _WithdrawPageState extends State<WithdrawPage> {
         _buildPaymentMethod(
           'دفع محلي',
           Icons.credit_card,
-          'فيزا، ماستركارد، إلخ',
+          'دفع المحافظ الالكترونية',
         ),
         _buildPaymentMethod(
           'ويسترن يونيون',
@@ -326,7 +326,7 @@ class _WithdrawPageState extends State<WithdrawPage> {
                     SizedBox(height: 12.h),
                     CustomTextFormField(
                       controller: _cardNumberController,
-                      hint: 'معلومات الحساب البنكي (IBAN أو رقم الحساب)',
+                      hint: 'اترك رقم حساب المحفظة الالكترونية',
                     ),
                     SizedBox(height: 12.h),
                   ] else if (title == 'عملات رقمية') ...[

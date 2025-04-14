@@ -14,6 +14,7 @@ import 'package:transcation_app/features/home/data/models/active_plans_response.
 import 'package:transcation_app/features/home/data/models/plans_response.dart';
 import 'package:transcation_app/features/home/presentation/bloc/history/history_cubit.dart';
 import 'package:transcation_app/features/home/presentation/bloc/home/home_cubit_cubit.dart';
+import 'package:transcation_app/features/home/presentation/bloc/my_plans/my_plans_cubit.dart';
 import 'package:transcation_app/features/home/presentation/pages/history_page.dart';
 import 'package:transcation_app/features/home/presentation/pages/notification_page.dart';
 import 'package:transcation_app/features/home/presentation/pages/menu_screen.dart';
@@ -95,7 +96,10 @@ class TranscationRouter {
       case RouteNames.planDetails:
         final plan = settings.arguments as ActivePlan;
         return MaterialPageRoute(
-          builder: (_) => PlanDetailsScreen(activePlan: plan),
+          builder: (_) => BlocProvider(
+            create: (context) => getIt<MyPlansCubit>()..getPlanReuslt(context.read<AppUserCubit>().state.accessToken!, plan.plan.id.toString()),
+            child: PlanDetailsScreen(activePlan: plan),
+          ),
         );
       case RouteNames.historyPage:
         return MaterialPageRoute(

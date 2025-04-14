@@ -16,5 +16,19 @@ Future<void> getUserActivePlan(String token) async {
     (success) => emit(state.copyWith(status: MyPlansStatus.success, activePlans: success.plans)),
   );
 }
- 
+ void getPlanReuslt(String token, String planId) async {
+        emit(state.copyWith(status: MyPlansStatus.loading));
+
+    final result = await repository.getPlanReuslt(token, planId);
+    result.fold(
+      (failure) => emit(state.copyWith(
+        status: MyPlansStatus.error,
+        errorMessage: failure.message,
+      )),
+      (plan) => emit(state.copyWith(
+        status: MyPlansStatus.successGetPlanDetails,
+        userActivePlan: plan,
+      )),
+    );
+  }
 }

@@ -3,9 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:transcation_app/core/theme/app_color.dart';
 
 class CustomContainer extends StatelessWidget {
-  const CustomContainer({super.key, required this.child, this.horizontal=10,});
+  const CustomContainer({super.key, required this.child, this.horizontal=10, this.color= AppColor.darkGray,});
   final Widget child;
   final double? horizontal;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +14,7 @@ class CustomContainer extends StatelessWidget {
       margin: EdgeInsets.symmetric(vertical: 10.h),
       padding: EdgeInsets.symmetric(horizontal: horizontal!.w),
       decoration: BoxDecoration(
-        color: AppColor.darkGray,
+        color: color,
         borderRadius: BorderRadius.circular(15),
         border: Border.all(
           color: AppColor.brandPrimary.withOpacity(0.3),

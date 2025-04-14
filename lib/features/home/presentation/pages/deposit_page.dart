@@ -92,28 +92,14 @@ class _DepositPageState extends State<DepositPage> {
               () => customelaunchUrl(whatsappLink,context),
             ),
             SizedBox(height: 16.h),
-            _buildDepositOption(
+            _buildDepositOption3(
               'بينانس باي',
               Icon(Icons.currency_bitcoin,
                   color: AppColor.brandHighlight, size: 24.sp),
               'الدفع عبر بينانس باي',
               '''Tron (TRC20) 
 TG8MRqNqWFi1tyqnyRmvV3FFouQhzvFSWa''', // Replace with your actual address
-              'نسخ العنوان',
-              () {
-                Clipboard.setData(ClipboardData(
-                        text: 'TG8MRqNqWFi1tyqnyRmvV3FFouQhzvFSWa'))
-                    .then((_) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('تم نسخ العنوان إلى الحافظة'),
-                      backgroundColor: AppColor.brandHighlight,
-                      behavior: SnackBarBehavior.floating,
-                      margin: EdgeInsets.all(16.sp),
-                    ),
-                  );
-                });
-              },
+         
             ),
             // After the Binance Pay option, add:
             SizedBox(height: 16.h),
@@ -301,6 +287,140 @@ TG8MRqNqWFi1tyqnyRmvV3FFouQhzvFSWa''', // Replace with your actual address
                     onPressed: () {
                       Clipboard.setData(ClipboardData(
                         text: 'TR44 0082 9000 0949 2078 6745 37',
+                      )).then((_) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('تم نسخ العنوان إلى الحافظة'),
+                            backgroundColor: AppColor.brandHighlight,
+                            behavior: SnackBarBehavior.floating,
+                            margin: EdgeInsets.all(16.sp),
+                          ),
+                        );
+                      });
+                    },
+                  ),
+                ),
+              
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+   Widget _buildDepositOption3(
+    String title,
+    Widget icon,
+    String subtitle,
+    String details,
+  ) {
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColor.brandDark.withOpacity(0.3),
+        borderRadius: BorderRadius.circular(15.r),
+        border: Border.all(
+          color: AppColor.brandSecondary.withOpacity(0.3),
+          width: 0.5,
+        ),
+      ),
+      child: ExpansionTile(
+        title: Text(
+          title,
+          style: TextStyle(
+            color: AppColor.white,
+            fontSize: 18.sp,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        leading: icon,
+        subtitle: Text(
+          subtitle,
+          style: TextStyle(
+            color: AppColor.white.withOpacity(0.7),
+            fontSize: 14.sp,
+          ),
+        ),
+        backgroundColor: Colors.transparent,
+        collapsedIconColor: AppColor.brandHighlight,
+        iconColor: AppColor.brandHighlight,
+        children: [
+          Padding(
+            padding: EdgeInsets.all(16.sp),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  title: Text(
+                    'Tron (TRC20)',
+                    style: TextStyle(
+                      color: AppColor.white.withOpacity(0.9),
+                      fontSize: 14.sp,
+                    ),
+                  ),
+            
+                  trailing: IconButton(
+                    icon: Icon(Icons.copy, color: AppColor.brandHighlight),
+                    onPressed: () {
+                      Clipboard.setData(ClipboardData(
+                        text: 'TRC20',
+                      )).then((_) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('تم نسخ العنوان إلى الحافظة'),
+                            backgroundColor: AppColor.brandHighlight,
+                            behavior: SnackBarBehavior.floating,
+                            margin: EdgeInsets.all(16.sp),
+                          ),
+                        );
+                      });
+                    },
+                  ),
+                ),
+
+                ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  title: Text(
+                    'TG8MRqNqWFi1tyqnyRmvV3FFouQhzvFSWa',
+                    style: TextStyle(
+                      color: AppColor.white.withOpacity(0.9),
+                      fontSize: 14.sp,
+                    ),
+                  ),
+            
+                  trailing: IconButton(
+                    icon: Icon(Icons.copy, color: AppColor.brandHighlight),
+                    onPressed: () {
+                      Clipboard.setData(ClipboardData(
+                        text: 'TG8MRqNqWFi1tyqnyRmvV3FFouQhzvFSWa',
+                      )).then((_) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('تم نسخ العنوان إلى الحافظة'),
+                            backgroundColor: AppColor.brandHighlight,
+                            behavior: SnackBarBehavior.floating,
+                            margin: EdgeInsets.all(16.sp),
+                          ),
+                        );
+                      });
+                    },
+                  ),
+                ),
+                ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  title: Text(
+                    'ID BINANCE : 836483841',
+                    style: TextStyle(
+                      color: AppColor.white.withOpacity(0.9),
+                      fontSize: 14.sp,
+                    ),
+                  ),
+            
+                  trailing: IconButton(
+                    icon: Icon(Icons.copy, color: AppColor.brandHighlight),
+                    onPressed: () {
+                      Clipboard.setData(ClipboardData(
+                        text: '836483841',
                       )).then((_) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(

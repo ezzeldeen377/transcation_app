@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:transcation_app/core/routes/routes.dart';
 import 'package:transcation_app/core/theme/app_color.dart';
 import 'package:transcation_app/core/utils/custom_container.dart';
 import 'package:transcation_app/features/home/data/models/plans_response.dart';
@@ -84,11 +85,10 @@ class _PlansPageState extends State<PlansPage> {
                 padding: EdgeInsets.only(bottom: 16.h),
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.push(
+                    Navigator.pushNamed(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => PlanDetailsScreen(activePlan: activePlan),
-                      ),
+                       RouteNames.planDetails,arguments: activePlan
+                      
                     );
                   },
                   child: CustomContainer(
