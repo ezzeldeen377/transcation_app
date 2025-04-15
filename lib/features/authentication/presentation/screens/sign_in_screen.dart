@@ -1,9 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:transcation_app/core/common/cubit/app_user/app_user_cubit.dart';
+import 'package:transcation_app/core/common/cubit/app_user/app_user_state.dart';
 import 'package:transcation_app/core/helpers/secure_storage_helper.dart';
 import 'package:transcation_app/core/helpers/spacer.dart';
 import 'package:transcation_app/core/routes/routes.dart';
@@ -21,14 +21,12 @@ import '../widgets/sign_up/google_button.dart';
 class SignInScreen extends StatelessWidget {
   const SignInScreen({super.key});
 
-
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<SignInCubit>();
-   return CustomSignInListener(
+    return CustomSignInListener(
       child: WillPopScope(
-                onWillPop:()=> onWillPop(context),
-
+        onWillPop: () => onWillPop(context),
         child: PopScope(
           canPop: false,
           child: GestureDetector(
@@ -46,7 +44,10 @@ class SignInScreen extends StatelessWidget {
                           title: 'تسجيل الدخول',
                           animatedText: 'مرحباً بعودتك!',
                           padding: EdgeInsetsDirectional.only(
-                              top: 148.h, bottom: 65.h, end: 35.w, start: 35.w),
+                              top: 148.h,
+                              bottom: 65.h,
+                              end: 35.w,
+                              start: 35.w),
                         ),
                         const CustomSignInInputFields(),
                         SizedBox(height: 60.h),
@@ -55,18 +56,20 @@ class SignInScreen extends StatelessWidget {
                             BlocBuilder<SignInCubit, SignInState>(
                               builder: (context, state) {
                                 return Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 20.w),
                                   child: Center(
                                     child: CustomButton(
                                       buttonContent: state.isLoading ||
                                               state.isAlreadySignIn ||
                                               state.isNotSignIn ||
-                                              state.isSuccessSignIn 
+                                              state.isSuccessSignIn
                                           ? const CircularProgressIndicator()
                                           : Text(
                                               'تسجيل الدخول',
                                               style: Theme.of(context)
-                                                  .textTheme.titleLarge
+                                                  .textTheme
+                                                  .titleLarge
                                                   ?.copyWith(
                                                       color: AppColor.white),
                                             ),
@@ -74,7 +77,7 @@ class SignInScreen extends StatelessWidget {
                                       onTapButton: state.isLoading ||
                                               state.isAlreadySignIn ||
                                               state.isNotSignIn ||
-                                              state.isSuccessSignIn 
+                                              state.isSuccessSignIn
                                           ? null
                                           : () {
                                               if (cubit.formKey.currentState!
@@ -92,10 +95,10 @@ class SignInScreen extends StatelessWidget {
                             SizedBox(height: 30.h),
                             CustomDontHaveAccountRow(
                               onTap: () {
-                                Navigator.of(context).pushNamed(RouteNames.signUp);
+                                Navigator.of(context)
+                                    .pushNamed(RouteNames.signUp);
                               },
                             ),
-                        
                           ],
                         )
                             .animate()
@@ -103,12 +106,12 @@ class SignInScreen extends StatelessWidget {
                                 begin: 1,
                                 end: 0,
                                 duration: const Duration(milliseconds: 500),
-                                delay:
-                                    const Duration(milliseconds: (3) * 200 + 200))
+                                delay: const Duration(
+                                    milliseconds: (3) * 200 + 200))
                             .fadeIn(
                                 duration: const Duration(milliseconds: 500),
-                                delay:
-                                    const Duration(milliseconds: (3) * 200 + 200))
+                                delay: const Duration(
+                                    milliseconds: (3) * 200 + 200))
                             .then(delay: const Duration(milliseconds: 200)),
                       ],
                     )),

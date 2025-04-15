@@ -10,14 +10,13 @@ class VerificationCubit extends Cubit<VerificationState> {
   VerificationCubit(this.repository) : super(const VerificationState());
   final codeController = TextEditingController();
   final AuthRepository repository;
-  String? email;
 
-  void setEmail(String userEmail) {
-    email = userEmail;
+  void setEmailPassword(String userEmail,String password) {
+   emit(state.copyWith(email: userEmail,password: password));
   }
 
   Future<void> verifyCode() async {
-    if (email == null) {
+    if (state.email == null) {
       emit(state.copyWith(
         status: VerificationStatus.error,
         errorMessage: "Email is required for verification",
@@ -28,7 +27,7 @@ class VerificationCubit extends Cubit<VerificationState> {
     emit(state.copyWith(status: VerificationStatus.loading));
 
     final result =
-        await repository.verifyCode(email!, codeController.text.trim());
+        await repository.verifyCode(state.email!, codeController.text.trim());
 
     result.fold(
       (failure) => emit(state.copyWith(
@@ -40,7 +39,7 @@ class VerificationCubit extends Cubit<VerificationState> {
   }
 
   Future<void> resendCode() async {
-    if (email == null) {
+    if (state.email == null) {
       emit(state.copyWith(
         status: VerificationStatus.error,
         errorMessage: "Email is required to resend code",
@@ -50,7 +49,7 @@ class VerificationCubit extends Cubit<VerificationState> {
 
     emit(state.copyWith(status: VerificationStatus.loading));
 
-    final result = await repository.resendVerifyCode(email!);
+    final result = await repository.resendVerifyCode(state.email!);
 
     result.fold(
       (failure) => emit(state.copyWith(

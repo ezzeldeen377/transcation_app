@@ -87,7 +87,7 @@ class _DepositPageState extends State<DepositPage> {
                 height: 24.sp,
               ),
               'تواصل معنا على واتساب للإيداع',
-              'راسلنا على واتساب لإتمام عملية الإيداع',
+              'تواصل واتساب بعد قيامك بالايداع وارسل صورة ايصال تحويل لاجل اضافة اموالك',
               'فتح واتساب',
               () => customelaunchUrl(whatsappLink,context),
             ),
@@ -105,6 +105,9 @@ TG8MRqNqWFi1tyqnyRmvV3FFouQhzvFSWa''', // Replace with your actual address
             SizedBox(height: 16.h),
                 _buildDepositOption2("بنك تركيا ", Icon(Icons.account_balance,
                   color: AppColor.brandHighlight, size: 24.sp),"ايداع عن طريق بنك تركيا",""),
+            SizedBox(height: 16.h),
+                _buildDepositOption4("محفظة شام كاش", Icon(Icons.wallet,
+                  color: AppColor.brandHighlight, size: 24.sp),"ادفع من خلال محفظة شام كاش سوريا",""),
 
 
             // For Telegram
@@ -434,6 +437,84 @@ TG8MRqNqWFi1tyqnyRmvV3FFouQhzvFSWa''', // Replace with your actual address
                     },
                   ),
                 ),
+              
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+   Widget _buildDepositOption4(
+    String title,
+    Widget icon,
+    String subtitle,
+    String details,
+  ) {
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColor.brandDark.withOpacity(0.3),
+        borderRadius: BorderRadius.circular(15.r),
+        border: Border.all(
+          color: AppColor.brandSecondary.withOpacity(0.3),
+          width: 0.5,
+        ),
+      ),
+      child: ExpansionTile(
+        title: Text(
+          title,
+          style: TextStyle(
+            color: AppColor.white,
+            fontSize: 18.sp,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        leading: icon,
+        subtitle: Text(
+          subtitle,
+          style: TextStyle(
+            color: AppColor.white.withOpacity(0.7),
+            fontSize: 14.sp,
+          ),
+        ),
+        backgroundColor: Colors.transparent,
+        collapsedIconColor: AppColor.brandHighlight,
+        iconColor: AppColor.brandHighlight,
+        children: [
+          Padding(
+            padding: EdgeInsets.all(16.sp),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  title: Text(
+                    '335dd1c3e040ef2feb8f79c7c2dbf5b9',
+                    style: TextStyle(
+                      color: AppColor.white.withOpacity(0.9),
+                      fontSize: 14.sp,
+                    ),
+                  ),
+            
+                  trailing: IconButton(
+                    icon: Icon(Icons.copy, color: AppColor.brandHighlight),
+                    onPressed: () {
+                      Clipboard.setData(ClipboardData(
+                        text: 'TRC20',
+                      )).then((_) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('تم نسخ العنوان إلى الحافظة'),
+                            backgroundColor: AppColor.brandHighlight,
+                            behavior: SnackBarBehavior.floating,
+                            margin: EdgeInsets.all(16.sp),
+                          ),
+                        );
+                      });
+                    },
+                  ),
+                ),
+
               
               ],
             ),

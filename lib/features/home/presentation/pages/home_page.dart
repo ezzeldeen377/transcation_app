@@ -110,179 +110,258 @@ class _HomePageState extends State<HomePage> {
           );
         }
       },
-      child: Scaffold(
-        appBar: CustomAppBar(),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              // Remove ColorList from _HomePageState as it's no longer needed
+      child: SafeArea(
+        child: Scaffold(
+          appBar:AppBar(
+      automaticallyImplyLeading: false,
+      backgroundColor: AppColor.darkGray,
+      elevation: 4,
+      flexibleSpace: Container(
+        decoration: BoxDecoration(
+          color: AppColor.darkGray,
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(20.r),
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 10,
+              offset: Offset(0, 5),
+            ),
+          ],
+        ),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+          child: BlocBuilder<HomeCubit, HomeState>(
+            
+            builder: (context, state) {
+              final userIdentifier = state.user?.userIdentifier ?? "غير متوفر";
 
-              // In the build method, replace the BlocBuilder with:
-              ProfitCard(),
-              SizedBox(height: 10.h),
-              BlocBuilder<HomeCubit, HomeState>(
-                builder: (context, state) {
-                  return UserBalance(
-                    pageController: widget.controller,
-                    balance: (state.user?.balance ?? 0).toString(),
-                  );
-                },
-              ),
-              SizedBox(height: 20.h),
-              InvestmentPlansCarousel(),
-              SizedBox(height: 20.h),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.w),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    _buildActionButton(
-                      'إيداع',
-                      Icons.arrow_downward,
-                      AppColor.brandPrimary,
-                      () {
-                        widget.controller.animateToPage(1,
-                            duration: const Duration(milliseconds: 300),
-                            curve: Curves.easeInOut);
-                      },
-                    ),
-                    _buildActionButton(
-                      'سحب',
-                      Icons.arrow_upward,
-                      AppColor.brandHighlight,
-                      () {
-                        widget.controller.animateToPage(2,
-                            duration: const Duration(milliseconds: 300),
-                            curve: Curves.easeInOut);
-                      },
-                    ),
-                    _buildActionButton(
-                      'السجل',
-                      Icons.history,
-                      AppColor.brandAccent,
-                      () {
-                        context.pushNamed(RouteNames.historyPage);
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 20.h),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'المعاملات الأخيرة',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.bold,
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      Clipboard.setData(ClipboardData(text: userIdentifier.toString()));
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('تم نسخ معرف المستخدم إلى الحافظة')),
+                      );
+                    },
+                    child: Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                      decoration: BoxDecoration(
+                        color: AppColor.brandDark,
+                        borderRadius: BorderRadius.circular(20.r),
+                      ),
+                      child: Row(
+                        children: [
+                          Text(
+                            "المعرف: $userIdentifier",
+                            style: TextStyles.fontCircularSpotify12GreyRegular,
+                          ),
+                          SizedBox(width: 8.w),
+                          Icon(Icons.copy, color: AppColor.brandHighlight),
+                        ],
                       ),
                     ),
-                    SizedBox(height: 10.h),
-                    BlocBuilder<HomeCubit, HomeState>(
-                      builder: (context, state) {
-                        final transactions = state.history;
-                        if (state.isLoading || state.isInitial) {
-                          return Center(
-                            child: CircularProgressIndicator(
-                              color: AppColor.brandHighlight,
-                            ),
-                          );
-                        }
-                        if (transactions == null) {
-                          return Center(
-                            child: Text(
-                              'لا توجد معاملات حديثة',
-                              style: TextStyle(
-                                color: Colors.white70,
-                                fontSize: 14.sp,
-                              ),
-                            ),
-                          );
-                        }
-
-                        final lastDeposit = transactions.deposits.firstOrNull;
-                        final lastWithdrawal =
-                            transactions.withdrawals.firstOrNull;
-                        final lastSubscription =
-                            transactions.subscriptions.firstOrNull;
-                        // Get plan details for the last subscription
-                        final lastPlanDetails = lastSubscription != null
-                            ? state.planDetails![lastSubscription.planId]
-                            : null;
-
-                        // if (lastDeposit == null &&
-                        //     lastWithdrawal == null &&
-                        //     lastSubscription == null) {
-                        //   return Center(
-                        //     child: Text(
-                        //       'No recent transactions',
-                        //       style: TextStyle(
-                        //         color: Colors.white70,
-                        //         fontSize: 14.sp,
-                        //       ),
-                        //     ),
-                        //   );
-                        // }
-
-                        return Column(
-                          children: [
-                            if (lastDeposit != null)
-                              _buildTransactionItem(
-                                'إيداع',
-                                '+\$${lastDeposit.amount}',
-                                timeago.format(lastDeposit.createdAt,
-                                    locale: "ar"),
-                                Icons.arrow_downward,
-                                AppColor.brandPrimary,
-                              )
-                            else
-                              _buildEmptyTransactionItem(
-                                'لا توجد إيداعات حديثة',
-                                Icons.arrow_downward,
-                                AppColor.brandPrimary.withOpacity(0.5),
-                              ),
-                            if (lastWithdrawal != null)
-                              _buildTransactionItem(
-                                'سحب',
-                                '-\$${lastWithdrawal.amount}',
-                                timeago.format(lastWithdrawal.createdAt,
-                                    locale: "ar"),
-                                Icons.arrow_upward,
-                                AppColor.brandHighlight,
-                              )
-                            else
-                              _buildEmptyTransactionItem(
-                                'لا توجد عمليات سحب حديثة',
-                                Icons.arrow_upward,
-                                AppColor.brandHighlight.withOpacity(0.5),
-                              ),
-                            if (lastSubscription != null)
-                              _buildTransactionItem(
-                                lastPlanDetails?.plan.name ?? 'استثمار',
-                                '-\$${lastPlanDetails?.plan.price}',
-                                timeago.format(lastSubscription.createdAt,
-                                    locale: "ar"),
-                                Icons.account_balance,
-                                AppColor.brandAccent,
-                              )
-                            else
-                              _buildEmptyTransactionItem(
-                                'لا توجد استثمارات نشطة',
-                                Icons.account_balance,
-                                AppColor.brandAccent.withOpacity(0.5),
-                              ),
-                          ],
-                        );
-                      },
-                    ),
-                  ],
+                  ),
+                  Row(
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.notifications,
+                            color: AppColor.brandHighlight),
+                        onPressed: () {
+                          Navigator.pushNamed(context, RouteNames.notification);
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.menu, color: AppColor.brandHighlight),
+                        onPressed: () {
+                          Navigator.pushNamed(context, RouteNames.menu);
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              );
+            },
+          ),
+        ),
+      ),
+    ),
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                // Remove ColorList from _HomePageState as it's no longer needed
+        
+                // In the build method, replace the BlocBuilder with:
+                ProfitCard(),
+                SizedBox(height: 10.h),
+                BlocBuilder<HomeCubit, HomeState>(
+                  builder: (context, state) {
+                    return UserBalance(
+                      pageController: widget.controller,
+                      balance: (state.user?.balance ?? 0).toString(),
+                    );
+                  },
                 ),
-              ),
-            ],
+                SizedBox(height: 20.h),
+                InvestmentPlansCarousel(),
+                SizedBox(height: 20.h),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      _buildActionButton(
+                        'إيداع',
+                        Icons.arrow_downward,
+                        AppColor.brandPrimary,
+                        () {
+                          widget.controller.animateToPage(1,
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeInOut);
+                        },
+                      ),
+                      _buildActionButton(
+                        'سحب',
+                        Icons.arrow_upward,
+                        AppColor.brandHighlight,
+                        () {
+                          widget.controller.animateToPage(2,
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeInOut);
+                        },
+                      ),
+                      _buildActionButton(
+                        'السجل',
+                        Icons.history,
+                        AppColor.brandAccent,
+                        () {
+                          context.pushNamed(RouteNames.historyPage);
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 20.h),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'المعاملات الأخيرة',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 10.h),
+                      BlocBuilder<HomeCubit, HomeState>(
+                        builder: (context, state) {
+                          final transactions = state.history;
+                          if (state.isLoading || state.isInitial) {
+                            return Center(
+                              child: CircularProgressIndicator(
+                                color: AppColor.brandHighlight,
+                              ),
+                            );
+                          }
+                          if (transactions == null) {
+                            return Center(
+                              child: Text(
+                                'لا توجد معاملات حديثة',
+                                style: TextStyle(
+                                  color: Colors.white70,
+                                  fontSize: 14.sp,
+                                ),
+                              ),
+                            );
+                          }
+        
+                          final lastDeposit = transactions.deposits.firstOrNull;
+                          final lastWithdrawal =
+                              transactions.withdrawals.firstOrNull;
+                          final lastSubscription =
+                              transactions.subscriptions.firstOrNull;
+                          // Get plan details for the last subscription
+                          final lastPlanDetails = lastSubscription != null
+                              ? state.planDetails![lastSubscription.planId]
+                              : null;
+        
+                          // if (lastDeposit == null &&
+                          //     lastWithdrawal == null &&
+                          //     lastSubscription == null) {
+                          //   return Center(
+                          //     child: Text(
+                          //       'No recent transactions',
+                          //       style: TextStyle(
+                          //         color: Colors.white70,
+                          //         fontSize: 14.sp,
+                          //       ),
+                          //     ),
+                          //   );
+                          // }
+        
+                          return Column(
+                            children: [
+                              if (lastDeposit != null)
+                                _buildTransactionItem(
+                                  'إيداع',
+                                  '+\$${lastDeposit.amount}',
+                                  timeago.format(lastDeposit.createdAt,
+                                      locale: "ar"),
+                                  Icons.arrow_downward,
+                                  AppColor.brandPrimary,
+                                )
+                              else
+                                _buildEmptyTransactionItem(
+                                  'لا توجد إيداعات حديثة',
+                                  Icons.arrow_downward,
+                                  AppColor.brandPrimary.withOpacity(0.5),
+                                ),
+                              if (lastWithdrawal != null)
+                                _buildTransactionItem(
+                                  'سحب',
+                                  '-\$${lastWithdrawal.amount}',
+                                  timeago.format(lastWithdrawal.createdAt,
+                                      locale: "ar"),
+                                  Icons.arrow_upward,
+                                  AppColor.brandHighlight,
+                                )
+                              else
+                                _buildEmptyTransactionItem(
+                                  'لا توجد عمليات سحب حديثة',
+                                  Icons.arrow_upward,
+                                  AppColor.brandHighlight.withOpacity(0.5),
+                                ),
+                              if (lastSubscription != null)
+                                _buildTransactionItem(
+                                  lastPlanDetails?.plan.name ?? 'استثمار',
+                                  '-\$${lastPlanDetails?.plan.price}',
+                                  timeago.format(lastSubscription.createdAt,
+                                      locale: "ar"),
+                                  Icons.account_balance,
+                                  AppColor.brandAccent,
+                                )
+                              else
+                                _buildEmptyTransactionItem(
+                                  'لا توجد استثمارات نشطة',
+                                  Icons.account_balance,
+                                  AppColor.brandAccent.withOpacity(0.5),
+                                ),
+                            ],
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

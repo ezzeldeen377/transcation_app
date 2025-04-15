@@ -22,8 +22,11 @@ class CustomeSignUpListner extends StatelessWidget {
             "تم إرسال رمز التحقق إلى بريدك الإلكتروني.",
             "تم إنشاء الحساب بنجاح",
             () {
-              Navigator.popAndPushNamed(context, RouteNames.verification,arguments: cubit.emailController.text.trim());
-            },
+              Navigator.popAndPushNamed(context, RouteNames.verification,arguments:{
+                'email':cubit.emailController.text.trim(),
+                'password':cubit.passwordController.text.trim(),
+              });
+            },            
           );
         } else if (state.isFailure) {
           showSnackBar(context, state.erorrMessage ?? '');

@@ -12,26 +12,28 @@ Future<Either<Failure, T>> executeTryAndCatchForRepository<T>(
     final result = await action();
     return right(result);
   } on NoInternetException {
-    return left(
-        Failure("Network connection error"));
+    return left(Failure("Network connection error"));
   } on TimeoutException {
-    return left(Failure(
-        "Request timed out. Please try again"));
+    return left(Failure("Request timed out. Please try again"));
   } on SocketException {
-    return left(
-        Failure("Network connection error"));
+    return left(Failure("Network connection error"));
   } on FormatException {
     return left(Failure("An unexpected error occurred"));
-  }catch (e) {
+  } catch (e) {
     if (e.toString().contains('network error') ||
         e.toString().contains('timeout') ||
         e.toString().contains('RecaptchaCallWrapper')) {
-      return left(Failure(
-          "Network connection error"));
+      return left(Failure("Network connection error"));
     }
-    print('%%%%%%%%%%%%%%%%${e.toString()}');
-
-    return left(Failure(e.toString()));
+    
+    final errorMessage = e.toString()
+        .replaceAll('Exception:', '')
+        .replaceAll('Failed to perform POST request:', '')
+        .replaceAll('[', '')
+        .replaceAll(']', '')
+        .trim();
+    
+    return left(Failure(errorMessage));
   }
 }
 
@@ -53,7 +55,7 @@ Future<T> executeTryAndCatchForDataLayer<T>(Future<T> Function() action) async {
   } on FormatException {
     rethrow;
   } catch (e) {
-   throw Exception(e.toString());
+   rethrow;
   }
 }
 

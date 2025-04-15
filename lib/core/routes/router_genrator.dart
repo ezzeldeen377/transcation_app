@@ -73,8 +73,10 @@ class TranscationRouter {
       case RouteNames.verification:
         return PageRouteBuilder(
           pageBuilder: (context, animation, secondaryAnimation) => BlocProvider(
-            create: (context) => getIt<VerificationCubit>()
-              ..setEmail(settings.arguments as String),
+            create: (context) {
+              final args=settings.arguments as Map<String,dynamic>;
+              return  getIt<VerificationCubit>()
+              ..setEmailPassword(args['email'],args['password']);},
             child: const VerificationScreen(),
           ),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {

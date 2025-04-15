@@ -13,13 +13,16 @@ class SecureStorageHelper {
   static const String _ratingListKey = 'ratingList';
   static const String _accessTokenKey = 'accessToken';
   static const String _expireDateKey = 'expireData';
+  static const String _isLogin = 'isLogin';
+  static const String _password = 'password';
+  static const String _email = 'email';
 
   static final _storage = FlutterSecureStorage(
     aOptions: _getAndroidOptions(),
   );
   // Save user data
   static Future<Either<String, void>> saveUserData(
-      String token, int expireAt, User user) async {
+      String token, int expireAt, User user,String email,String password, bool isLogin) async {
     try {
       await _storage.write(
         key: _userKey,
@@ -31,12 +34,31 @@ class SecureStorageHelper {
         value:
             DateTime.now().add(Duration(seconds: expireAt)).toIso8601String(),
       );
+      await _storage.write(key: _isLogin, value: isLogin.toString());
+      await _storage.write(key: _email, value: email);
+      await _storage.write(key: _password, value: password);
       return const Right(null);
     } catch (e) {
       return Left(e.toString());
     }
   }
+  // Get email from storage
+  static Future<String?> getEmail() async {
+    final email = await _storage.read(key: _email);
+    return email;
+  }
 
+  // Get password from storage  
+  static Future<String?> getPassword() async {
+    final password = await _storage.read(key: _password);
+    return password;
+  }
+
+  // Get login status from storage
+  static Future<bool> getIsLogin() async {
+    final isLogin = await _storage.read(key: _isLogin);
+    return bool.tryParse(isLogin??'false')??false; // Return false if isLogin is null or not a boolean
+  }
   // Get user data
   static Future<Either<String, User?>> getUserData() async {
     try {
@@ -80,6 +102,9 @@ class SecureStorageHelper {
       await _storage.delete(key: _userKey);
       await _storage.delete(key: _accessTokenKey);
       await _storage.delete(key: _expireDateKey);
+      await _storage.delete(key: _isLogin);
+      await _storage.delete(key: _email);
+      await _storage.delete(key: _password);
       return const Right(null);
     } catch (e) {
       return Left(e.toString());

@@ -12,8 +12,8 @@ class CustomSignInListener extends StatelessWidget {
   final Widget child;
   const CustomSignInListener({super.key, required this.child});
 
-  Future<void> _navigateToHome(BuildContext context, User user,String token,int expireAt) async {
-     await context.read<AppUserCubit>().saveUserData(user,token,expireAt);
+  Future<void> _navigateToHome(BuildContext context, User user,String token,int expireAt,String email,String password,bool isLogin) async {
+     await context.read<AppUserCubit>().saveUserData(user,token,expireAt,email,password,isLogin);
     Navigator.pushNamedAndRemoveUntil(
       context,
       RouteNames.initial,
@@ -32,7 +32,7 @@ class CustomSignInListener extends StatelessWidget {
 print('User: ${state.userModel}');
 print('Access Token: ${state.accessToken}');
 print('Expires At: ${state.expiresAt}');
-          _navigateToHome(context, state.userModel!,state.accessToken!,state.expiresAt!);
+          _navigateToHome(context, state.userModel!,state.accessToken!,state.expiresAt!,signInCubit.emailController.text.trim(),signInCubit.passwordController.text.trim(),true);
         } else if (state.isFailure) {
           showSnackBar(context, state.erorrMessage ?? 'Something went wrong');
         }

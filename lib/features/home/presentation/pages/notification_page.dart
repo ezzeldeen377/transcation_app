@@ -16,26 +16,23 @@ class NotificationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColor.darkGray,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(60.h),
-        child: AppBar(
-          backgroundColor: AppColor.darkGray,
-          elevation: 0,
-          title: Text(
-            'الإشعارات',
-            style: TextStyle(
-              color: AppColor.brandHighlight,
-              fontSize: 20.sp,
-              fontWeight: FontWeight.bold,
-            ),
+      appBar: AppBar(
+        backgroundColor: AppColor.darkGray,
+        elevation: 0,
+        title: Text(
+          'الإشعارات',
+          style: TextStyle(
+            color: AppColor.brandHighlight,
+            fontSize: 20.sp,
+            fontWeight: FontWeight.bold,
           ),
-          leading: IconButton(
-            icon: Icon(
-              Icons.arrow_back_ios,
-              color: AppColor.brandHighlight,
-            ),
-            onPressed: () => Navigator.pop(context),
+        ),surfaceTintColor: AppColor.darkGray,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: AppColor.brandHighlight,
           ),
+          onPressed: () => Navigator.pop(context),
         ),
       ),
       body: Directionality(

@@ -24,6 +24,8 @@ class VerificationState {
   final User? user;
    final String? accessToken;
   final int? expiresAt;
+  final String? email;
+  final String? password;
 
   const VerificationState({
     this.status = VerificationStatus.initial,
@@ -31,6 +33,8 @@ class VerificationState {
     this.user,
     this.accessToken,
     this.expiresAt,
+    this.email,
+    this.password,
   });
 
   VerificationState copyWith({
@@ -39,6 +43,8 @@ class VerificationState {
     User? user,
     String? accessToken,
     int? expiresAt,
+    String? email,
+    String? password,
   }) {
     return VerificationState(
       status: status ?? this.status,
@@ -46,12 +52,14 @@ class VerificationState {
       user: user ?? this.user,
       accessToken: accessToken ?? this.accessToken,
       expiresAt: expiresAt ?? this.expiresAt,
+      email: email ?? this.email,
+      password: password ?? this.password,
     );
   }
 
   @override
   String toString() {
-    return 'VerificationState(status: $status, errorMessage: $errorMessage, user: $user, accessToken: $accessToken, expiresAt: $expiresAt)';
+    return 'VerificationState(status: $status, errorMessage: $errorMessage, user: $user, accessToken: $accessToken, expiresAt: $expiresAt, email: $email, password: $password)';
   }
 
  

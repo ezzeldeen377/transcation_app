@@ -27,7 +27,7 @@ class VerificationScreen extends StatelessWidget {
           showSnackBar(context, state.errorMessage!);
         }
         if (state.isVerified) {
-          context.read<AppUserCubit>().saveUserData(state.user!, state.accessToken!, state.expiresAt!);
+          context.read<AppUserCubit>().saveUserData(state.user!, state.accessToken!, state.expiresAt!, state.email!, state.password!, true);
           showDialog(
             context: context,
             barrierDismissible: false,

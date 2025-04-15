@@ -14,12 +14,15 @@ class HttpServices {
 
   static HttpServices get instance => _instance;
 
-  Future<Map<String, dynamic>> get(String endPoint, {Map<String, String>? headers}) async {
+  Future<Map<String, dynamic>> get(String endPoint,
+      {Map<String, String>? headers}) async {
     try {
-      final response = await http.get(
-        Uri.parse(ApiConstant.baseUrl + endPoint),
-        headers: headers ?? {'Content-Type': 'application/json'},
-      ).timeout(_timeout);
+      final response = await http
+          .get(
+            Uri.parse(ApiConstant.baseUrl + endPoint),
+            headers: headers ?? {'Content-Type': 'application/json'},
+          )
+          .timeout(_timeout);
 
       return _processResponse(response);
     } catch (e) {
@@ -33,11 +36,13 @@ class HttpServices {
     dynamic body,
   }) async {
     try {
-      final response = await http.post(
-        Uri.parse(ApiConstant.baseUrl + endPoint),
-        headers: headers ?? {'Content-Type': 'application/json'},
-        body: body != null ? json.encode(body) : null,
-      ).timeout(_timeout);
+      final response = await http
+          .post(
+            Uri.parse(ApiConstant.baseUrl + endPoint),
+            headers: headers ?? {'Content-Type': 'application/json'},
+            body: body != null ? json.encode(body) : null,
+          )
+          .timeout(_timeout);
 
       return _processResponse(response);
     } catch (e) {
@@ -46,12 +51,28 @@ class HttpServices {
   }
 
   Map<String, dynamic> _processResponse(http.Response response) {
-    if (response.statusCode >= 200 && response.statusCode < 300) {
-      if (response.body.isEmpty) return {};
-      return json.decode(response.body) as Map<String, dynamic>;
-    } else {
-      print('HTTP Error: ${response.statusCode}\nBody: ${response.body}');
-      throw Exception('Server Error: ${(json.decode(response.body) as Map<String, dynamic>)['email']}');
+    try {
+      final body = json.decode(response.body);
+
+      if (body is Map<String, dynamic>) {
+        if (response.statusCode >= 200 && response.statusCode < 300) {
+          if (body.isEmpty) return {};
+          return body;
+        } else if (response.statusCode == 401) {
+          throw Exception(body['error'] ?? "Unauthorized access");
+        } else {
+          print('HTTP Error: ${response.statusCode}\nBody: ${response.body}');
+          throw Exception(body['error'] ?? "An error occurred");
+        }
+      } else {
+        throw Exception(
+            "Unexpected server response format. Please try again later.");
+      }
+    } catch (e) {
+      if (e is Exception) {
+        rethrow;
+      }
+      throw Exception("An unexpected error occurred");
     }
   }
 }
