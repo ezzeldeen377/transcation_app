@@ -17,4 +17,5 @@ class DepositCubit extends Cubit<DepositState> with MountedCubit<DepositState> {
           (r) => emit(state.copyWith(status: DepositStatus.success, balance: r.balance)), 
     );
   }
+  
 }

@@ -2,7 +2,7 @@ import 'package:transcation_app/features/home/data/models/plans_response.dart';
 
 class ActivePlansResponse {
   final String message;
-  final List<ActivePlan> plans;
+  final List<ActivePlan>? plans;
   final double balance;
   final double totalProfit;
 
@@ -15,17 +15,20 @@ class ActivePlansResponse {
 
   factory ActivePlansResponse.fromMap(Map<String, dynamic> map) {
     return ActivePlansResponse(
-      message: map['message'],
-      plans: List<ActivePlan>.from(map['plans'].map((x) => ActivePlan.fromMap(x))),
-      balance: (map['balance'] as num).toDouble(),
-      totalProfit: (map['total_profit'] as num).toDouble(),
+      message: map['message'] ?? '',
+      plans: map['plans'] != null 
+          ? List<ActivePlan>.from(
+              (map['plans'] as List<dynamic>).map((x) => ActivePlan.fromMap(x)))
+          : [],
+      balance: ((map['balance'] as num?) ?? 0).toDouble(),
+      totalProfit: ((map['total_profit'] as num?) ?? 0).toDouble(),
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
       'message': message,
-      'plans': plans.map((x) => x.toMap()).toList(),
+      'plans': plans?.map((x) => x.toMap()).toList() ?? [],
       'balance': balance,
       'total_profit': totalProfit,
     };

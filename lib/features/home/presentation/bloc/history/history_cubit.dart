@@ -21,7 +21,7 @@ class HistoryCubit extends Cubit<HistoryState> {
       (history) async {
         // Fetch plan details for each subscription
         final subscriptionsWithDetails = await Future.wait(
-          history.subscriptions.map((subscription) async {
+          (history.subscriptions ?? []).map((subscription) async {
             final planResult = await _repository.getPlanReuslt(
               token,
               subscription.planId.toString(),

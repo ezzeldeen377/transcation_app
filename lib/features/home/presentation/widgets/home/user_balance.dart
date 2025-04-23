@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:transcation_app/core/theme/app_color.dart';
-import 'package:transcation_app/features/home/presentation/bloc/home/home_cubit_cubit.dart';
 
 class UserBalance extends StatelessWidget {
   const UserBalance({super.key, this.pageController, required this.balance});

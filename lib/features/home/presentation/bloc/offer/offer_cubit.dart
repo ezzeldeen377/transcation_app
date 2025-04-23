@@ -26,7 +26,7 @@ class OfferCubit extends Cubit<OfferState> with MountedCubit<OfferState>  {
   emit(state.copyWith(status: OfferStatus.loading) );
   final response = await repository.getUserActivePlan(token);
   response.fold(
-    (failure) => emit(state.copyWith(status: OfferStatus.failure, message: failure.message)),
+    (failure) => emit(state.copyWith(status: OfferStatus.failure, message: null)),
     (success) => emit(state.copyWith(status: OfferStatus.successGetActiveUserPlans, userActivePlans: success.plans)),
   );
 }

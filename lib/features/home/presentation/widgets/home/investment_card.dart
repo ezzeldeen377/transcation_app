@@ -6,7 +6,6 @@ import 'package:transcation_app/core/helpers/navigator.dart';
 import 'package:transcation_app/core/routes/routes.dart';
 import 'package:transcation_app/core/theme/app_color.dart';
 import 'package:transcation_app/features/home/data/models/active_plans_response.dart';
-import 'package:transcation_app/features/home/data/models/plans_response.dart';
 import 'package:transcation_app/features/home/presentation/bloc/home/home_cubit_cubit.dart';
 import 'package:transcation_app/features/home/presentation/bloc/offer/offer_cubit.dart';
 
@@ -209,83 +208,9 @@ class InvestmentCard extends StatelessWidget {
     );
   }
 
-  Widget _buildBenefitsList() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Plan Benefits',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 16.sp,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        SizedBox(height: 8.h),
-      ],
-    );
-  }
 
-  Widget _buildBenefitChip(String benefit) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.15),
-        borderRadius: BorderRadius.circular(20.r),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            Icons.check_circle_outline,
-            color: Colors.white,
-            size: 14.sp,
-          ),
-          SizedBox(width: 4.w),
-          Text(
-            benefit,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 12.sp,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
-  Widget _buildDescription() {
-    return Text(
-      activePlan.plan.description,
-      style: TextStyle(
-        color: Colors.white70,
-        fontSize: 13.sp,
-      ),
-    );
-  }
 
-  Widget _buildBenefitItem(String benefit) {
-    return Padding(
-      padding: EdgeInsets.only(bottom: 8.h),
-      child: Row(
-        children: [
-          Icon(
-            Icons.check_circle_outline,
-            color: Colors.white,
-            size: 16.sp,
-          ),
-          SizedBox(width: 8.w),
-          Text(
-            benefit,
-            style: TextStyle(
-              color: Colors.white70,
-              fontSize: 13.sp,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
   void _showConfirmationBottomSheet(BuildContext context) {
     showModalBottomSheet(

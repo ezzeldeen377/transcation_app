@@ -6,9 +6,8 @@ import 'package:transcation_app/core/common/cubit/app_user/app_user_cubit.dart';
 import 'package:transcation_app/core/helpers/spacer.dart';
 import 'package:transcation_app/core/routes/routes.dart';
 import 'package:transcation_app/core/theme/app_color.dart';
+import 'package:transcation_app/core/utils/show_snack_bar.dart';
 import 'package:transcation_app/features/home/data/models/active_plans_response.dart';
-import 'package:transcation_app/features/home/data/models/plans_response.dart';
-import 'package:transcation_app/features/home/presentation/bloc/home/home_cubit_cubit.dart';
 import 'package:transcation_app/features/home/presentation/bloc/offer/offer_cubit.dart';
 import 'package:transcation_app/features/home/presentation/widgets/home/investment_card.dart';
 
@@ -25,6 +24,9 @@ class _OfferPageState extends State<OfferPage> {
   Widget build(BuildContext context) {
     return BlocListener<OfferCubit, OfferState>(
       listener: (context, state) {
+          if(state.isFailure){
+         if(state.message!=null) showSnackBar(context,state.message!);
+        }
         if (state.isSubscribePlan) {
           context.read<OfferCubit>().getUserActivePlan(
               context.read<AppUserCubit>().state.accessToken!);

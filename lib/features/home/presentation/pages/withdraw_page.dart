@@ -11,7 +11,7 @@ import 'package:transcation_app/core/utils/custom_text_form_field.dart';
 import 'package:transcation_app/features/home/presentation/bloc/withdraw/withdraw_cubit.dart';
 
 class WithdrawPage extends StatefulWidget {
-  const WithdrawPage({Key? key}) : super(key: key);
+  const WithdrawPage({super.key});
 
   @override
   State<WithdrawPage> createState() => _WithdrawPageState();

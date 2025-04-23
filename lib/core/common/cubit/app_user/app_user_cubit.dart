@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:transcation_app/core/common/cubit/app_user/app_user_state.dart';
+import 'package:transcation_app/core/helpers/notification_helper.dart';
 import 'package:transcation_app/core/helpers/secure_storage_helper.dart';
 import 'package:transcation_app/features/authentication/data/model/login_response.dart';
 import 'package:transcation_app/features/authentication/data/repositories/auth_repository.dart';
@@ -16,7 +17,20 @@ class AppUserCubit extends Cubit<AppUserState> {
   AppUserCubit({required this.authRepository})
       : super(AppUserState(state: AppUserStates.initial));
   static final LocalAuthentication localAuth = LocalAuthentication();
-
+   void deleteAccount(String token) async {
+    emit(state.copyWith(state: AppUserStates.loading));
+    final result = await authRepository.deleteAccount(token:token);
+    result.fold(
+      (failure) => emit(state.copyWith(
+        state: AppUserStates.failure,
+        errorMessage: failure.message,
+      )),
+      (success) => emit(state.copyWith(
+        state: AppUserStates.successDeleteAccount,
+        errorMessage: success["message"],
+      )),
+    );
+  }
   Future<void> saveUserData(User user, String token, int expireAt, String email,
       String password, bool isLogin) async {
     final res = await SecureStorageHelper.saveUserData(
@@ -44,7 +58,7 @@ class AppUserCubit extends Cubit<AppUserState> {
     final user = await SecureStorageHelper.getUserDataDirect();
 
     print("🔑 Token: ${token != null ? 'exists' : 'null'}");
-    print("🔑 Token: ${token}");
+    print("🔑 Token: $token");
     print("⏱️ Expiry: ${expiry != null ? expiry.toString() : 'null'}");
 
     if (token != null && expiry != null && user != null) {
@@ -135,11 +149,13 @@ class AppUserCubit extends Cubit<AppUserState> {
               ));
               return false;
             }
-          }
-          emit(state.copyWith(
+          }else {
+
+            emit(state.copyWith(
             state: AppUserStates.failure,
             errorMessage: "هذا الجهاز لا يدعم المصادقة البيومترية",
           ));
+          }
         }
         print("تمت المصادقة...");
         var email = await SecureStorageHelper.getEmail();
@@ -147,6 +163,10 @@ class AppUserCubit extends Cubit<AppUserState> {
         var password = await SecureStorageHelper.getPassword();
         await login(email: email!, password: password!);
         // var res = await AuthController.login(email!, password!);
+               final deviceToken=await NotificationHelper.getFCMToken();
+    if(deviceToken!=null) {
+     await NotificationHelper.submitDeviceTokenToBackend(deviceToken);
+    }
          return true;
       }
       emit(state.copyWith(
@@ -188,6 +208,7 @@ class AppUserCubit extends Cubit<AppUserState> {
           password,
           true,
         );
+    
         emit(state.copyWith(
           state: AppUserStates.loggedIn,
           user: loginResponse.user,

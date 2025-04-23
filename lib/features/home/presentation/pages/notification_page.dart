@@ -5,10 +5,9 @@ import 'package:transcation_app/core/theme/app_color.dart';
 import 'package:transcation_app/features/home/presentation/bloc/home/home_cubit_cubit.dart';
 import 'package:transcation_app/features/home/presentation/widgets/notification_item.dart';
 import 'package:timeago/timeago.dart' as timeago;
-import 'package:flutter_localizations/flutter_localizations.dart';
 
 class NotificationPage extends StatelessWidget {
-  const NotificationPage({Key? key}) : super(key: key);
+  const NotificationPage({super.key});
 
   
 

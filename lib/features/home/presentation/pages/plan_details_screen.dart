@@ -5,10 +5,8 @@ import 'package:lottie/lottie.dart';
 import 'package:transcation_app/core/theme/app_color.dart';
 import 'package:transcation_app/core/utils/custom_container.dart';
 import 'package:transcation_app/features/home/data/models/active_plans_response.dart';
-import 'package:transcation_app/features/home/data/models/plans_response.dart';
 import 'package:transcation_app/features/home/presentation/bloc/my_plans/my_plans_cubit.dart';
 import 'package:transcation_app/features/home/presentation/bloc/my_plans/my_plans_state.dart';
-import 'package:transcation_app/features/home/presentation/pages/profit_page.dart';
 
 class PlanDetailsScreen extends StatefulWidget {
   final ActivePlan activePlan;
@@ -33,10 +31,6 @@ class _PlanDetailsScreenState extends State<PlanDetailsScreen>
     _calculateProgress();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
 
   void _calculateProgress() {
     startTime = DateTime.parse(

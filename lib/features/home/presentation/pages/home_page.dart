@@ -1,24 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:transcation_app/core/common/cubit/app_user/app_user_cubit.dart';
 import 'package:transcation_app/core/helpers/navigator.dart';
-import 'package:transcation_app/core/helpers/spacer.dart';
 import 'package:transcation_app/core/routes/routes.dart';
 import 'package:transcation_app/core/theme/app_color.dart';
 import 'package:flutter/services.dart';
 import 'package:transcation_app/core/theme/text_styles.dart';
 import 'package:transcation_app/core/utils/custom_container.dart';
+import 'package:transcation_app/core/utils/show_snack_bar.dart';
 import 'package:transcation_app/features/home/presentation/bloc/home/home_cubit_cubit.dart';
-import 'package:transcation_app/features/home/presentation/pages/notification_page.dart';
-import 'package:transcation_app/features/home/presentation/pages/menu_screen.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:transcation_app/features/home/presentation/widgets/home/custom_app_bar.dart';
 import 'package:transcation_app/features/home/presentation/widgets/home/investment_plans_carousel.dart';
 import 'package:transcation_app/features/home/presentation/widgets/home/user_balance.dart';
 import 'package:transcation_app/features/home/presentation/widgets/profit_card.dart';
-import 'package:transcation_app/features/home/presentation/widgets/home/investment_card.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:collection/collection.dart';
 
@@ -31,12 +25,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<HomeCubit, HomeState>(
       listener: (context, state) {
+        if(state.isFailure){
+         if(state.message!=null) showSnackBar(context,state.message!);
+        }
         if (state.isSubscribePlan) {
           context.read<HomeCubit>().getUserActivePlan(
               context.read<AppUserCubit>().state.accessToken!);
@@ -112,7 +108,7 @@ class _HomePageState extends State<HomePage> {
       },
       child: SafeArea(
         child: Scaffold(
-          appBar:AppBar(
+          appBar: AppBar(
       automaticallyImplyLeading: false,
       backgroundColor: AppColor.darkGray,
       elevation: 4,
@@ -190,10 +186,20 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     ),
-          body: SingleChildScrollView(
-            child: Column(
-              children: [
-                // Remove ColorList from _HomePageState as it's no longer needed
+          body: RefreshIndicator(
+            color: AppColor.brandHighlight,
+            backgroundColor: AppColor.darkGray,
+            onRefresh: () async {
+              // Refresh data
+              final token = context.read<AppUserCubit>().state.accessToken!;
+              await context.read<HomeCubit>().getUserProfile(token:token);
+             
+            },
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: Column(
+                children: [
+                  // Remove ColorList from _HomePageState as it's no longer needed
         
                 // In the build method, replace the BlocBuilder with:
                 ProfitCard(),
@@ -281,12 +287,15 @@ class _HomePageState extends State<HomePage> {
                               ),
                             );
                           }
-        
-                          final lastDeposit = transactions.deposits.firstOrNull;
-                          final lastWithdrawal =
-                              transactions.withdrawals.firstOrNull;
-                          final lastSubscription =
-                              transactions.subscriptions.firstOrNull;
+
+                          // Add null checks with default empty lists
+                          final deposits = transactions.deposits ?? [];
+                          final withdrawals = transactions.withdrawals ?? [];
+                          final subscriptions = transactions.subscriptions ?? [];
+
+                          final lastDeposit = deposits.firstOrNull;
+                          final lastWithdrawal = withdrawals.firstOrNull;
+                          final lastSubscription = subscriptions.firstOrNull;
                           // Get plan details for the last subscription
                           final lastPlanDetails = lastSubscription != null
                               ? state.planDetails![lastSubscription.planId]
@@ -365,7 +374,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-    );
+     ) );
   }
 
   Widget _buildActionButton(

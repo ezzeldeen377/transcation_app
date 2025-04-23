@@ -8,6 +8,7 @@ class ApiConstant {
   static const String resendVerificationCodeEndPoint =
       'api/auth/resendVerificationCode';
   static const String refreshTokenEndPoint = 'api/auth/refresh';
+  static const String deleteAccountEndPoint = 'api/auth/delete';
 
   static const String plansEndPoint = 'api/plans';
   static const String offersEndPoint = 'api/getoffers';
@@ -18,4 +19,11 @@ class ApiConstant {
   static const String withdrawEndPoint = 'api/withdraw';
   static const String lastTransactionsEndPoint = 'api/last-transactions';
   static const String planResultEndPoint = 'api/plan-result';
+
+
+
+  static const String deviceTokenEndPoint = 'api/token';
+
+static const String sendNotificationEndPoint = "/api/send-notification";  // adjust path as needed
+
 }

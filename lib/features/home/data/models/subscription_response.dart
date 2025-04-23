@@ -1,6 +1,6 @@
 class SubscriptionResponse {
-  final String message;
-  final SubscriptedPlan userPlan;
+  final String? message;
+  final SubscriptedPlan? userPlan;
 
   SubscriptionResponse({
     required this.message,
@@ -10,14 +10,16 @@ class SubscriptionResponse {
   factory SubscriptionResponse.fromMap(Map<String, dynamic> json) {
     return SubscriptionResponse(
       message: json['message'],
-      userPlan: SubscriptedPlan.fromMap(json['user_plan']),
+      userPlan: json['user_plan'] != null 
+          ? SubscriptedPlan.fromMap(json['user_plan'])
+          : null,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'message': message,
-      'user_plan': userPlan.toJson(),
+      'user_plan': userPlan?.toJson(),
     };
   }
 }

@@ -1,5 +1,4 @@
 
-import 'dart:math';
 
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
@@ -19,6 +18,7 @@ abstract interface class AuthRepository {
    Future<Either<Failure,LoginResponse>> verifyCode(String email, String code);
   Future<Either<Failure,String>> resendVerifyCode(String email);
     Future<Either<Failure, LoginResponse>>refreshToken({required String token});
+    Future<Either<Failure, Map<String,dynamic>>>deleteAccount({required String token});
 
 }
 
@@ -34,14 +34,14 @@ class AuthRepositoryImpl implements AuthRepository {
     required String name,
     required String phone,
   }) async {
-    return await executeTryAndCatchForRepository(() async {
+    return  executeTryAndCatchForRepository(() async {
       return await authDataSource.register(
         email: email,
         password: password,
         name: name,
         phone: phone
       );
- 
+      
     });
   }
 
@@ -90,6 +90,14 @@ class AuthRepositoryImpl implements AuthRepository {
     return executeTryAndCatchForRepository(() async {
       final response= await authDataSource.refreshToken(token: token);
       return LoginResponse.fromMap(response);
+    });
+  }
+  
+  @override
+  Future<Either<Failure, Map<String,dynamic>>> deleteAccount({required String token}) {
+    return executeTryAndCatchForRepository(() async {
+      final response= await authDataSource.deleteAccount(token: token);
+      return response; 
     });
   }
 

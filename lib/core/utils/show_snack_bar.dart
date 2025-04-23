@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:transcation_app/core/theme/app_color.dart';
 import 'package:transcation_app/core/theme/text_styles.dart';
+import 'dart:io';
 
 showSnackBar(BuildContext context, String content) {
   return ScaffoldMessenger.of(context)
@@ -88,7 +89,7 @@ Future<bool> onWillPop(BuildContext context) async {
                 ),
               ),
               TextButton(
-                onPressed: () => Navigator.of(context).pop(true),
+                onPressed: () => exit(0), // Exit the app completely
                 child: Text(
                   'نعم',
                   style: TextStyles.fontCircularSpotify14BlackMedium.copyWith(

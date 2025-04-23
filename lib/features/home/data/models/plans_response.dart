@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 
 class PlansResponse {
   final String? message;
-  final List<Plan> plans;
+  final List<Plan>? plans;
   PlansResponse({
     this.message,
     required this.plans,
@@ -24,16 +24,24 @@ class PlansResponse {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'message': message,
-      'plans': plans.map((x) => x.toMap()).toList(),
+      'plans': plans?.map((x) => x.toMap()).toList(),
     };
   }
 
   factory PlansResponse.fromMap(Map<String, dynamic> map) {
     return PlansResponse(
       message: map['message'] != null ? map['message'] as String : null,
-      plans: List<Plan>.from((map['plans'] as List<dynamic>).map<Plan>((x) => Plan.fromMap(x as Map<String,dynamic>),),),
+      plans: map['plans'] != null 
+          ? List<Plan>.from(
+              (map['plans'] as List<dynamic>).map<Plan>(
+                (x) => Plan.fromMap(x as Map<String, dynamic>),
+              ),
+            )
+          : [],
     );
   }
+
+  
 
   String toJson() => json.encode(toMap());
 
@@ -58,7 +66,7 @@ class PlansResponse {
 
 class OffersResponse {
   final String? message;
-  final List<Plan> offers;
+  final List<Plan>? offers;
   OffersResponse({
     this.message,
     required this.offers,
@@ -77,16 +85,26 @@ class OffersResponse {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'message': message,
-      'offers': offers.map((x) => x.toMap()).toList(),
+      'offers': offers?.map((x) => x.toMap()).toList(),
     };
   }
 
   factory OffersResponse.fromMap(Map<String, dynamic> map) {
     return OffersResponse(
       message: map['message'] != null ? map['message'] as String : null,
-      offers: List<Plan>.from((map['offers'] as List<dynamic>).map<Plan>((x) => Plan.fromMap(x as Map<String,dynamic>),),),
+      offers: map['offers'] != null 
+          ? List<Plan>.from(
+              (map['offers'] as List<dynamic>).map<Plan>(
+                (x) => Plan.fromMap(x as Map<String, dynamic>),
+              ),
+            )
+          : [],
     );
   }
+
+ 
+
+  
 
   String toJson() => json.encode(toMap());
 

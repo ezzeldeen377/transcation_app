@@ -7,7 +7,7 @@ import 'package:transcation_app/features/home/presentation/bloc/history/history_
 import 'package:transcation_app/features/home/presentation/bloc/history/history_state.dart';
 
 class HistoryPage extends StatelessWidget {
-  const HistoryPage({Key? key}) : super(key: key);
+  const HistoryPage({super.key});
 
   @override
   Widget build(BuildContext context) {

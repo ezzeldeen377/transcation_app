@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:transcation_app/core/utils/mounted_mixin.dart';
 import 'package:transcation_app/features/authentication/data/model/login_response.dart';
+import 'package:transcation_app/features/authentication/data/repositories/auth_repository.dart';
 import 'package:transcation_app/features/home/data/models/active_plans_response.dart';
 import 'package:transcation_app/features/home/data/models/notifcation_response.dart';
 import 'package:transcation_app/features/home/data/models/plans_response.dart';
@@ -31,7 +32,7 @@ class HomeCubit extends Cubit<HomeState> with MountedCubit<HomeState> {
     emit(state.copyWith(status: HomeStatus.loading));
     final response = await repository.getAllPlans();
     response.fold(
-      (failure) => emit(state.copyWith(status: HomeStatus.failure)),
+      (failure) => emit(state.copyWith(status: HomeStatus.initial)),
       (response) => emit(state.copyWith(
           status: HomeStatus.successGetUser, plans: response.plans)),
     );
@@ -53,7 +54,7 @@ class HomeCubit extends Cubit<HomeState> with MountedCubit<HomeState> {
     final response = await repository.getUserActivePlan(token);
     response.fold(
       (failure) => emit(
-          state.copyWith(status: HomeStatus.failure, message: failure.message)),
+          state.copyWith(status: HomeStatus.failure, message: null)),
       (success) => emit(state.copyWith(
           status: HomeStatus.successGetUserActivePlans,
           userActivePlans: success.plans)),
@@ -78,7 +79,7 @@ class HomeCubit extends Cubit<HomeState> with MountedCubit<HomeState> {
     final response = await repository.checkPlans(token);
     response.fold(
       (failure) => emit(
-          state.copyWith(status: HomeStatus.failure, message: failure.message)),
+          state.copyWith(status: HomeStatus.failure, message: null)),
       (success) => emit(state.copyWith(
         status: HomeStatus.successCheckPlans,
       )),
@@ -96,29 +97,46 @@ class HomeCubit extends Cubit<HomeState> with MountedCubit<HomeState> {
         message: failure.message,
       )),
       (history) async {
-        // Fetch plan details for each subscription
-        final subscriptionsWithDetails = await Future.wait(
-          history.subscriptions.map((subscription) async {
-            final planResult = await repository.getPlanReuslt(
-              token,
-              subscription.planId.toString(),
-            );
-            return planResult.fold(
-              (failure) => null,
-              (plan) => (subscription, plan),
-            );
-          }),
-        );
+        if (history.subscriptions==null) {
+          emit(state.copyWith(
+            status: HomeStatus.successGetTranscation,
+            history: history,
+            planDetails: {},
+          ));
+          return;
+        }
 
-        emit(state.copyWith(
-          status: HomeStatus.successGetTranscation,
-          history: history,
-          planDetails: Map.fromEntries(
-            subscriptionsWithDetails
-                .where((element) => element != null)
-                .map((e) => MapEntry(e!.$1.planId, e.$2)),
-          ),
-        ));
+        try {
+          final subscriptionsWithDetails = await Future.wait(
+            (history.subscriptions ?? []).map((subscription) async {
+              
+              final planResult = await repository.getPlanReuslt(
+                token,
+                subscription.planId.toString(),
+              );
+              return planResult.fold(
+                (failure) => null,
+                (plan) => (subscription, plan),
+              );
+            }),
+          );
+
+          final validDetails = subscriptionsWithDetails
+              .where((element) => element != null)
+              .map((e) => MapEntry(e!.$1.planId, e.$2))
+              .toList();
+
+          emit(state.copyWith(
+            status: HomeStatus.successGetTranscation,
+            history: history,
+            planDetails: Map.fromEntries(validDetails),
+          ));
+        } catch (e) {
+          emit(state.copyWith(
+            status: HomeStatus.failure,
+            message: 'Failed to fetch plan details',
+          ));
+        }
       },
     );
   }
@@ -137,4 +155,5 @@ class HomeCubit extends Cubit<HomeState> with MountedCubit<HomeState> {
       )),
     );
   }
+ 
 }

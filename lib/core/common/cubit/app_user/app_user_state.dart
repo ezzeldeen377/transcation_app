@@ -17,7 +17,8 @@ enum AppUserStates {
   failureSaveData,
   clearUserData,
   loading,
-  updated
+  updated,
+  successDeleteAccount
 }
 
 extension AppUserStateExtension on AppUserState {
@@ -34,6 +35,7 @@ extension AppUserStateExtension on AppUserState {
   bool get isClearUserData => state == AppUserStates.clearUserData;
   bool get isLoading => state == AppUserStates.loading;
   bool get isUpdated => state == AppUserStates.updated;
+  bool get isSuccessDeleteAccount => state == AppUserStates.successDeleteAccount;
 }
 
 class AppUserState {

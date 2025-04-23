@@ -43,7 +43,6 @@ class HttpServices {
             body: body != null ? json.encode(body) : null,
           )
           .timeout(_timeout);
-
       return _processResponse(response);
     } catch (e) {
       throw Exception('Failed to perform POST request: ${e.toString()}');
@@ -51,28 +50,29 @@ class HttpServices {
   }
 
   Map<String, dynamic> _processResponse(http.Response response) {
-    try {
       final body = json.decode(response.body);
-
+      print('HTTP Response: ${response.statusCode}\nBody: $body  ${body}');
+      
       if (body is Map<String, dynamic>) {
         if (response.statusCode >= 200 && response.statusCode < 300) {
           if (body.isEmpty) return {};
           return body;
-        } else if (response.statusCode == 401) {
+         
+        } else if (response.statusCode == 422) {
+           throw Exception(body['error'] ??body['message']?? "empty values");
+          } else if (response.statusCode == 401) {
           throw Exception(body['error'] ?? "Unauthorized access");
         } else {
-          print('HTTP Error: ${response.statusCode}\nBody: ${response.body}');
           throw Exception(body['error'] ?? "An error occurred");
         }
       } else {
-        throw Exception(
+        if(body !is List){
+          return {};
+        }else {
+          throw Exception(
             "Unexpected server response format. Please try again later.");
+        }
       }
-    } catch (e) {
-      if (e is Exception) {
-        rethrow;
-      }
-      throw Exception("An unexpected error occurred");
-    }
+   
   }
 }

@@ -24,6 +24,7 @@ abstract class MainRepository {
   Future<Either<Failure, TransactionHistoryResponse>> getLastTranscations(
       String token);
   Future<Either<Failure, ActivePlan>> getPlanReuslt(String token,String planId);
+  Future<Either<Failure, Map<String,dynamic>>> updateDeviceToken(String token,String userIdentifer);
 }
 
 @Injectable(as: MainRepository)
@@ -112,6 +113,14 @@ class MainRepositoryImpl implements MainRepository {
     return executeTryAndCatchForRepository(() async {
       final response = await dataSource.getPlanReuslt(token,planId);
       return ActivePlan.fromMap(response);
+    });
+  }
+  
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> updateDeviceToken(String token, String userIdentifer) {
+    return executeTryAndCatchForRepository(() async {
+      final response = await dataSource.updateDeviceToken(token,userIdentifer);
+      return response; 
     });
   }
 }

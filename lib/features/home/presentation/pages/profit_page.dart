@@ -7,7 +7,7 @@ import 'package:transcation_app/features/home/data/models/plans_response.dart';
 class ProfitPage extends StatelessWidget {
   final Plan plan;
 
-  const ProfitPage({Key? key, required this.plan}) : super(key: key);
+  const ProfitPage({super.key, required this.plan});
 
   @override
   Widget build(BuildContext context) {
@@ -40,11 +40,11 @@ class ProfitPage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildProfitRow('الاستثمار المبدئي', '${plan.price}'),
+                      _buildProfitRow('الاستثمار المبدئي', plan.price),
                       SizedBox(height: 8.h),
                       _buildProfitRow('العائد الحالي', '${plan.profitMargin}%'),
                       SizedBox(height: 8.h),
-                      _buildProfitRow('الربح المتوقع', '${_calculateEstimatedProfit()}'),
+                      _buildProfitRow('الربح المتوقع', _calculateEstimatedProfit()),
                     ],
                   ),
                 ),

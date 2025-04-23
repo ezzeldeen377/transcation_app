@@ -219,7 +219,7 @@ class User {
       other.isVerified == isVerified &&
       other.rememberToken == rememberToken &&
       other.createdAt == createdAt &&
-      other.updatedAt == updatedAt;
+      other.updatedAt == updatedAt&&
       other.userIdentifier == userIdentifier;  // Added to equality operator
   }
 

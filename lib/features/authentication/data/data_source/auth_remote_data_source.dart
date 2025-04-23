@@ -16,6 +16,7 @@ abstract interface class AuthRemoteDataSource {
   Future<Map<String, dynamic>> verifyCode(String email, String code);
   Future<String> resendVerifyCode(String email);
     Future<Map<String, dynamic>> refreshToken({required String token});
+    Future<Map<String, dynamic>> deleteAccount({required String token});
 
 
 }
@@ -98,6 +99,16 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     return executeTryAndCatchForDataLayer(() async {
       return await HttpServices.instance
          .post(ApiConstant.refreshTokenEndPoint, body: {
+        "token": token,
+      });
+    });
+  }
+  
+  @override
+  Future<Map<String, dynamic>> deleteAccount({required String token}) {
+    return executeTryAndCatchForDataLayer(() async {
+      return await HttpServices.instance
+        .post(ApiConstant.deleteAccountEndPoint, body: {
         "token": token,
       });
     });

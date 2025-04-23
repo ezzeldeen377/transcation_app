@@ -65,10 +65,10 @@ extension GetItInjectableX on _i174.GetIt {
         _i472.MainRepositoryImpl(dataSource: gh<_i416.MainRemoteDataSource>()));
     gh.factory<_i513.DepositCubit>(
         () => _i513.DepositCubit(gh<_i472.MainRepository>()));
-    gh.factory<_i56.WithdrawCubit>(
-        () => _i56.WithdrawCubit(gh<_i472.MainRepository>()));
     gh.factory<_i829.HistoryCubit>(
         () => _i829.HistoryCubit(gh<_i472.MainRepository>()));
+    gh.factory<_i56.WithdrawCubit>(
+        () => _i56.WithdrawCubit(gh<_i472.MainRepository>()));
     gh.factory<_i257.HomeCubit>(
         () => _i257.HomeCubit(gh<_i472.MainRepository>()));
     gh.factory<_i281.MyPlansCubit>(

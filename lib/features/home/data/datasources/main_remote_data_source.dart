@@ -14,6 +14,9 @@ abstract class MainRemoteDataSource {
   Future<Map<String, dynamic>> withdraw(Map<String, dynamic> withdrawData);
   Future<Map<String, dynamic>> getLastTranscations(String token);
   Future<Map<String, dynamic>> getPlanReuslt(String token, String planId);
+  Future<Map<String, dynamic>> updateDeviceToken(String token, String userIdentifer);
+
+  
 }
 
 @Injectable(as: MainRemoteDataSource)
@@ -105,6 +108,16 @@ class MainRemoteDataSourceImpl implements MainRemoteDataSource {
       return HttpServices.instance.post(ApiConstant.planResultEndPoint, body: {
         "token": token,
         "plan_id": planId,
+      });
+    });
+  }
+  
+  @override
+  Future<Map<String, dynamic>> updateDeviceToken(String token, String userIdentifer) {
+   return executeTryAndCatchForDataLayer(() {
+      return HttpServices.instance.post(ApiConstant.deviceTokenEndPoint, body: {
+        "token": token,
+        "user_identifier": userIdentifer,
       });
     });
   }

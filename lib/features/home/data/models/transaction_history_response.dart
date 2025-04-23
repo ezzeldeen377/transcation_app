@@ -2,9 +2,9 @@ import 'dart:convert';
 
 class TransactionHistoryResponse {
   final String message;
-  final List<Withdrawal> withdrawals;
-  final List<Deposit> deposits;
-  final List<Subscription> subscriptions;
+  final List<Withdrawal>? withdrawals;
+  final List<Deposit>? deposits;
+  final List<Subscription>? subscriptions;
 
   TransactionHistoryResponse({
     required this.message,
@@ -16,9 +16,9 @@ class TransactionHistoryResponse {
   Map<String, dynamic> toMap() {
     return {
       'message': message,
-      'withdrawals': withdrawals.map((x) => x.toMap()).toList(),
-      'deposits': deposits.map((x) => x.toMap()).toList(),
-      'subscriptions': subscriptions.map((x) => x.toMap()).toList(),
+      'withdrawals': withdrawals?.map((x) => x.toMap()).toList(),
+      'deposits': deposits?.map((x) => x.toMap()).toList(),
+      'subscriptions': subscriptions?.map((x) => x.toMap()).toList(),
     };
   }
 

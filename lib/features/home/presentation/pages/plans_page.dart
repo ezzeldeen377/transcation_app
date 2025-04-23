@@ -4,13 +4,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:transcation_app/core/routes/routes.dart';
 import 'package:transcation_app/core/theme/app_color.dart';
 import 'package:transcation_app/core/utils/custom_container.dart';
-import 'package:transcation_app/features/home/data/models/plans_response.dart';
 import 'package:transcation_app/features/home/presentation/bloc/my_plans/my_plans_cubit.dart';
 import 'package:transcation_app/features/home/presentation/bloc/my_plans/my_plans_state.dart';
-import 'package:transcation_app/features/home/presentation/pages/plan_details_screen.dart';
 
 class PlansPage extends StatefulWidget {
-  const PlansPage({Key? key}) : super(key: key);
+  const PlansPage({super.key});
 
   @override
   State<PlansPage> createState() => _PlansPageState();

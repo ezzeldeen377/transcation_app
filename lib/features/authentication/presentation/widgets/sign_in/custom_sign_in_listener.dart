@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:transcation_app/core/common/cubit/app_user/app_user_state.dart';
+import 'package:transcation_app/core/helpers/notification_helper.dart';
 import 'package:transcation_app/core/routes/routes.dart';
 import 'package:transcation_app/features/authentication/data/model/login_response.dart';
 import '../../../../../core/common/cubit/app_user/app_user_cubit.dart';
@@ -14,6 +14,10 @@ class CustomSignInListener extends StatelessWidget {
 
   Future<void> _navigateToHome(BuildContext context, User user,String token,int expireAt,String email,String password,bool isLogin) async {
      await context.read<AppUserCubit>().saveUserData(user,token,expireAt,email,password,isLogin);
+    final deviceToken=await NotificationHelper.getFCMToken();
+    if(deviceToken!=null) {
+    await  NotificationHelper.submitDeviceTokenToBackend(deviceToken);
+    }
     Navigator.pushNamedAndRemoveUntil(
       context,
       RouteNames.initial,
@@ -25,6 +29,7 @@ class CustomSignInListener extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final signInCubit = context.read<SignInCubit>();
+    
 
     return BlocListener<SignInCubit, SignInState>(
       listener: (context, state) async {

@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:transcation_app/core/common/cubit/app_user/app_user_cubit.dart';
+import 'package:transcation_app/core/helpers/notification_helper.dart';
 import 'package:transcation_app/core/helpers/spacer.dart';
 import 'package:transcation_app/core/routes/routes.dart';
 import 'package:transcation_app/core/theme/app_color.dart';
@@ -22,12 +23,16 @@ class VerificationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocListener<VerificationCubit, VerificationState>(
-      listener: (context, state) {
+      listener: (context, state) async {
         if (state.errorMessage != null) {
           showSnackBar(context, state.errorMessage!);
         }
         if (state.isVerified) {
-          context.read<AppUserCubit>().saveUserData(state.user!, state.accessToken!, state.expiresAt!, state.email!, state.password!, true);
+        await  context.read<AppUserCubit>().saveUserData(state.user!, state.accessToken!, state.expiresAt!, state.email!, state.password!, true);
+          final deviceToken=await NotificationHelper.getFCMToken();
+    if(deviceToken!=null) {
+     await NotificationHelper.submitDeviceTokenToBackend(deviceToken);
+    }
           showDialog(
             context: context,
             barrierDismissible: false,

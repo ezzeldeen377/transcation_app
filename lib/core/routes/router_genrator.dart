@@ -11,7 +11,6 @@ import 'package:transcation_app/features/authentication/presentation/screens/sig
 import 'package:transcation_app/features/authentication/presentation/screens/verification_screen.dart';
 import 'package:transcation_app/features/authentication/presentation/cubits/verification_cubit/verification_cubit.dart';
 import 'package:transcation_app/features/home/data/models/active_plans_response.dart';
-import 'package:transcation_app/features/home/data/models/plans_response.dart';
 import 'package:transcation_app/features/home/presentation/bloc/history/history_cubit.dart';
 import 'package:transcation_app/features/home/presentation/bloc/home/home_cubit_cubit.dart';
 import 'package:transcation_app/features/home/presentation/bloc/my_plans/my_plans_cubit.dart';

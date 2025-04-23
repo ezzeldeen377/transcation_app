@@ -60,14 +60,14 @@ class _InvestmentPlansCarouselState extends State<InvestmentPlansCarousel> {
               child: CarouselSlider.builder(
                 itemCount: plans.length,
                 options: CarouselOptions(
-                  aspectRatio: 16/15,  // Changed from 18/17 to give more height
+                  aspectRatio: 20/19,  // Changed from 18/17 to give more height
                   clipBehavior: Clip.none,
                   autoPlay: true,
                   enlargeCenterPage: true,
                   viewportFraction: 0.85,  // Increased from 0.8
                   autoPlayInterval: const Duration(seconds: 3),
                   autoPlayAnimationDuration: const Duration(milliseconds: 1500),
-                  enlargeFactor: 0.185,  // Increased from 0.2
+                  enlargeFactor: 0.16,  // Increased from 0.2
                   onPageChanged: (index, reason) {
                     setState(() {
                       _currentIndex = index;

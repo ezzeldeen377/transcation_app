@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:transcation_app/core/helpers/spacer.dart';
 import 'package:transcation_app/core/theme/app_color.dart';
 import 'package:transcation_app/core/utils/custom_text_form_field.dart';
+import 'package:transcation_app/core/utils/web_view.dart';
 
 import '../../../../../core/helpers/validators.dart';
 import '../../cubits/sign_up_cubit/sign_up_cubit.dart';
@@ -12,6 +13,7 @@ import '../../cubits/sign_up_cubit/sign_up_state.dart';
 
 class CustomeSignUpInputFields extends StatelessWidget {
   final Function onSubmit;
+  final String termsLink="https://www.termsfeed.com/live/dfa918d5-54c3-4730-bd02-544269a6c90f";
   const CustomeSignUpInputFields({
     super.key,
     required this.onSubmit,
@@ -207,8 +209,7 @@ class CustomeSignUpInputFields extends StatelessWidget {
                     ),
                     InkWell(
                       onTap: () {
-                        // Navigate to Terms & Conditions page if needed
-                      },
+customelaunchUrl(termsLink,context);                      },
                       child: Text(
                         "الشروط والأحكام",
                         style: TextStyle(

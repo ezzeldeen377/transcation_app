@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:transcation_app/core/common/cubit/app_user/app_user_cubit.dart';
 import 'package:transcation_app/core/common/cubit/app_user/app_user_state.dart';
 import 'package:transcation_app/core/di/di.dart';
 import 'package:transcation_app/core/helpers/navigator.dart';
-import 'package:transcation_app/core/helpers/secure_storage_helper.dart';
 import 'package:transcation_app/core/routes/routes.dart';
 import 'package:transcation_app/core/theme/app_color.dart';
-import 'package:transcation_app/core/theme/text_styles.dart';
 import 'package:transcation_app/core/utils/show_snack_bar.dart';
 import 'package:transcation_app/features/home/presentation/bloc/deposit/deposit_cubit.dart';
 import 'package:transcation_app/features/home/presentation/bloc/home/home_cubit_cubit.dart';
@@ -22,7 +19,7 @@ import 'package:transcation_app/features/home/presentation/pages/withdraw_page.d
 import 'package:transcation_app/features/home/presentation/pages/offer_page.dart';
 
 class InitialScreen extends StatefulWidget {
-  const InitialScreen({Key? key}) : super(key: key);
+  const InitialScreen({super.key});
 
   @override
   State<InitialScreen> createState() => _InitialScreenState();
