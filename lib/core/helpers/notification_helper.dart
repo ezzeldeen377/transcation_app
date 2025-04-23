@@ -205,19 +205,7 @@ class NotificationHelper {
   }
 
   static Future<String> getAccessToken() async {
-    final serviceAccountJson = {
-  "type": "service_account",
-  "project_id": "ethraawallet-a1ed5",
-  "private_key_id": "23b9823c6c4913828ffef3f646d4c2e14426a832",
-  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDl5jno/2pRM2QM\nZB+ZjbgZuOwDwk4BwslDO5EfiJ+R03GWUlFv+UcqZio8NQCkNkuUZtryhvLQn8Jp\npWEvHu7XAWvPYzYVqLDzwwqkMyswxdQYHkw7mDJQPepITSe1SFUP6VU4C7ObvU3g\nDw3jsF1+fFaoCAG1WA4on0sXPykkfnt7Vt6mhKeLK9i71yh6MEgRhenuPPnFb1RZ\nGLEISeQe9sJ3Np+TVEs4cdq3KeV7Kzj4LfNybNeeLEyvSmO5JiFtpGkqPtiVI/Tk\ncBnGFRWPnFO/FdzsZIuh73zx5j9hiaEtMaoKtW5gIN+VPtVmgiHOUMII1q4bC0+P\nIer+aM/nAgMBAAECggEAOyTLaSGsXE94QafQaVSINDXaoezu3I0b8ev1HcOsKXvY\nEPAEe2YJ5OJ7oxmPnK9LKlZ7pUEKXpl7Dmq5YcH3d+Cpt6SyWUgYnd1jc3Kmfdmn\nAr1opzw0VWhYSVlwCbceCwXgIpcAEeTVj/rPe+/3XX7nXDsTFXAd1F2Gl+hr0TMr\n5uUBeMoIr8wUiLvkLiQuM81RPh/cqDu4ol+WQMga/SlV5qvg/Ob+j4flfdcZuQbe\nYRXEuybmuPYoZYLpStF9BPBxKEQQgesTsxdXkdMp8zY6gMXLYNfR0L/On6os6GbY\n+pJEEblpordFYkW8hVnoHFxORzYnjpmVWvNg091rwQKBgQD9ntMZzAvDfalsrOka\nfmPDek6s9mVv8FZLNzkDZKdJgu9HYGSFonFeMud4AL81XqTCUzQ8Mdn/flSfqie/\nQpeodkYWjzef1VSDwDo1RkNmhU5o+Wjb1caLD9NT4iYHQWx+3N2A831EkoeOWd/J\nxSR43VazYIOHHVnZhp4DVKfIHwKBgQDoDmztRqZMbeKPspsD7m5+hHSvxELBSE6m\n5CnEGxDnLXxZn7EBc+Sidfw/w2e38cIs6YsmUszB5bSM1dU5Dnl15ISs+B38WRzq\ndT8F8mKpqNI7zva8HRE831dD+bEWYM0AxCmqlDDDZrMBxDi9Wy3129Wi+xnGpzBH\nBBIHf/6fOQKBgQD8OS+HwD0Sta4AvhU0m+1rQf9sU76djE7Fjq3MihU0Llr4iQxv\nOhW0sLsxxMxjrzP7bfPMyWcbh+9wui+9LeTVTIp3dQbElcvvGwTIZpAxLPHFxARc\nXEWPlrV7/rQDEzVrFQvUalJyF6doEklUyBJ1gOnwilND1BS/F/mdJluV0QKBgFby\nCLgCT461YTzr847OiBHZOQseItDecbGwLUHvzi5/6WZ/Icfkj1ablE6jvTm7WECR\npHRQc612jmZyO/irxrB4VYmlUT7aeK4UDfABeBwPR+3mxqWG0o2XNNAgPsyeqlDO\nLrpd2cNsuEdCKOwxvI+wtWPiZy76N2l0SfkLaPBpAoGAQWR442FwmCOl5o0b08Am\nxDtWk7WXEoml2NzqmIYZXUAxB9yDv21XOC/U6mkg1DfCS/s4WUuZrmnd0MSqJwS9\nNQGxPH/2rK2SNRgXI1fAT2hCRm6uNWKxIBvukjsTQfY2+X58WK0Lc3TON3wfXClO\naS5XxcqntmAQJtQqNU8ynm8=\n-----END PRIVATE KEY-----\n",
-  "client_email": "firebase-adminsdk-fbsvc@ethraawallet-a1ed5.iam.gserviceaccount.com",
-  "client_id": "101354279660916476520",
-  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-  "token_uri": "https://oauth2.googleapis.com/token",
-  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-fbsvc%40ethraawallet-a1ed5.iam.gserviceaccount.com",
-  "universe_domain": "googleapis.com"
-};
+    final serviceAccountJson ="";
 
     List<String> scopes = [
       "https://www.googleapis.com/auth/userinfo.email",
