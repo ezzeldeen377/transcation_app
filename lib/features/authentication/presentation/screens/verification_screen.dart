@@ -120,6 +120,39 @@ class VerificationScreen extends StatelessWidget {
               ),
               const CustomVerificationInputFields(),
               Padding(
+                padding: EdgeInsets.symmetric(horizontal: 35.w),
+                child: BlocBuilder<VerificationCubit, VerificationState>(
+                  builder: (context, state) {
+                    return Column(
+                      children: [
+                        Text(
+                          "إذا لم تجد رسالة التحقق، يرجى التحقق من مجلد البريد المزعج (Spam)",
+                          style: TextStyle(
+                            color: AppColor.white.withOpacity(0.7),
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w400,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        if (state.resendTimer > 0) ...[
+                          verticalSpace(8),
+                          Text(
+                            "يمكنك إعادة الإرسال بعد ${state.resendTimer} ثانية",
+                            style: TextStyle(
+                              color: AppColor.brandHighlight,
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ],
+                    );
+                  },
+                ),
+              ),
+              verticalSpace(5),
+              Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.w),
                 child: Column(
                   children: [
@@ -129,7 +162,7 @@ class VerificationScreen extends StatelessWidget {
                           buttonContent: state.isLoading
                               ? const CircularProgressIndicator(color: AppColor.white)
                               : Text(
-                                  "تحقق",
+                                "تحقق",
                                   style: TextStyle(
                                     fontSize: 18.sp,
                                     fontWeight: FontWeight.bold,
@@ -137,9 +170,11 @@ class VerificationScreen extends StatelessWidget {
                                   ),
                                 ),
                           animationIndex: 3,
-                          onTapButton: () {
-                            context.read<VerificationCubit>().verifyCode();
-                          },
+                          onTapButton: state.resendTimer > 0
+                              ? null
+                              : () {
+                                  context.read<VerificationCubit>().verifyCode();
+                                },
                         );
                       },
                     ),

@@ -60,6 +60,7 @@ class _WithdrawPageState extends State<WithdrawPage> {
         if (state.isSuccess) {
           // Replace the SnackBar in BlocListener with this AlertDialog
           showDialog(
+            barrierDismissible: false,
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
@@ -100,7 +101,18 @@ class _WithdrawPageState extends State<WithdrawPage> {
                     SizedBox(height: 24.h),
                     CustomButton(
                       onTapButton: () {
-                        Navigator.of(context).popAndPushNamed(RouteNames.historyPage);
+                        _amountController.clear();
+                        _westernUnionNameController.clear();
+                        _westernUnionPhoneController.clear();
+                        _swiftController.clear();
+                        _accountNumberController.clear();
+                        _bankNameController.clear();
+                        _cardNumberController.clear();
+                        _paypalEmailController.clear();
+                        _walletAddressController.clear();
+                        
+                        Navigator.of(context)
+                            .popAndPushNamed(RouteNames.historyPage);
                       },
                       buttonContent: Text("تم"),
                       animationIndex: 1,
@@ -209,14 +221,23 @@ class _WithdrawPageState extends State<WithdrawPage> {
           'بيتكوين، إيثريوم، تيثر',
         ),
         SizedBox(height: 32.h),
-        CustomButton(
-          onTapButton: () {
-            // Implement withdraw logic
-            _handleWithdraw();
+        BlocBuilder<WithdrawCubit, WithdrawState>(
+          builder: (context, state) {
+            return CustomButton(
+              onTapButton: state.isLoading?null:_handleWithdraw,
+              buttonContent: state.isLoading?CircularProgressIndicator(color: AppColor.white,): Text("سحب"),
+              animationIndex: 1,
+            );
           },
-          buttonContent: Text("سحب"),
-          animationIndex: 1,
         ),
+        verticalSpace(10),
+         CustomButton(
+              onTapButton: (){
+                Navigator.of(context).pushNamed(RouteNames.agentsPage);
+              },
+              buttonContent:Text( 'السحب عن طريق الوكلاء'),
+              animationIndex: 2,
+            )
       ],
     );
   }
@@ -357,12 +378,42 @@ class _WithdrawPageState extends State<WithdrawPage> {
       );
       return;
     }
+    // Validate amount format
+    if (_amountController.text.contains('.') || _amountController.text.contains(',')) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('يرجى إدخال رقم صحيح فقط'),
+          backgroundColor: AppColor.errorColor,
+        ),
+      );
+      return;
+    }
+
+    // Check if amount is greater than balance
+    if (int.tryParse(_amountController.text.trim()) == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('يرجى إدخال رقم صحيح'),
+          backgroundColor: AppColor.errorColor,
+        ),
+      );
+      return;
+    }
+
+    if (int.parse(_amountController.text.trim()) > context.read<WithdrawCubit>().state.balance!) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('الرصيد غير كافي'),
+          backgroundColor: AppColor.errorColor,
+        ),
+      );
+      return;
+    }
 
     if (_amountController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('يرجى إدخال المبلغ'
-),
+          content: Text('يرجى إدخال المبلغ'),
           backgroundColor: AppColor.errorColor,
         ),
       );
@@ -374,7 +425,7 @@ class _WithdrawPageState extends State<WithdrawPage> {
       'token': context.read<AppUserCubit>().state.accessToken,
     };
     switch (_selectedPaymentMethod) {
-      case 'Western Union':
+      case 'ويسترن يونيون':
         if (_westernUnionNameController.text.isEmpty ||
             _westernUnionPhoneController.text.isEmpty) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -391,7 +442,7 @@ class _WithdrawPageState extends State<WithdrawPage> {
         });
         break;
 
-      case 'Bank Transfer':
+      case 'تحويل بنكي':
         if (_accountNumberController.text.isEmpty ||
             _bankNameController.text.isEmpty) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -408,7 +459,7 @@ class _WithdrawPageState extends State<WithdrawPage> {
         });
         break;
 
-      case 'Credit Card':
+      case 'دفع محلي':
         if (_cardNumberController.text.isEmpty) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -423,7 +474,7 @@ class _WithdrawPageState extends State<WithdrawPage> {
         });
         break;
 
-      case 'Crypto':
+      case 'عملات رقمية':
         if (_walletAddressController.text.isEmpty) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(

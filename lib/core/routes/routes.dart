@@ -11,5 +11,7 @@ class RouteNames {
   static const menu = '/menu';
   static const planDetails = '/planDetails';
   static const historyPage = '/historyPage';
+  static const agentsPage = '/agentsPage';
+
 
 }

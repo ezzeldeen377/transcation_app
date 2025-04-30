@@ -11,9 +11,11 @@ import 'package:transcation_app/features/authentication/presentation/screens/sig
 import 'package:transcation_app/features/authentication/presentation/screens/verification_screen.dart';
 import 'package:transcation_app/features/authentication/presentation/cubits/verification_cubit/verification_cubit.dart';
 import 'package:transcation_app/features/home/data/models/active_plans_response.dart';
+import 'package:transcation_app/features/home/presentation/bloc/agent/agent_cubit.dart';
 import 'package:transcation_app/features/home/presentation/bloc/history/history_cubit.dart';
 import 'package:transcation_app/features/home/presentation/bloc/home/home_cubit_cubit.dart';
 import 'package:transcation_app/features/home/presentation/bloc/my_plans/my_plans_cubit.dart';
+import 'package:transcation_app/features/home/presentation/pages/agents_page.dart';
 import 'package:transcation_app/features/home/presentation/pages/history_page.dart';
 import 'package:transcation_app/features/home/presentation/pages/notification_page.dart';
 import 'package:transcation_app/features/home/presentation/pages/menu_screen.dart';
@@ -73,9 +75,10 @@ class TranscationRouter {
         return PageRouteBuilder(
           pageBuilder: (context, animation, secondaryAnimation) => BlocProvider(
             create: (context) {
-              final args=settings.arguments as Map<String,dynamic>;
-              return  getIt<VerificationCubit>()
-              ..setEmailPassword(args['email'],args['password']);},
+              final args = settings.arguments as Map<String, dynamic>;
+              return getIt<VerificationCubit>()
+                ..setEmailPassword(args['email'], args['password']);
+            },
             child: const VerificationScreen(),
           ),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
@@ -98,7 +101,9 @@ class TranscationRouter {
         final plan = settings.arguments as ActivePlan;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => getIt<MyPlansCubit>()..getPlanReuslt(context.read<AppUserCubit>().state.accessToken!, plan.plan.id.toString()),
+            create: (context) => getIt<MyPlansCubit>()
+              ..getPlanReuslt(context.read<AppUserCubit>().state.accessToken!,
+                  plan.plan.id.toString()),
             child: PlanDetailsScreen(activePlan: plan),
           ),
         );
@@ -110,6 +115,11 @@ class TranscationRouter {
                   context.read<AppUserCubit>().state.accessToken!),
             child: HistoryPage(),
           ),
+        );
+      case RouteNames.agentsPage:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+              create: (context) => getIt<AgentCubit>(), child: AgentsPage()),
         );
 
       default:

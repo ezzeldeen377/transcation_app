@@ -161,7 +161,7 @@ class _ProfitCardState extends State<ProfitCard> {
                       return Text(
                         '+${state.user?.profit ?? 0}',
                         style: TextStyle(
-                          color: AppColor.brandHighlight,
+                          color: AppColor.green,
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
                         ),

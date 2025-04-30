@@ -23,10 +23,11 @@ showSnackBar(BuildContext context, String content) {
     );
 }
 
-showCustomDialog(
-    BuildContext context, String content,String title, void Function() onPressed) {
+showCustomDialog(BuildContext context, String content, String title,
+    void Function() onPressed) {
   return showDialog<void>(
     context: context,
+    barrierDismissible: false,
     builder: (BuildContext context) {
       return AlertDialog(
         backgroundColor: AppColor.brandDark,
@@ -60,45 +61,44 @@ showCustomDialog(
   );
 }
 
-
 Future<bool> onWillPop(BuildContext context) async {
-    return await showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            backgroundColor: AppColor.darkGray,
-            title: Text(
-              'الخروج من التطبيق',
-              style: TextStyles.fontCircularSpotify16BlackMedium.copyWith(
-                color: AppColor.brandPrimary,
-              ),
+  return await showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          backgroundColor: AppColor.darkGray,
+          title: Text(
+            'الخروج من التطبيق',
+            style: TextStyles.fontCircularSpotify16BlackMedium.copyWith(
+              color: AppColor.brandPrimary,
             ),
-            content: Text(
-              'هل أنت متأكد أنك تريد الخروج؟',
-              style: TextStyles.fontCircularSpotify14BlackMedium.copyWith(
-                color: AppColor.white,
-              ),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(false),
-                child: Text(
-                  'لا',
-                  style: TextStyles.fontCircularSpotify14BlackMedium.copyWith(
-                    color: AppColor.white,
-                  ),
-                ),
-              ),
-              TextButton(
-                onPressed: () => exit(0), // Exit the app completely
-                child: Text(
-                  'نعم',
-                  style: TextStyles.fontCircularSpotify14BlackMedium.copyWith(
-                    color: AppColor.brandHighlight,
-                  ),
-                ),
-              ),
-            ],
           ),
-        ) ??
-        false;
-  }
+          content: Text(
+            'هل أنت متأكد أنك تريد الخروج؟',
+            style: TextStyles.fontCircularSpotify14BlackMedium.copyWith(
+              color: AppColor.white,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text(
+                'لا',
+                style: TextStyles.fontCircularSpotify14BlackMedium.copyWith(
+                  color: AppColor.white,
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () => exit(0), // Exit the app completely
+              child: Text(
+                'نعم',
+                style: TextStyles.fontCircularSpotify14BlackMedium.copyWith(
+                  color: AppColor.brandHighlight,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ) ??
+      false;
+}

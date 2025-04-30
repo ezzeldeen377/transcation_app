@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter/material.dart';
+import 'package:transcation_app/core/common/screens/initial_screen.dart';
 import 'package:transcation_app/core/helpers/secure_storage_helper.dart';
 import 'package:transcation_app/core/networking/api_constant.dart';
 import 'package:transcation_app/core/networking/http_services.dart';
@@ -18,7 +19,6 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
   // Print the message for debugging
   debugPrint('Handling a background message: ${message.messageId}');
-
   // The system will automatically show the notification from FCM
 }
 
@@ -82,7 +82,7 @@ class NotificationHelper {
         final payload = details.payload;
         if (payload != null) {
           final data = json.decode(payload);
-          _handleNotificationTap(data);
+          handleNotificationTap(data);
         }
       },
     );
@@ -118,7 +118,7 @@ class NotificationHelper {
 
     // Handle FCM messages when app is in background and user taps notification
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      _handleNotificationTap(message.data);
+      handleNotificationTap(message.data);
     });
   }
 
@@ -160,9 +160,15 @@ class NotificationHelper {
     );
   }
 
-  static void _handleNotificationTap(Map<String, dynamic> data) {
-    // TODO: Handle notification tap based on data
+  static Function(int)? navigateToIndex;
+
+  static void handleNotificationTap(Map<String, dynamic> data) {
     debugPrint('Notification tapped with data: $data');
+    
+    // Navigate to deposit page (index 1)
+    if (navigateToIndex != null) {
+      navigateToIndex!(1);
+    }
   }
 
   // Public method to show local notification

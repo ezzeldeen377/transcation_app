@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:transcation_app/features/home/data/models/plans_response.dart';
 
 class ActivePlansResponse {
@@ -55,7 +56,7 @@ class ActivePlan {
       status: map['status'],
       profit: (map['profit'] as num).toDouble(),
       expiryDate: map['expiry_date'],
-      startDate: map['start_date'],
+      startDate: map['start_at'],
     );
   }
 
@@ -65,7 +66,12 @@ class ActivePlan {
       'status': status,
       'profit': profit,
       'expiry_date': expiryDate,
-      'start_date': startDate,
+      'start_at': startDate,
     };
+  }
+
+  @override
+  String toString() {
+    return 'ActivePlan(plan: $plan, status: $status, profit: $profit, expiryDate: $expiryDate, startDate: $startDate)';
   }
 }

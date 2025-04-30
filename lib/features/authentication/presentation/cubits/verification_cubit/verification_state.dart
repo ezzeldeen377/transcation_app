@@ -26,6 +26,7 @@ class VerificationState {
   final int? expiresAt;
   final String? email;
   final String? password;
+  final int resendTimer;
 
   const VerificationState({
     this.status = VerificationStatus.initial,
@@ -35,6 +36,7 @@ class VerificationState {
     this.expiresAt,
     this.email,
     this.password,
+    this.resendTimer = 0,
   });
 
   VerificationState copyWith({
@@ -45,6 +47,7 @@ class VerificationState {
     int? expiresAt,
     String? email,
     String? password,
+    int? resendTimer,
   }) {
     return VerificationState(
       status: status ?? this.status,
@@ -54,13 +57,7 @@ class VerificationState {
       expiresAt: expiresAt ?? this.expiresAt,
       email: email ?? this.email,
       password: password ?? this.password,
+      resendTimer: resendTimer ?? this.resendTimer,
     );
   }
-
-  @override
-  String toString() {
-    return 'VerificationState(status: $status, errorMessage: $errorMessage, user: $user, accessToken: $accessToken, expiresAt: $expiresAt, email: $email, password: $password)';
-  }
-
- 
 }

@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 import 'package:transcation_app/core/theme/app_color.dart';
 import 'package:transcation_app/core/utils/custom_container.dart';
+import 'package:transcation_app/core/utils/date_and_countdown_widget.dart';
 import 'package:transcation_app/features/home/data/models/active_plans_response.dart';
 import 'package:transcation_app/features/home/presentation/bloc/my_plans/my_plans_cubit.dart';
 import 'package:transcation_app/features/home/presentation/bloc/my_plans/my_plans_state.dart';
@@ -38,9 +39,14 @@ class _PlanDetailsScreenState extends State<PlanDetailsScreen>
     endTime = DateTime.parse(widget.activePlan.expiryDate);
     final now = DateTime.now();
     final totalDays = widget.activePlan.plan.durationDays;
-    final difference = now.difference(startTime).inDays;
+    
+    // Calculate hours difference and convert to complete days
+    final differenceInHours = now.difference(startTime).inHours;
+    print("differenceInHours $differenceInHours");
+    print("startat $startTime");
+    final completeDays = (differenceInHours / 24).floor();
 
-    daysSpent = difference.clamp(0, totalDays);
+    daysSpent = completeDays.clamp(0, totalDays);
     daysRemaining = (totalDays - daysSpent).clamp(0, totalDays);
     progress = (daysSpent / totalDays).clamp(0.0, 1.0);
   }
@@ -163,13 +169,18 @@ class _PlanDetailsScreenState extends State<PlanDetailsScreen>
                                 ),
                               ],
                             ),
+                            SizedBox(height: 16.h),
+                          DateAndCountdownWidget(
+                            startAt: DateTime.parse(widget.activePlan.startDate ?? DateTime.now().toString()),
+                            endAt: DateTime.parse(widget.activePlan.expiryDate),
+                          ),
                           ],
                         ),
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: 16.h),
+                SizedBox(height: 5.h),
                 Text(
                   'الوصف',
                   style: TextStyle(
@@ -178,14 +189,14 @@ class _PlanDetailsScreenState extends State<PlanDetailsScreen>
                     color: AppColor.brandHighlight,
                   ),
                 ),
-                SizedBox(height: 8.h),
+                SizedBox(height: 5.h),
                 Row(
                   children: [
                     Expanded(
                       flex: 3,
                       child: CustomContainer(
                         child: Padding(
-                          padding: EdgeInsets.all(16.w),
+                          padding: EdgeInsets.all(10.w),
                           child: Text(
                             widget.activePlan.plan.description,
                             style: TextStyle(
@@ -224,7 +235,7 @@ class _PlanDetailsScreenState extends State<PlanDetailsScreen>
                     ),
                   ],
                 ),
-                SizedBox(height: 24.h),
+                SizedBox(height: 5.h),
                 Text(
                   'الأرباح',
                   style: TextStyle(
@@ -233,10 +244,10 @@ class _PlanDetailsScreenState extends State<PlanDetailsScreen>
                     color: AppColor.brandHighlight,
                   ),
                 ),
-                SizedBox(height: 8.h),
+                SizedBox(height: 5.h),
                 CustomContainer(
                   child: Padding(
-                    padding: EdgeInsets.all(16.w),
+                    padding: EdgeInsets.symmetric(vertical:  10.w),
                     child: Column(
                       children: [
                         SizedBox(height: 8.h),
@@ -336,51 +347,51 @@ class _PlanDetailsScreenState extends State<PlanDetailsScreen>
   }
 
   Widget _buildInfoRow(String label, String value) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 8.h),
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(
-            color: AppColor.brandHighlight.withOpacity(0.1),
-            width: 1,
-          ),
-        ),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              Container(
-                width: 4.w,
-                height: 16.h,
-                decoration: BoxDecoration(
-                  color: AppColor.brandHighlight,
-                  borderRadius: BorderRadius.circular(2.r),
-                ),
-              ),
-              SizedBox(width: 8.w),
-              Text(
-                label,
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  color: Colors.white70,
-                ),
-              ),
-            ],
-          ),
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: 14.sp,
-              fontWeight: FontWeight.w600,
-              color: AppColor.white,
+      return Container(
+        padding: EdgeInsets.symmetric(vertical: 4.h), // Reduced from 8 to 4
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(
+              color: AppColor.brandHighlight.withOpacity(0.1),
+              width: 0.5, // Reduced from 1 to 0.5
             ),
           ),
-        ],
-      ),
-    );
-  }
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                Container(
+                  width: 4.w,
+                  height: 16.h,
+                  decoration: BoxDecoration(
+                    color: AppColor.brandHighlight,
+                    borderRadius: BorderRadius.circular(2.r),
+                  ),
+                ),
+                SizedBox(width: 8.w),
+                Text(
+                  label,
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    color: Colors.white70,
+                  ),
+                ),
+              ],
+            ),
+            Text(
+              value,
+              style: TextStyle(
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w600,
+                color: AppColor.white,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
 
   String _formatDate(DateTime date) {
     return '${date.day}/${date.month}/${date.year}';

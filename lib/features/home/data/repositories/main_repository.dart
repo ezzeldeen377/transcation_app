@@ -5,6 +5,7 @@ import 'package:transcation_app/core/utils/try_and_catch.dart';
 import 'package:transcation_app/features/authentication/data/model/login_response.dart';
 import 'package:transcation_app/features/home/data/datasources/main_remote_data_source.dart';
 import 'package:transcation_app/features/home/data/models/active_plans_response.dart';
+import 'package:transcation_app/features/home/data/models/agent_model.dart';
 import 'package:transcation_app/features/home/data/models/notifcation_response.dart';
 import 'package:transcation_app/features/home/data/models/plans_response.dart';
 import 'package:transcation_app/features/home/data/models/subscription_response.dart';
@@ -25,6 +26,7 @@ abstract class MainRepository {
       String token);
   Future<Either<Failure, ActivePlan>> getPlanReuslt(String token,String planId);
   Future<Either<Failure, Map<String,dynamic>>> updateDeviceToken(String token,String userIdentifer);
+  Future<Either<Failure,AgentResponse>>getAgents(String country);
 }
 
 @Injectable(as: MainRepository)
@@ -112,6 +114,8 @@ class MainRepositoryImpl implements MainRepository {
   Future<Either<Failure, ActivePlan>> getPlanReuslt(String token,String planId) {
     return executeTryAndCatchForRepository(() async {
       final response = await dataSource.getPlanReuslt(token,planId);
+      
+      print("plan result $response");
       return ActivePlan.fromMap(response);
     });
   }
@@ -121,6 +125,14 @@ class MainRepositoryImpl implements MainRepository {
     return executeTryAndCatchForRepository(() async {
       final response = await dataSource.updateDeviceToken(token,userIdentifer);
       return response; 
+    });
+  }
+  
+  @override
+  Future<Either<Failure, AgentResponse>> getAgents(String country) {
+    return executeTryAndCatchForRepository(() async {
+      final response = await dataSource.getAgent(country);
+      return AgentResponse.fromMap(response);
     });
   }
 }

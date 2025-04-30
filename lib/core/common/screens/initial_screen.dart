@@ -4,6 +4,7 @@ import 'package:transcation_app/core/common/cubit/app_user/app_user_cubit.dart';
 import 'package:transcation_app/core/common/cubit/app_user/app_user_state.dart';
 import 'package:transcation_app/core/di/di.dart';
 import 'package:transcation_app/core/helpers/navigator.dart';
+import 'package:transcation_app/core/helpers/notification_helper.dart';
 import 'package:transcation_app/core/routes/routes.dart';
 import 'package:transcation_app/core/theme/app_color.dart';
 import 'package:transcation_app/core/utils/show_snack_bar.dart';
@@ -22,21 +23,36 @@ class InitialScreen extends StatefulWidget {
   const InitialScreen({super.key});
 
   @override
-  State<InitialScreen> createState() => _InitialScreenState();
+  State<InitialScreen> createState() => InitialScreenState();
 }
 
-class _InitialScreenState extends State<InitialScreen> {
+class InitialScreenState extends State<InitialScreen> {
   int _selectedIndex = 0;
   final PageController _pageController = PageController();
 
   late final List<Widget> _screens;
-
+static final GlobalKey<InitialScreenState> globalKey = GlobalKey<InitialScreenState>();
   @override
   void initState() {
     super.initState();
     _screens = _buildScreens();
+    
+    // Set up notification navigation
+    NotificationHelper.navigateToIndex = (int index) {
+      _pageController.animateToPage(
+        index,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    };
   }
-
+void navigateToDeposit() {
+    _pageController.animateToPage(
+      1, // Index of deposit page
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
+  }
   List<Widget> _buildScreens() {
     return [
       BlocProvider(

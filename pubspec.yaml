@@ -5,7 +5,7 @@ description: "A new Flutter project."
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 
-version: 1.0.1+10
+version: 1.0.1+14
 
 environment:
   sdk: ^3.6.1
@@ -45,6 +45,8 @@ dependencies:
   flutter_local_notifications: ^19.1.0
   googleapis_auth: ^2.0.0
   googleapis: ^14.0.0
+  country_picker: ^2.0.27
+  flutter_staggered_animations: ^1.1.1
 
 dev_dependencies:
   flutter_test:

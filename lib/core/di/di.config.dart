@@ -25,6 +25,7 @@ import '../../features/authentication/presentation/cubits/verification_cubit/ver
 import '../../features/home/data/datasources/main_remote_data_source.dart'
     as _i416;
 import '../../features/home/data/repositories/main_repository.dart' as _i472;
+import '../../features/home/presentation/bloc/agent/agent_cubit.dart' as _i597;
 import '../../features/home/presentation/bloc/deposit/deposit_cubit.dart'
     as _i513;
 import '../../features/home/presentation/bloc/history/history_cubit.dart'
@@ -63,6 +64,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i531.SignUpCubit(authRepository: gh<_i935.AuthRepository>()));
     gh.factory<_i472.MainRepository>(() =>
         _i472.MainRepositoryImpl(dataSource: gh<_i416.MainRemoteDataSource>()));
+    gh.factory<_i597.AgentCubit>(
+        () => _i597.AgentCubit(gh<_i472.MainRepository>()));
     gh.factory<_i513.DepositCubit>(
         () => _i513.DepositCubit(gh<_i472.MainRepository>()));
     gh.factory<_i829.HistoryCubit>(

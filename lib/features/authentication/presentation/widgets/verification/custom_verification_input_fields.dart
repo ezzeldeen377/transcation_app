@@ -4,13 +4,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:transcation_app/core/helpers/spacer.dart';
 import 'package:transcation_app/core/theme/app_color.dart';
 import 'package:transcation_app/features/authentication/presentation/cubits/verification_cubit/verification_cubit.dart';
+import 'package:transcation_app/features/authentication/presentation/cubits/verification_cubit/verification_state.dart';
 
 class CustomVerificationInputFields extends StatelessWidget {
   const CustomVerificationInputFields({super.key});
 
   @override
   Widget build(BuildContext context) {
-final cubit=context.read<VerificationCubit>();
+    final cubit = context.read<VerificationCubit>();
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.w),
       child: Column(
@@ -33,7 +34,7 @@ final cubit=context.read<VerificationCubit>();
                 fontWeight: FontWeight.bold,
                 color: AppColor.brandHighlight,
               ),
-              
+
               cursorColor: AppColor.brandHighlight,
               textAlign: TextAlign.center,
               decoration: const InputDecoration(
@@ -46,19 +47,21 @@ final cubit=context.read<VerificationCubit>();
             ),
           ),
           verticalSpace(20),
-      
-          TextButton(
-            onPressed: () {
-              cubit.resendCode();
+          BlocBuilder<VerificationCubit, VerificationState>(
+            builder: (context, state) {
+              return TextButton(
+                onPressed: () =>
+                    state.resendTimer > 0 ? null : cubit.resendCode(),
+                child: Text(
+                  'إعادة إرسال الرمز',
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    color: AppColor.brandHighlight,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              );
             },
-            child: Text(
-              'إعادة إرسال الرمز',
-              style: TextStyle(
-                fontSize: 14.sp,
-                color: AppColor.brandHighlight,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
           ),
         ],
       ),

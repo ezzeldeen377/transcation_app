@@ -15,6 +15,7 @@ abstract class MainRemoteDataSource {
   Future<Map<String, dynamic>> getLastTranscations(String token);
   Future<Map<String, dynamic>> getPlanReuslt(String token, String planId);
   Future<Map<String, dynamic>> updateDeviceToken(String token, String userIdentifer);
+  Future<Map<String, dynamic>> getAgent(String country);
 
   
 }
@@ -118,6 +119,15 @@ class MainRemoteDataSourceImpl implements MainRemoteDataSource {
       return HttpServices.instance.post(ApiConstant.deviceTokenEndPoint, body: {
         "token": token,
         "user_identifier": userIdentifer,
+      });
+    });
+  }
+  
+  @override
+  Future<Map<String, dynamic>> getAgent(String country) {
+   return executeTryAndCatchForDataLayer(() {
+      return HttpServices.instance.post(ApiConstant.agentEndPoint, body: {
+        "country": country,
       });
     });
   }

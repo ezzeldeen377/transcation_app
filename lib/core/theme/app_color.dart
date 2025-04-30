@@ -12,6 +12,7 @@ static const Color white = Color(0xFFffffff);
 static const Color errorColor = Color(0xFFD32F2F); // Red 700
 static const Color errorLightColor = Color(0xFFFFEBEE); // Red 50
  static const Color darkGray = Color(0xFF1D1D1D);
+ static const Color green = Colors.green;
 
 // Main color for a branded feel
 }

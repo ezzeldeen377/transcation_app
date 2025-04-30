@@ -25,10 +25,13 @@ Future<void> getUserActivePlan(String token) async {
         status: MyPlansStatus.error,
         errorMessage: failure.message,
       )),
-      (plan) => emit(state.copyWith(
+      (plan) {
+        
+        print("plan is $plan");
+         emit(state.copyWith(
         status: MyPlansStatus.successGetPlanDetails,
         userActivePlan: plan,
-      )),
+      ));},
     );
   }
 }

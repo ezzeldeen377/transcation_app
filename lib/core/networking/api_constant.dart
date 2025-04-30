@@ -23,6 +23,7 @@ class ApiConstant {
 
 
   static const String deviceTokenEndPoint = 'api/token';
+  static const String agentEndPoint = 'api/agent';
 
 static const String sendNotificationEndPoint = "/api/send-notification";  // adjust path as needed
 

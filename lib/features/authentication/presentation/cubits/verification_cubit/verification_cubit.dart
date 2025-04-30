@@ -58,6 +58,20 @@ class VerificationCubit extends Cubit<VerificationState> {
       )),
       (r) => emit(state.copyWith(status: VerificationStatus.canResend)),
     );
+    
+    // Start the timer after sending the code
+    emit(state.copyWith(resendTimer: 180)); // 3 minutes in seconds
+    _startResendTimer();
+  }
+
+  void _startResendTimer() {
+    Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (state.resendTimer > 0) {
+        emit(state.copyWith(resendTimer: state.resendTimer - 1));
+      } else {
+        timer.cancel();
+      }
+    });
   }
 
   @override

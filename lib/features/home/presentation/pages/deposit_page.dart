@@ -6,7 +6,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:transcation_app/core/common/cubit/app_user/app_user_cubit.dart';
 import 'package:transcation_app/core/helpers/notification_helper.dart';
 import 'package:transcation_app/core/helpers/spacer.dart';
+import 'package:transcation_app/core/routes/routes.dart';
 import 'package:transcation_app/core/theme/app_color.dart';
+import 'package:transcation_app/core/utils/custom_button.dart';
 import 'package:transcation_app/core/utils/web_view.dart';
 import 'package:transcation_app/features/home/presentation/bloc/deposit/deposit_cubit.dart';
 import 'package:transcation_app/features/home/presentation/widgets/home/user_balance.dart';
@@ -130,23 +132,23 @@ class _DepositPageState extends State<DepositPage> {
   }
 
   Widget _buildInstructionItem(String text) {
-      return Padding(
-        padding: EdgeInsets.only(bottom: 8.h),
-        child: Row(
-          children: [
-            Icon(Icons.circle, size: 8.sp, color: AppColor.brandHighlight),
-            SizedBox(width: 8.w),
-            Text(
-              text,
-              style: TextStyle(
-                color: AppColor.white.withOpacity(0.9),
-                fontSize: 14.sp,
-              ),
+    return Padding(
+      padding: EdgeInsets.only(bottom: 8.h),
+      child: Row(
+        children: [
+          Icon(Icons.circle, size: 8.sp, color: AppColor.brandHighlight),
+          SizedBox(width: 8.w),
+          Text(
+            text,
+            style: TextStyle(
+              color: AppColor.white.withOpacity(0.9),
+              fontSize: 14.sp,
             ),
-          ],
-        ),
-      );
-    }
+          ),
+        ],
+      ),
+    );
+  }
 
   Widget _buildInstructionsCard() {
     return Container(
@@ -193,7 +195,8 @@ class _DepositPageState extends State<DepositPage> {
               ),
               child: Row(
                 children: [
-                  Icon(Icons.access_time, color: AppColor.brandHighlight, size: 20.sp),
+                  Icon(Icons.access_time,
+                      color: AppColor.brandHighlight, size: 20.sp),
                   SizedBox(width: 8.w),
                   Expanded(
                     child: Text(
@@ -234,12 +237,14 @@ class _DepositPageState extends State<DepositPage> {
         backgroundColor: AppColor.darkGray,
         onRefresh: () async {
           // Trigger balance refresh
-          context.read<DepositCubit>().getBalance(token:context.read<AppUserCubit>().state.accessToken!);
+          context.read<DepositCubit>().getBalance(
+              token: context.read<AppUserCubit>().state.accessToken!);
         },
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
           child: SizedBox(
-            height: MediaQuery.of(context).size.height - AppBar().preferredSize.height,
+            height: MediaQuery.of(context).size.height -
+                AppBar().preferredSize.height,
             child: Column(
               children: [
                 BlocBuilder<DepositCubit, DepositState>(
@@ -251,50 +256,87 @@ class _DepositPageState extends State<DepositPage> {
                 ),
                 verticalSpace(20),
                 _buildInstructionsCard(),
-               
               ],
             ),
           ),
         ),
       ),
-      bottomNavigationBar:  SizedBox(
-                  width: double.infinity,
-                  child: Padding(
-                    padding: EdgeInsets.all(8.sp),
-                    child: ElevatedButton(
-                      onPressed: () =>
-                          // {
-                          //   NotificationHelper.sendNotification(
-                          //     'eMZNXJ-ZQx27APpX5jvnnw:APA91bEM99T79Ygl_PaoSlmQ4QhIFqr_UtPjchXp0umdcwjmLlQLhlRvDZq1z3xdNAARErJZHCom8mHrSBojpq379G_duRj-j-jXNR7Jx9k57Of1BYVMlio',
-                          //     'تم إرسال طلب إيداع',
-                          //     'تم إرسال طلب إيداع بنجاح',
-                          //   );
-                          // },
-                          _launchUrl('https://ethraawalet.com/payment'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColor.brandHighlight,
-                        padding: EdgeInsets.symmetric(vertical: 12.h),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.r),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.account_balance_wallet, size: 20.sp),
-                          SizedBox(width: 8.w),
-                          Text(
-                            'اشحن الآن',
-                            style: TextStyle(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+      bottomNavigationBar: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+       
+          SizedBox(
+            width: double.infinity,
+            child: Padding(
+              padding: EdgeInsets.all(8.sp),
+              child: ElevatedButton(
+                onPressed: () =>
+                    Navigator.of(context).pushNamed(RouteNames.agentsPage),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColor.brandHighlight,
+                  padding: EdgeInsets.symmetric(vertical: 12.h),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.r),
                   ),
                 ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.account_balance_wallet_sharp, size: 20.sp),
+                    SizedBox(width: 8.w),
+                    Text(
+                      'الايداع عن طريق الوكلاء',
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          SizedBox(
+            width: double.infinity,
+            child: Padding(
+              padding: EdgeInsets.all(8.sp),
+              child: ElevatedButton(
+                onPressed: () =>
+                    // {
+                    //   NotificationHelper.sendNotification(
+                    //     'eMZNXJ-ZQx27APpX5jvnnw:APA91bEM99T79Ygl_PaoSlmQ4QhIFqr_UtPjchXp0umdcwjmLlQLhlRvDZq1z3xdNAARErJZHCom8mHrSBojpq379G_duRj-j-jXNR7Jx9k57Of1BYVMlio',
+                    //     'تم إرسال طلب إيداع',
+                    //     'تم إرسال طلب إيداع بنجاح',
+                    //   );
+                    // },
+                    _launchUrl('https://ethraawalet.com/payment'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColor.brandHighlight,
+                  padding: EdgeInsets.symmetric(vertical: 12.h),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.r),
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.account_balance_wallet, size: 20.sp),
+                    SizedBox(width: 8.w),
+                    Text(
+                      'اشحن الآن',
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

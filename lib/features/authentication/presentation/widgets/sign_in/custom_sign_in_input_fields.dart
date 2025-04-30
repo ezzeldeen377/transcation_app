@@ -73,7 +73,6 @@ class CustomSignInInputFields extends StatelessWidget {
                   if (cubit.formKey.currentState!.validate()) {
                     context.read<SignInCubit>().login();
                   }
-                  print("done");
                 },
                 textInputAction: TextInputAction.done,
               );

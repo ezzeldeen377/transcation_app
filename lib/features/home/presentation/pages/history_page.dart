@@ -93,7 +93,7 @@ class HistoryPage extends StatelessWidget {
           method = 'ويسترن يونيون';
           details = withdrawal.western!;
         } else if (withdrawal.moneyOffice != null) {
-          method = 'مكتب الصرافة';
+          method = 'دفع محلي';
           details = withdrawal.moneyOffice!;
         } else if (withdrawal.usdt != null) {
           method = 'عملات رقمية';
@@ -102,7 +102,7 @@ class HistoryPage extends StatelessWidget {
 
         return _buildTransactionCard(
           amount: withdrawal.amount,
-          date: withdrawal.createdAt,
+          date: withdrawal.createdAt.add(Duration(hours: 2)),
           method: method,
           details: details,
           isWithdrawal: true,
@@ -125,7 +125,7 @@ class HistoryPage extends StatelessWidget {
         final deposit = deposits[index];
         return _buildTransactionCard(
           amount: deposit.amount,
-          date: deposit.createdAt,
+          date: deposit.createdAt.add(Duration(hours: 2)),
           method: 'إيداع',
           details: 'إيداع في الحساب',
           isWithdrawal: false,
