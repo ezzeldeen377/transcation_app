@@ -114,7 +114,7 @@ class VerificationScreen extends StatelessWidget {
             children: [
               CustomeTitleText(
                 title: "التحقق",
-                animatedText: "أدخل الرمز المرسل إلى بريدك الإلكتروني",
+                animatedText: "أدخل الرمز المرسل إلى  رقم الواتساب الخاص بيك للتأكيد",
                 padding: EdgeInsetsDirectional.only(
                     top: 35.h, bottom: 65.h, end: 35.w, start: 35.w),
               ),
@@ -123,17 +123,9 @@ class VerificationScreen extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 35.w),
                 child: BlocBuilder<VerificationCubit, VerificationState>(
                   builder: (context, state) {
-                    return Column(
+                    return Column(crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(
-                          "إذا لم تجد رسالة التحقق، يرجى التحقق من مجلد البريد المزعج (Spam)",
-                          style: TextStyle(
-                            color: AppColor.white.withOpacity(0.7),
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w400,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
+                      
                         if (state.resendTimer > 0) ...[
                           verticalSpace(8),
                           Text(
@@ -170,9 +162,7 @@ class VerificationScreen extends StatelessWidget {
                                   ),
                                 ),
                           animationIndex: 3,
-                          onTapButton: state.resendTimer > 0
-                              ? null
-                              : () {
+                          onTapButton:  () {
                                   context.read<VerificationCubit>().verifyCode();
                                 },
                         );

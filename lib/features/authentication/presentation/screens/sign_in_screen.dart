@@ -17,7 +17,7 @@ import '../widgets/sign_in/custom_sign_in_listener.dart';
 
 class SignInScreen extends StatelessWidget {
   const SignInScreen({super.key});
-  final String telegramLink = "https://telegram.me/Ethraawalet";
+  final String telegramLink = "https://t.me/EthraaSP";
 
   @override
   Widget build(BuildContext context) {
@@ -42,10 +42,7 @@ class SignInScreen extends StatelessWidget {
                           title: 'تسجيل الدخول',
                           animatedText: 'مرحباً بعودتك!',
                           padding: EdgeInsetsDirectional.only(
-                              top: 148.h,
-                              bottom: 65.h,
-                              end: 35.w,
-                              start: 35.w),
+                              top: 148.h, bottom: 65.h, end: 35.w, start: 35.w),
                         ),
                         const CustomSignInInputFields(),
                         SizedBox(height: 60.h),
@@ -97,45 +94,48 @@ class SignInScreen extends StatelessWidget {
                                     .pushNamed(RouteNames.signUp);
                               },
                             ),
-                             Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.w,vertical: 30.h),
-                child: InkWell(
-                  onTap: () {
-                    launchUrl(Uri.parse(telegramLink));
-                  },
-                  child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 16.w),
-                    decoration: BoxDecoration(
-                      color: AppColor.darkGray,
-                      borderRadius: BorderRadius.circular(12.r),
-                      border: Border.all(
-                        color: AppColor.brandHighlight.withOpacity(0.3),
-                        width: 1,
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SvgPicture.asset(
-                          'assets/icons/telegram.svg',
-                          height: 24.h,
-                          width: 24.w,
-                          color: AppColor.brandAccent,
-                        ),
-                        SizedBox(width: 10.w),
-                        Text(
-                          ' تواصل مع الدعم الفني اذا كنت تواجه مشكله ',
-                          style: TextStyle(
-                            color: AppColor.white,
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 20.w, vertical: 30.h),
+                              child: InkWell(
+                                onTap: () {
+                                  launchUrl(Uri.parse(telegramLink));
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 12.h, horizontal: 16.w),
+                                  decoration: BoxDecoration(
+                                    color: AppColor.darkGray,
+                                    borderRadius: BorderRadius.circular(12.r),
+                                    border: Border.all(
+                                      color: AppColor.brandHighlight
+                                          .withOpacity(0.3),
+                                      width: 1,
+                                    ),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      SvgPicture.asset(
+                                        'assets/icons/telegram.svg',
+                                        height: 24.h,
+                                        width: 24.w,
+                                        color: AppColor.brandAccent,
+                                      ),
+                                      SizedBox(width: 10.w),
+                                      Text(
+                                        ' تواصل مع الدعم الفني اذا كنت تواجه مشكله ',
+                                        style: TextStyle(
+                                          color: AppColor.white,
+                                          fontSize: 12.sp,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
                           ],
                         )
                             .animate()

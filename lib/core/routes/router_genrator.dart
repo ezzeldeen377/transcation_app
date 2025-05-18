@@ -77,7 +77,7 @@ class TranscationRouter {
             create: (context) {
               final args = settings.arguments as Map<String, dynamic>;
               return getIt<VerificationCubit>()
-                ..setEmailPassword(args['email'], args['password']);
+                ..setEmailPassword(args['email'], args['password'],args['phone']);
             },
             child: const VerificationScreen(),
           ),

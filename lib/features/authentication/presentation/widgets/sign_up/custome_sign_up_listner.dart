@@ -18,12 +18,13 @@ class CustomeSignUpListner extends StatelessWidget {
           
           showCustomDialog(
             context,
-            "تم إرسال رمز التحقق إلى بريدك الإلكتروني.",
+            "تم إرسال رمز التحقق إلى رقم الواتساب الخاص بيك  .",
             "تم إنشاء الحساب بنجاح",
             () {
               Navigator.popAndPushNamed(context, RouteNames.verification,arguments:{
                 'email':cubit.emailController.text.trim(),
                 'password':cubit.passwordController.text.trim(),
+                'phone':cubit.phoneController.text.trim(),
               });
             },            
           );

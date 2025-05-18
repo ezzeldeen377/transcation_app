@@ -86,9 +86,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<String> resendVerifyCode(String email) {
     return executeTryAndCatchForDataLayer(() async {
+      print("email: $email");
       final response = await HttpServices.instance
           .post(ApiConstant.resendVerificationCodeEndPoint, body: {
-        "email": email,
+        "phone": email,
       });
       return response['message'];
     });

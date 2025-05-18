@@ -1,7 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl_phone_field/country_picker_dialog.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:transcation_app/core/helpers/spacer.dart';
 import 'package:transcation_app/core/theme/app_color.dart';
 import 'package:transcation_app/core/utils/custom_text_form_field.dart';
@@ -13,7 +14,8 @@ import '../../cubits/sign_up_cubit/sign_up_state.dart';
 
 class CustomeSignUpInputFields extends StatelessWidget {
   final Function onSubmit;
-  final String termsLink="https://www.termsfeed.com/live/dfa918d5-54c3-4730-bd02-544269a6c90f";
+  final String termsLink =
+      "https://www.termsfeed.com/live/dfa918d5-54c3-4730-bd02-544269a6c90f";
   const CustomeSignUpInputFields({
     super.key,
     required this.onSubmit,
@@ -22,7 +24,7 @@ class CustomeSignUpInputFields extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cubit = context.watch<SignUpCubit>();
-   
+
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: 20.w,
@@ -68,8 +70,7 @@ class CustomeSignUpInputFields extends StatelessWidget {
             keyboardType: TextInputType.name,
             suffixIcon: const Icon(
               Icons.person,
-                            color: AppColor.brandHighlight,
-
+              color: AppColor.brandHighlight,
             ),
             controller: cubit.nameController,
             animationIndex: 1,
@@ -78,7 +79,7 @@ class CustomeSignUpInputFields extends StatelessWidget {
           ),
           SizedBox(height: 15.h),
           Text(
-            "رقم الهاتف",
+            "رقم الواتساب",
             style: TextStyle(
               fontSize: 14.sp,
               fontWeight: FontWeight.w600,
@@ -86,21 +87,67 @@ class CustomeSignUpInputFields extends StatelessWidget {
             ),
           ),
           verticalSpace(10),
-          CustomTextFormField(
-            validator: emptyValidator,
-            hint: "أدخل رقم هاتفك",
-            keyboardType: TextInputType.number,
-            suffixIcon: const Icon(
-              Icons.call,
-                            color: AppColor.brandHighlight,
-
+          IntlPhoneField(
+            decoration: InputDecoration(
+              labelStyle: TextStyle(
+                color: AppColor.white,
+                fontSize: 14.sp,
+              ),
+              fillColor: AppColor.brandDark,
+              filled: true,
             ),
-            controller: cubit.phoneController,
-            animationIndex: 1,
-            textInputAction: TextInputAction.next,
-            autofillHints: const [AutofillHints.telephoneNumber],
+            initialCountryCode: 'SY',
+            pickerDialogStyle: PickerDialogStyle(
+              backgroundColor: AppColor.darkGray,
+              searchFieldInputDecoration: InputDecoration(
+                hintText: 'بحث',
+                hintStyle: TextStyle(color: AppColor.white.withOpacity(0.5)),
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(color: AppColor.brandHighlight),
+                  borderRadius: BorderRadius.circular(12.r),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      color: AppColor.brandHighlight.withOpacity(0.3)),
+                  borderRadius: BorderRadius.circular(12.r),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: AppColor.brandHighlight),
+                  borderRadius: BorderRadius.circular(12.r),
+                ),
+                fillColor: AppColor.darkGray,
+                filled: true,
+              ),
+              searchFieldCursorColor: AppColor.brandHighlight,
+              countryNameStyle: TextStyle(
+                color: AppColor.white,
+                fontSize: 14.sp,
+              ),
+              countryCodeStyle: TextStyle(
+                color: AppColor.white,
+                fontSize: 14.sp,
+              ),
+            ),
+            languageCode: "ar",
+            dropdownTextStyle: TextStyle(
+              color: AppColor.white,
+              fontSize: 14.sp,
+              fontWeight: FontWeight.w500,
+            ),
+            style: TextStyle(
+              color: AppColor.white,
+              fontSize: 14.sp,
+            ),
+            dropdownIcon: const Icon(
+              Icons.arrow_drop_down,
+              color: AppColor.brandHighlight,
+            ),
+            onChanged: (value) {
+              print(value.completeNumber);
+              cubit.phoneController.text = value.completeNumber;
+            },
           ),
-          SizedBox(height: 15.h),
+          SizedBox(height: 10.h),
           Text(
             "كلمة المرور",
             style: TextStyle(
@@ -125,8 +172,7 @@ class CustomeSignUpInputFields extends StatelessWidget {
                     state.isVisiblePassword == true
                         ? Icons.remove_red_eye_outlined
                         : Icons.visibility_off_outlined,
-                                      color: AppColor.brandHighlight,
-
+                    color: AppColor.brandHighlight,
                   ),
                 ),
                 controller: cubit.passwordController,
@@ -171,8 +217,7 @@ class CustomeSignUpInputFields extends StatelessWidget {
                     state.isVisiblePasswordConfirm == true
                         ? Icons.remove_red_eye_outlined
                         : Icons.visibility_off_outlined,
-                                      color: AppColor.brandHighlight,
-
+                    color: AppColor.brandHighlight,
                   ),
                 ),
                 controller: cubit.confirmPasswordController,
@@ -209,7 +254,8 @@ class CustomeSignUpInputFields extends StatelessWidget {
                     ),
                     InkWell(
                       onTap: () {
-customelaunchUrl(termsLink,context);                      },
+                        customelaunchUrl(termsLink, context);
+                      },
                       child: Text(
                         "الشروط والأحكام",
                         style: TextStyle(

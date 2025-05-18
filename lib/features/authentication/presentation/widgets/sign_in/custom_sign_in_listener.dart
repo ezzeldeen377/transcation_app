@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:transcation_app/core/helpers/notification_helper.dart';
 import 'package:transcation_app/core/routes/routes.dart';
+import 'package:transcation_app/core/theme/app_color.dart';
 import 'package:transcation_app/features/authentication/data/model/login_response.dart';
 import '../../../../../core/common/cubit/app_user/app_user_cubit.dart';
 import '../../../../../core/utils/show_snack_bar.dart';
@@ -13,11 +15,39 @@ class CustomSignInListener extends StatelessWidget {
   const CustomSignInListener({super.key, required this.child});
 
   Future<void> _navigateToHome(BuildContext context, User user,String token,int expireAt,String email,String password,bool isLogin) async {
-     await context.read<AppUserCubit>().saveUserData(user,token,expireAt,email,password,isLogin);
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: AppColor.darkGray,
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const CircularProgressIndicator(
+                color: AppColor.brandHighlight,
+              ),
+              SizedBox(height: 16.h),
+              Text(
+                                'جاري تسجيل الدخول...',
+                style: TextStyle(
+                  color: AppColor.white,
+                  fontSize: 14.sp,
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+
+    await context.read<AppUserCubit>().saveUserData(user,token,expireAt,email,password,isLogin);
     final deviceToken=await NotificationHelper.getFCMToken();
     if(deviceToken!=null) {
-    await  NotificationHelper.submitDeviceTokenToBackend(deviceToken);
+      await NotificationHelper.submitDeviceTokenToBackend(deviceToken);
     }
+
+    Navigator.of(context).pop(); // Dismiss loading dialog
     Navigator.pushNamedAndRemoveUntil(
       context,
       RouteNames.initial,

@@ -26,6 +26,8 @@ class VerificationState {
   final int? expiresAt;
   final String? email;
   final String? password;
+  final String? phone;
+  
   final int resendTimer;
 
   const VerificationState({
@@ -36,7 +38,7 @@ class VerificationState {
     this.expiresAt,
     this.email,
     this.password,
-    this.resendTimer = 0,
+    this.resendTimer = 0,this.phone,
   });
 
   VerificationState copyWith({
@@ -47,6 +49,7 @@ class VerificationState {
     int? expiresAt,
     String? email,
     String? password,
+    String? phone,
     int? resendTimer,
   }) {
     return VerificationState(
@@ -57,6 +60,7 @@ class VerificationState {
       expiresAt: expiresAt ?? this.expiresAt,
       email: email ?? this.email,
       password: password ?? this.password,
+      phone: phone?? this.phone,
       resendTimer: resendTimer ?? this.resendTimer,
     );
   }
